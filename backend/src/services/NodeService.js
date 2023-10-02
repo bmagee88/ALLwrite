@@ -9,6 +9,14 @@ async function createCover(client, cover){
 
 }
 
+async function getCoverById(client, cover_id){
+  const res = await client.query(
+    `select * from covers where id = ${cover_id}`
+  );
+  console.log(res.rows);
+  return res.rows;
+}
+
 
 async function getBookmarksByUserId(client, user_id) {
   const res = await client.query(
@@ -75,6 +83,7 @@ async function getLongestStoryChoicesFrom(client, n_id) {
 
 module.exports = {
   createCover,
+  getCoverById,
   getBookmarksByUserId,
   getCovers,
   getAuthorChildForPage,

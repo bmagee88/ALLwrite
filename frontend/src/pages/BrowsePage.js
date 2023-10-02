@@ -83,7 +83,7 @@ const BrowsePage = () => {
   // const [isBooked, setIsBooked] = useState(false);
 
   const ADD_AMOUNT = 3;
-  const ACTIVE_USER_ID = 2;
+  const ACTIVE_USER_ID = 1;
 
   useEffect(() => {
     const outer_stuff = async () => {

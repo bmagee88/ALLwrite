@@ -23,7 +23,7 @@ function App() {
           <Route path="register" element={<RegisterPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="browse" element={<BrowsePage />} />
-          <Route path="read" element={<ReadingPage />} />
+          <Route path="reading/:cover_title/:first_page" element={<ReadingPage />} />
           <Route path="donate" element={<DonationPage />} />
           <Route path="feedback" element={<FeedbackPage />} />
           <Route path="share" element={<SharePage />} />

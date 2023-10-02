@@ -70,6 +70,16 @@ app.get("/covers", (req, res) => {
     });
 });
 
+app.get("/cover-details/:id", (req, res)=>{
+  NodeService.getCoverById(client, req.params.id)
+  .then((result) => {
+    res.status(200).json({ data: result });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+})
+
 app.get("/author-choices", (req, res) => {
   NodeService.getAuthorChildForPage(client, res.body.author, 4)
     .then((result) => {
