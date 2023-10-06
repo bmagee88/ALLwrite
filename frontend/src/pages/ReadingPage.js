@@ -1,40 +1,133 @@
 import React, { useEffect, useState } from "react";
 import { FormCheck } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import ChoiceCard from "../components/nonexamples/ChoiceCard";
+import Rating from "../components/nonexamples/Rating";
+import { v4 as uuidv4 } from "uuid";
+import session_data from "../test/session";
 
 const ReadingPage = () => {
   const { cover_title, first_page } = useParams();
+  const this_page_id = first_page;
+  // here we have the title of the story and the current page's id
+
+  //maybe get cover record by title and first page in useEffect
+
+  // would be nice to have the previous page
+
+  // dont wanna fetch cover info or previous page every time.  cache them.
+
   const [choices, setChoices] = useState([]);
+  const [ratingChoices, setRatingChoices] = useState([]);
+  const [authorChoices, setAuthorChoices] = useState([]);
   const [page, setPage] = useState({});
   const [isRatedByActiveUser, setIsRatedByActiveUser] = useState(false);
-
-  const TEST_PAGE = {
-    body: `
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean bibendum, lectus sit amet aliquam congue, augue elit tempor justo, vel venenatis nibh felis a felis. Maecenas tincidunt ullamcorper congue. Suspendisse rhoncus eros nec quam ullamcorper sagittis. Nullam imperdiet dolor ut metus viverra, nec luctus tortor posuere. Morbi commodo id lacus at lacinia. Curabitur vehicula nulla ac malesuada tristique. Maecenas placerat at mi nec pulvinar.
-  
-  Mauris vitae dignissim nibh. Proin varius lacus vel orci posuere congue. Aliquam felis mi, tempus non justo et, rhoncus mattis enim. Nulla facilisi. Fusce feugiat aliquam condimentum. Proin nec eros eget neque tristique posuere. Fusce convallis nec diam vel aliquam. Cras mattis id ex ac varius. Suspendisse augue arcu, rhoncus non diam non, rhoncus iaculis erat. Sed pulvinar accumsan pellentesque. Nunc pulvinar, mi a tempus scelerisque, nisl nisl tempor nisl, at auctor lorem turpis pellentesque ante. Vestibulum iaculis, elit pharetra blandit mattis, elit nisi convallis quam, dignissim imperdiet leo leo sollicitudin urna. Nullam a fringilla quam.
-  
-  Nunc lacinia hendrerit ligula, pellentesque tincidunt nibh malesuada a. Vestibulum luctus nec nisl ultrices vulputate. Sed eu malesuada dui. Cras finibus, mi gravida efficitur vulputate, nisl felis tincidunt elit, interdum tincidunt libero ante ac diam. Donec cursus elementum mattis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel laoreet tortor. Donec vitae volutpat quam, eu porta lectus. Nulla facilisi. Pellentesque a condimentum massa. Integer in vestibulum metus. Nulla maximus rhoncus nisi, a aliquet erat semper eget. Praesent volutpat, arcu a pharetra lobortis, tellus leo ullamcorper lacus, vel tincidunt massa erat nec mi.
-  
-  Pellentesque ut lorem et lorem rhoncus finibus vitae a nisl. Pellentesque sed accumsan justo, eget dictum est. Aliquam et nisi eget ipsum congue ullamcorper. Fusce vel interdum dolor, eu vehicula ligula. Suspendisse tristique nisl ut nulla vestibulum, a ullamcorper sem pharetra. Vestibulum facilisis, urna vitae cursus malesuada, risus ligula dignissim nunc, vitae ultricies tortor lectus sed lorem. Suspendisse vitae lorem sed metus dapibus venenatis. Donec varius mollis interdum. Etiam at leo sed magna convallis dapibus eget nec ex. Praesent at felis ultricies, semper magna non, condimentum tellus. Nulla facilisi. Etiam venenatis porta nunc id accumsan. Donec eu lorem at metus ultrices semper. Mauris mauris lorem, volutpat id fringilla a, congue non elit.
-  
-  Phasellus condimentum vel turpis id finibus. In lobortis cursus turpis. Donec ut leo et metus finibus tristique. Sed et libero leo. Nam sed sagittis lacus. Suspendisse nunc ex, pulvinar lobortis egestas vel, congue at mauris. Suspendisse placerat et dui vitae suscipit. Cras sed cursus arcu, nec auctor mi. Aenean bibendum ante erat, ac faucibus mauris ultricies non.
-  
-  Nulla elementum placerat mi quis gravida. Phasellus finibus nibh hendrerit mi accumsan convallis eu quis quam. Etiam sed dui lacinia, mattis nisi at, tempor nisi. Proin sem dolor, luctus sit amet tellus at, ornare tristique mi. Ut maximus, velit ac efficitur congue, purus nisl sagittis diam, in luctus tortor tortor eget velit. Etiam vehicula sed quam dapibus sodales. Mauris sed purus malesuada, sagittis tortor eget, pharetra tortor. Maecenas sed lectus lorem. Vivamus congue felis id rutrum sagittis. Aliquam. `,
-    page_num: 1,
-  };
+  const [choiceLimit, setChoiceLimit] = useState(3);
+  const [trigger, setTrigger] = useState(false);
+  const [cover, setCover] = useState({});
+  const [pageIsRead, setPageIsRead] = useState(false);
 
   const FLAGS = { author: "Author", longest: "Longest", rating: "Rating" };
 
-  const TEST_CHOICE_ONE = { prompt: "asdf", flags: [FLAGS.author] };
-  const TEST_CHOICE_TWO = {};
-  const TEST_CHOICE_THREE = {};
-  const TEST_CHOICES = [TEST_CHOICE_ONE, TEST_CHOICE_TWO, TEST_CHOICE_THREE];
+  const TEST_AUTHOR = "dersh";
+  const ACTIVE_USER_ID = 4;
+  //   const TEST_ID = 22;
+
+  // console.log("this page id",this_page_id)
+  const CURRENT_PAGE_ENDPOINT = `http://localhost:8000/page/${this_page_id}`;
+  const CURRENT_COVER_ENDPOINT = `http://localhost:8000/cover-by/${this_page_id}`;
+  const CHOICES_ENDPOINT = `http://localhost:8000/choices-for/${this_page_id}?limit=${choiceLimit}`;
+  const AUTHOR_ENDPOINT = `http://localhost:8000/author-choices?author=${TEST_AUTHOR}&parent_id=${this_page_id}`;
+  const RATING_ENDPOINT = `http://localhost:8000/rating-choices?parent_id=${this_page_id}`;
+  const SET_READ_ENDPOINT = `http://localhost:8000/read`;
+  //   const AUTHOR_BODY = {
+  //     author: "Necrotroph",
+  //     parent_id: 4,
+  //   };
+  //   const RATING_BODY = {
+  //     parent_id: 4,
+  //   };
 
   useEffect(() => {
     //fetch first page
+    const reset = async () => {
+      setIsRatedByActiveUser(false);
+    };
+    reset();
+
+    const postRead = async () => {
+
+      let post_data = {
+        page_id : first_page,
+        user_id : ACTIVE_USER_ID
+      }
+
+      const result = await fetch(SET_READ_ENDPOINT, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(post_data),
+      });
+      const data = await result.json();
+      // console.log("insert result", data.data);
+      setPageIsRead(()=>data.data.length === 0)
+    };
+
+    const fetchCover = async () => {
+      const result = await fetch(CURRENT_COVER_ENDPOINT);
+      const data = await result.json();
+      // console.log("fetch cover data", data.data[0]);
+      // setPage(data.data[0]);
+      setCover(() => data.data[0]);
+    };
+
+    const fetchPage = async () => {
+      const result = await fetch(CURRENT_PAGE_ENDPOINT);
+      const data = await result.json();
+      // console.log("fetch page data", data.data[0]);
+      setPage(data.data[0]);
+      //untick checkbox
+    };
+    // fetchPage(first_page);
     //fetch choices
-  }, []);
+    const fetchRandomChoices = async () => {
+      const result = await fetch(CHOICES_ENDPOINT);
+      const data = await result.json();
+      // console.log("random choice data", data.data);
+      setChoices(() => {
+        return data.data;
+      });
+    };
+    // fetchRandomChoices();
+
+    const fetchAuthorChoice = async (title, page_id) => {
+      const result = await fetch(AUTHOR_ENDPOINT);
+      const data = await result.json();
+      // console.log("author data", data.data);
+      setAuthorChoices(() => {
+        return data.data;
+      });
+    };
+    // fetchAuthorChoice();
+
+    // const fetchRatingChoice = async (page_id) => {
+    //   const result = await fetch(RATING_ENDPOINT);
+    //   const data = await result.json();
+    //   // console.log("rating data", data.data);
+    //   setRatingChoices(() => {
+    //     return data.data;
+    //   });
+    // };
+
+    // fetchRatingChoice(this_page_id);
+    fetchAuthorChoice(cover_title, this_page_id);
+    fetchPage(this_page_id);
+    fetchRandomChoices();
+    fetchCover();
+    postRead();
+  }, [trigger, first_page]);
 
   //   useEffect(() => {
   //     setIsRatedByActiveUser((isRatedByActiveUser) => !isRatedByActiveUser);
@@ -45,101 +138,85 @@ const ReadingPage = () => {
       <div className="container bg=light">
         <div className="row justify-content-between border border-dark mt-2">
           <div className="col-1 w-auto">back</div>
-          <div className="col-1 w-auto">{cover_title}</div>
-          <div className="col-1 w-auto">{TEST_PAGE.page_num}</div>
+          <div className="col-1 w-auto">{cover_title}
+          {pageIsRead && (<span> {'['}READ{']'}</span>)}
+          </div>
+          <div className="col-1 w-auto">{page.page_num}</div>
         </div>
         <div className="row mt-4 border border-dark p-3 justify-content-center">
-          <div className="col-6 border">{TEST_PAGE.body}</div>
+          <div className="col-6 border">{page.body}</div>
         </div>
         <div className="row justify-content-center border border-dark mt-2">
           <div className="col-1 w-auto">
-            rated: {isRatedByActiveUser.toString()}
+            {/* rated: {isRatedByActiveUser.toString()} */}
+            <Rating user_id={ACTIVE_USER_ID} page_id={first_page} setIsRated={setIsRatedByActiveUser} isRated={isRatedByActiveUser}/>
             <FormCheck
               onClick={() => {
-                console.log("clicked");
+                // console.log("clicked");
                 setIsRatedByActiveUser(() => !isRatedByActiveUser);
+                // console.log("choices", choices);
+                // console.log("achoices", authorChoices);
+                // console.log("rchoices", ratingChoices);
               }}
             ></FormCheck>
           </div>
         </div>
+        {false && isRatedByActiveUser && (
+          <div className="row justify-content-evenly mt-2 border border-dark p-3">
+            {ratingChoices.map((item) => {
+              return (
+                <ChoiceCard
+                  key={uuidv4()}
+                  title={cover_title}
+                  choice={[item]}
+                  setTrigger={setTrigger}
+                  trigger={trigger}
+                  flags={[{ author: false, rating: true }]}
+                />
+              );
+            })}
+          </div>
+        )}
+
+        {false && isRatedByActiveUser && (
+          <div className="row justify-content-evenly mt-2 border border-dark p-3">
+            {authorChoices.map((item) => {
+              return (
+                <ChoiceCard
+                  key={uuidv4()}
+                  title={cover_title}
+                  choice={[item]}
+                  setTrigger={setTrigger}
+                  trigger={trigger}
+                  flags={[{ author: true, rating: false }]}
+                />
+              );
+            })}
+          </div>
+        )}
+
         {isRatedByActiveUser && (
           <div className="row justify-content-evenly mt-2 border border-dark p-3">
-            <div className="col-12 col-md-5 col-lg-3 border border-dark mt-2">
-              <div className="row">
-                <div className="col">author</div>
-                <div className="col">page rating</div>
-                <div className="col">possible length</div>
-              </div>
-              <div className="row mt-2">
-                <div className="col">
-                  {" "}
-                  Nulla elementum placerat mi quis gravida. Phasellus finibus
-                  nibh hendrerit mi accumsan convallis eu quis quam. Etiam sed
-                  dui lacinia, mattis nisi at, tempor nisi. Proin sem dolor,
-                  luctus sit amet tellus at, ornare tristique mi. Ut maximus,
-                  velit ac efficitur congue, purus nisl sagittis diam, in luctus
-                  tortor tortor eget velit. Etiam vehicula sed quam dapibus
-                  sodales. Mauris sed purus malesuada, sagittis tortor eget,
-                  pharetra tortor. Maecenas sed lectus lorem. Vivamus congue
-                  felis id rutrum sagittis. Aliquam. `,
-                </div>
-              </div>
-              <div className="row mt-2">
-                <div className="col mb-2">flags</div>{" "}
+            {choices.map((item) => {
+              // console.log("item being passed", item);
+              return (
+                <ChoiceCard
+                  key={uuidv4()}
+                  title={cover_title}
+                  choice={[item]}
+                  setTrigger={setTrigger}
+                  trigger={trigger}
+                  flags={[{ author: false, rating: false }]}
+                />
+              );
+            })}
+            <div className="row justify-content-end mt-2">
+              <div className="col-1 w-auto">
+                <Link to={`../../../create-page/${this_page_id}`}>
+                  <button>+ add new choice</button>
+                </Link>
               </div>
             </div>
-            <div className="col-12 col-md-5 col-lg-3 border border-dark mt-2">
-              <div className="row">
-                <div className="col">author</div>
-                <div className="col">page rating</div>
-                <div className="col">possible length</div>
-              </div>
-              <div className="row mt-2">
-                <div className="col">
-                  {" "}
-                  Nulla elementum placerat mi quis gravida. Phasellus finibus
-                  nibh hendrerit mi accumsan convallis eu quis quam. Etiam sed
-                  dui lacinia, mattis nisi at, tempor nisi. Proin sem dolor,
-                  luctus sit amet tellus at, ornare tristique mi. Ut maximus,
-                  velit ac efficitur congue, purus nisl sagittis diam, in luctus
-                  tortor tortor eget velit. Etiam vehicula sed quam dapibus
-                  sodales. Mauris sed purus malesuada, sagittis tortor eget,
-                  pharetra tortor. Maecenas sed lectus lorem. Vivamus congue
-                  felis id rutrum sagittis. Aliquam. `,
-                </div>
-              </div>
-              <div className="row mt-2">
-                <div className="col mb-2">flags</div>
-              </div>
-            </div>
-            <div className="col-12 col-md-5 col-lg-3 border border-dark mt-2">
-              <div className="row">
-                <div className="col">author</div>
-                <div className="col">page rating</div>
-                <div className="col">possible length</div>
-              </div>
-              <div className="row mt-2">
-                <div className="col">
-                  {" "}
-                  Nulla elementum placerat mi quis gravida. Phasellus finibus
-                  nibh hendrerit mi accumsan convallis eu quis quam. Etiam sed
-                  dui lacinia, mattis nisi at, tempor nisi. Proin sem dolor,
-                  luctus sit amet tellus at, ornare tristique mi. Ut maximus,
-                  velit ac efficitur congue, purus nisl sagittis diam, in luctus
-                  tortor tortor eget velit. Etiam vehicula sed quam dapibus
-                  sodales. Mauris sed purus malesuada, sagittis tortor eget,
-                  pharetra tortor. Maecenas sed lectus lorem. Vivamus congue
-                  felis id rutrum sagittis. Aliquam. `,
-                </div>
-              </div>
-              <div className="row mt-2">
-                <div className="col mb-2">flags</div>{" "}
-              </div>
-            </div>
-
-            {/* {asdf.map(() => {
-            return <ChoiceCard />;
-          })} */}
           </div>
         )}
       </div>

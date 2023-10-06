@@ -11,6 +11,7 @@ import CoverDetailsPage from "./pages/CoverDetailsPage"
 import Testing from "./pages/Testing";
 import Header from "./components/nonexamples/Header";
 import CreateCover from "./pages/CreateCover";
+import CreatePage from "./pages/CreatePage";
 function App() {
   return (
     <div>
@@ -29,6 +30,7 @@ function App() {
           <Route path="share" element={<SharePage />} />
           <Route path="create-cover" element={<CreateCover />} />
           <Route path="cover-details/:cover_id" element={<CoverDetailsPage />} />
+          <Route path="create-page/:parent_id" element={<CreatePage />} />
         </Routes>
       </Router>
     </div>
