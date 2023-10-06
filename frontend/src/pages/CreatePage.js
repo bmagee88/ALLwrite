@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 const CreatePage = () => {
   const { parent_id } = useParams();
+
+  const navigate = useNavigate();
 
   const [cover, setCover] = useState();
   const CREATE_PAGE_ENDPOINT = `http://localhost:8000/create-page-for/${parent_id}`;
@@ -37,8 +40,8 @@ const CreatePage = () => {
       author: ACTIVE_USER,
     };
 
-    console.log("prompt", typeof e.target.elements.prompt.value);
-    console.log("body_text", typeof e.target.elements.body_text.value);
+    // console.log("prompt", typeof e.target.elements.prompt.value);
+    // console.log("body_text", typeof e.target.elements.body_text.value);
 
     fetch(e.target.action, {
       method: "POST",
@@ -46,7 +49,6 @@ const CreatePage = () => {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      //   body: JSON.stringify(sample_insert),
       body: JSON.stringify(form_data),
     })
       .then((response) => {
@@ -55,7 +57,8 @@ const CreatePage = () => {
           throw new Error(response.statusText);
         }
         console.log("success");
-        return response.json();
+        // return response.json();
+        navigate(`/reading/${cover.title}/${parent_id}`)
       })
       .catch((err) => {
         console.log(err);

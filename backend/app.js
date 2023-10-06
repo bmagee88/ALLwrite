@@ -7,6 +7,7 @@ const { Client } = require("pg");
 const { CoverDto } = require("./src/dtos/CoverDto.js");
 const { PageDto } = require("./src/dtos/PageDto");
 const { ReadDto } = require("./src/dtos/ReadDto");
+const { UserDto } = require("./src/dtos/UserDto");
 
 const cors = require("cors");
 const app = express();
@@ -30,16 +31,19 @@ app.listen(SERVER_PORT, () => {
 
 app.use(cors());
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header('Access-Control-Allow-Methods', 'DELETE, PUT');
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  if ('OPTIONS' == req.method) {
-     res.sendStatus(200);
-   }
-   else {
-     next();
-   }});
+  res.header("Access-Control-Allow-Methods", "DELETE, PUT");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  if ("OPTIONS" == req.method) {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
+});
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -54,29 +58,12 @@ app.get("/page/:page_id", (req, res) => {
     });
 });
 
-app.get('/user-rating-for-page/:user_id/:page_id', (req, res) => {
-  NodeService.getRatingByUserAndPage(client, parseInt(req.params.user_id), parseInt(req.params.page_id))
-    .then((result) => {
-      res.status(200).json({ data: result });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-})
-
-app.put('/user-rating-for-page-update/:user_id/:page_id/:rating', (req, res) => {
-  NodeService.updateUserRatingByUserIdAndPageId(client, parseInt(req.params.user_id), parseInt(req.params.page_id), parseInt(req.params.rating))
-    .then((result) => {
-      res.status(200).json({ data: result });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-
-app.post('/user-rating-for-page-insert/:user_id/:page_id/:rating', (req, res) => {
-  NodeService.insertUserRatingByUserIdAndPageId(client, parseInt(req.params.user_id), parseInt(req.params.page_id), parseInt(req.params.rating))
+app.get("/user-rating-for-page/:user_id/:page_id", (req, res) => {
+  NodeService.getRatingByUserAndPage(
+    client,
+    parseInt(req.params.user_id),
+    parseInt(req.params.page_id)
+  )
     .then((result) => {
       res.status(200).json({ data: result });
     })
@@ -85,9 +72,61 @@ app.post('/user-rating-for-page-insert/:user_id/:page_id/:rating', (req, res) =>
     });
 });
 
+app.put(
+  "/user-rating-for-page-update/:user_id/:page_id/:rating",
+  (req, res) => {
+    NodeService.updateUserRatingByUserIdAndPageId(
+      client,
+      parseInt(req.params.user_id),
+      parseInt(req.params.page_id),
+      parseInt(req.params.rating)
+    )
+      .then((result) => {
+        res.status(200).json({ data: result });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+);
 
-app.get('/avg-rating/:page_id', (req, res) => {
-  console.log("avg-rating page id",req.params.page_id)
+app.post(
+  "/user-rating-for-page-insert/:user_id/:page_id/:rating",
+  (req, res) => {
+    NodeService.insertUserRatingByUserIdAndPageId(
+      client,
+      parseInt(req.params.user_id),
+      parseInt(req.params.page_id),
+      parseInt(req.params.rating)
+    )
+      .then((result) => {
+        res.status(200).json({ data: result });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+);
+
+app.post("/create-user", (req, res) => {
+  const user = new UserDto(
+    req.body.username,
+    req.body.firstname,
+    req.body.lastname,
+    req.body.email,
+    req.body.password
+  );
+  NodeService.createUser(client, user)
+    .then((result) => {
+      res.status(200).json({ data: result });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.get("/avg-rating/:page_id", (req, res) => {
+  console.log("avg-rating page id", req.params.page_id);
   NodeService.avgRatingByPageId(client, parseInt(req.params.page_id))
     .then((result) => {
       res.status(200).json({ data: result });
@@ -96,8 +135,6 @@ app.get('/avg-rating/:page_id', (req, res) => {
       console.log(err);
     });
 });
-
-
 
 app.get("/choices-for/:parent_id", (req, res) => {
   NodeService.getChoices(client, req.params.parent_id, req.query.limit)
@@ -130,10 +167,7 @@ app.post("/create-cover", (req, res) => {
 
 app.post("/read", (req, res) => {
   //validate
-  let read = new ReadDto(
-    req.body.user_id,
-    req.body.page_id,
-  );
+  let read = new ReadDto(req.body.user_id, req.body.page_id);
   NodeService.readPage(client, read)
     .then((result) => {
       res.status(200).json({ data: result });
@@ -151,7 +185,7 @@ app.post("/create-page-for/:parent_id", (req, res) => {
     parseInt(req.body.page_num),
     req.body.author
   );
-  console.log('page at endpoint', page);
+  // console.log("page at endpoint", page);
   NodeService.createPage(client, page)
     .then((result) => {
       res.status(200).json({ data: result });

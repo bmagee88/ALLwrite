@@ -1,7 +1,11 @@
 import React from "react";
 import { Form } from "react-bootstrap";
+import { useNavigate } from 'react-router-dom'
 
 const RegisterPage = () => {
+  const CREATE_USER_ENDPOINT = `http://localhost:8000/create-user`;
+
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -9,6 +13,35 @@ const RegisterPage = () => {
     //validate fields
 
     //post to server endpoint
+
+    var form_data = {
+      username: e.target.elements.inputUsername.value,
+      firstname: e.target.elements.inputFirstName.value,
+      lastname: e.target.elements.inputLastName.value,
+      email: e.target.elements.inputEmail.value,
+      password: e.target.elements.inputPassword.value,
+    };
+
+    fetch(e.target.action, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(form_data),
+    })
+      .then((response) => {
+        if (response.status !== 200) {
+          console.log("status code not 200");
+          throw new Error(response.statusText);
+        }
+        console.log("success");
+        // return response.json();
+        navigate("/browse");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     //then wait for response and notify the user accordingly
   };
@@ -20,7 +53,12 @@ const RegisterPage = () => {
           Register
         </div>
       </div>
-      <Form className="mx-5" onSubmit={handleSubmit}>
+      <Form
+        className="mx-5"
+        onSubmit={handleSubmit}
+        action={CREATE_USER_ENDPOINT}
+        method="POST"
+      >
         <div className="form-group row">
           <label htmlFor="inputUsername" className="col-sm-2 col-form-label">
             Username
@@ -153,7 +191,7 @@ const RegisterPage = () => {
         <div className="form-group row">
           <div className="col-sm-10">
             <button type="submit" className="btn btn-primary" formAction="">
-              Join :{']'}
+              Join :{"]"}
             </button>
           </div>
         </div>

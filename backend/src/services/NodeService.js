@@ -15,6 +15,42 @@ async function createCover(client, cover) {
   return res.rows;
 }
 
+async function createUser(client, user) {
+  const resUser = await client
+    .query(`insert into allwrite_user (id) values (default) returning *;`)
+    .then((resUser) => {
+      // console.log("resUser.rows[0]", resUser.rows[0])
+        client.query(
+          `insert into user_profile (user_id, username, firstname, lastname, email, password) values (${resUser.rows[0].id}, '${user.username}', '${user.firstname}', '${user.lastname}', '${user.email}', '${user.password}');`
+        );
+        return resUser;
+    })
+    .then((resUser) => {
+      if (resUser.rows.length !== 0) {
+        client.query(
+          `insert into user_account (user_id, amount) values (${resUser.rows[0].id}, 100);`
+        );
+      }
+      return resUser;
+    })
+    .catch((err) => {
+      console.log(err);
+      return resUser;
+    });
+
+  // console.log("id from insert", resUser[0].id);
+  // if (resUser.rows.length !== 0) {
+  //   const resProfile = await client.query(
+  //     `insert into user_profile (user_id, username, firstname, lastname, email, password) values (${resUser.rows.id}, '${user.username}', '${user.firstname}', '${user.lastname}', '${user.email}', '${user.password}');`
+  //   );
+  //   const resAccount = await client.query(
+  //     `insert into user_account (user_id, amount) values (${resUser.rows.id}, 100;`
+  //   );
+  // }
+  // console.log(res.rows);
+  return resUser.rows;
+}
+
 async function createPage(client, page) {
   const id = await client.query("select id from page order by id desc limit 1");
   console.log("id", id.rows[0].id);
@@ -23,7 +59,7 @@ async function createPage(client, page) {
       id.rows[0].id + 1
     }, ${page.parent_id}, '${page.prompt}', '${page.body_text.toString()}', ${
       page.page_num
-    }, '${page.author}');`
+    }, '${page.author}' ) returning *;`
   );
   // const res = await client.query(`insert into page (id, parent_id, prompt, body, page_num, author) values (${id.rows[0].id+1}, ${page.parent_id}, ${page.prompt}, ${page.body}, ${page.page_num}, '${page.author}');`
   // );
@@ -209,4 +245,5 @@ module.exports = {
   getRatingByUserAndPage,
   insertUserRatingByUserIdAndPageId,
   updateUserRatingByUserIdAndPageId,
+  createUser,
 };
