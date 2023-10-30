@@ -126,7 +126,7 @@ app.post("/create-user", (req, res) => {
 });
 
 app.get("/avg-rating/:page_id", (req, res) => {
-  console.log("avg-rating page id", req.params.page_id);
+  // console.log("avg-rating page id", req.params.page_id);
   NodeService.avgRatingByPageId(client, parseInt(req.params.page_id))
     .then((result) => {
       res.status(200).json({ data: result });
@@ -147,7 +147,7 @@ app.get("/choices-for/:parent_id", (req, res) => {
 });
 
 app.post("/create-cover", (req, res) => {
-  console.log("body", req.body);
+  // console.log("body", req.body);
   //validate
   let cover = new CoverDto(
     req.body.title,
@@ -177,10 +177,45 @@ app.post("/read", (req, res) => {
     });
 });
 
+app.post("/login", (req, res) => {
+  //validate
+  NodeService.login(client, req.body.username, req.body.password)
+    .then((result) => {
+      res.status(200).json({ data: result });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json({ data: "invalid" });
+    });
+});
+
+app.get("/is-username-taken/:username", (req, res) => {
+  NodeService.isUsernameTaken(client, req.params.username)
+    .then((result) => {
+      res.status(200).json({ data: result });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ data: "server error" });
+    });
+});
+
 app.post("/create-page-for/:parent_id", (req, res) => {
+  // console.log("param value of pid", req.params.parent_id);
+
+  let adjusted_pid = null;
+  let adjusted_prompt = null;
+
+  if (parseInt(req.params.parent_id) !== 0) {
+    adjusted_pid = parseInt(req.params.parent_id);
+  }
+  if (req.body.prompt !== 0) {
+    // console.log("using non-null value (value passed in)");
+    adjusted_prompt = "'" + req.body.prompt + "'";
+  }
   let page = new PageDto(
-    parseInt(req.params.parent_id),
-    req.body.prompt,
+    adjusted_pid,
+    adjusted_prompt,
     req.body.body_text,
     parseInt(req.body.page_num),
     req.body.author
@@ -188,7 +223,7 @@ app.post("/create-page-for/:parent_id", (req, res) => {
   // console.log("page at endpoint", page);
   NodeService.createPage(client, page)
     .then((result) => {
-      res.status(200).json({ data: result });
+      res.json({ data: result });
     })
     .catch((err) => {
       console.log(err);
@@ -226,8 +261,27 @@ app.get("/cover-details/:id", (req, res) => {
 });
 
 app.get("/cover-by/:page_id", (req, res) => {
-  console.log("page id at endpoint", req.params.page_id);
+  // console.log("page id at endpoint", req.params.page_id);
   NodeService.getCoverByPageId(client, req.params.page_id)
+    .then((result) => {
+      res.status(200).json({ data: result });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.get("/page-is-read", (req, res) => {
+  // console.log(
+  //   "page is read query info:",
+  //   parseInt(req.query.page_id),
+  //   parseInt(req.query.user_id)
+  // );
+  NodeService.getIfPageRead(
+    client,
+    parseInt(req.query.page_id),
+    parseInt(req.query.user_id)
+  )
     .then((result) => {
       res.status(200).json({ data: result });
     })
@@ -260,8 +314,8 @@ app.get("/rating-choices", (req, res) => {
     });
 });
 
-app.get("/longest-story", (req, res) => {
-  NodeService.getLongestStoryChoicesFrom(client, 2)
+app.get("/longest-stories", (req, res) => {
+  NodeService.getLongestStoryChoicesFrom(client, req.query.page_id)
     .then((result) => {
       res.status(200).json({ data: result });
     })

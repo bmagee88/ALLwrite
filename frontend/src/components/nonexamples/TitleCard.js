@@ -18,7 +18,6 @@ const TitleCard = ({
           <div className="row">
             <div className="col col-11">
               <div className="row border border-primary p-1 bg-white mx-1 h4">
-                {cover_id}
                 {title}
               </div>
               <div className="row border border-primary p-1 bg-white mx-1 lead">

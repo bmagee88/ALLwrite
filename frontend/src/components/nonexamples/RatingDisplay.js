@@ -30,7 +30,7 @@ const RatingDisplay = ({ page_id }) => {
         return (
           <img
             key={rating + index + 1}
-            id={parseInt(index) + 1}
+            id={String(parseInt(index) + 1)}
             src={RatingDropFull}
             height="10"
             width="10"
@@ -48,7 +48,7 @@ const RatingDisplay = ({ page_id }) => {
           return (
             <img
               key={rating + index + 1}
-              id={parseInt(rating) + parseInt(index) + 1}
+              id={String(parseInt(rating) + parseInt(index) + 1)}
               src={RatingDropEmpty}
               height="10"
               width="10"

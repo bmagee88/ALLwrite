@@ -1,4 +1,4 @@
-const session_data = { user_id: 3,
-username: "Dersh" };
+// const session_data = { user_id: 21,
+// username: "Ben" };
 
-export default session_data;
+// export default session_data;

@@ -1,27 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form } from "react-bootstrap";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
+import bcrypt from "bcryptjs";
 
 const RegisterPage = () => {
   const CREATE_USER_ENDPOINT = `http://localhost:8000/create-user`;
+  const IS_USERNAME_AVAILABLE_ENDPOINT = `http://localhost:8000/is-username-taken/`;
+  const [usernameAvailable, setUsernameAvailable] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     //validate fields
+    if (e.target.value === "" || !usernameAvailable) {
+      // flash the field
+      console.log("caught username unavailable");
+      return;
+    }
 
-    //post to server endpoint
-
+    //encrypt password
+    const encrypted_password = await bcrypt.hash(
+      e.target.elements.inputPassword.value,
+      10
+    );
+    // load pbject to send
     var form_data = {
       username: e.target.elements.inputUsername.value,
       firstname: e.target.elements.inputFirstName.value,
       lastname: e.target.elements.inputLastName.value,
       email: e.target.elements.inputEmail.value,
-      password: e.target.elements.inputPassword.value,
+      password: encrypted_password,
     };
 
+    // bcrypt.compare(
+    //   e.target.elements.inputPassword.value,
+    //   encrypted_password,
+    //   function (err, result) {
+    //     if (err) {
+    //       console.log("error");
+    //     } else {
+    //       if (result) {
+    //         console.log("Password is correct");
+    //       } else {
+    //         console.log("Password is incorrect");
+    //       }
+    //     }
+    //   }
+    // );
+
+    //post to server endpoint
     fetch(e.target.action, {
       method: "POST",
       headers: {
@@ -46,6 +75,45 @@ const RegisterPage = () => {
     //then wait for response and notify the user accordingly
   };
 
+  const getUsernameAvailable = debounce((username) => {
+    //fetch here
+    const getTaken = async (username) => {
+      const result = await fetch(
+        IS_USERNAME_AVAILABLE_ENDPOINT + `${username}`
+      );
+      const data = await result.json();
+      // console.log("getusernametaken:data", data)
+      if (data.data === true) setUsernameAvailable(false);
+      else {
+        setUsernameAvailable(true);
+      }
+    };
+
+    if(username === ""){
+      setUsernameAvailable(false)
+      return;
+    }
+    getTaken(username);
+  });
+
+  function debounce(cb, delay = 1000) {
+    let timeout;
+
+    return (...args) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        cb(...args);
+      }, delay);
+    };
+  }
+
+  const checkUsernameAvailability = (e) => {
+    //use debouncing to check availablity
+    getUsernameAvailable(e.target.value);
+    //update state : usernameIsValid
+    //fetch from db from is-username-taken:username
+  };
+
   return (
     <div>
       <div className="row justify-content-center h1 mt-4">
@@ -68,9 +136,12 @@ const RegisterPage = () => {
               type="text"
               className="form-control"
               id="inputUsername"
-              placeholder="Username"
+              placeholder=""
+              onChange={(e) => checkUsernameAvailability(e)}
               required
             />
+            {usernameAvailable && <div className="text-success">Available</div>}
+            {!usernameAvailable && <div className="text-danger">Taken</div>}
           </div>
         </div>
         <div className="form-group row">
@@ -82,7 +153,7 @@ const RegisterPage = () => {
               type="text"
               className="form-control"
               id="inputFirstName"
-              placeholder="First Name"
+              placeholder=""
             />
           </div>
         </div>
@@ -95,7 +166,7 @@ const RegisterPage = () => {
               type="text"
               className="form-control"
               id="inputLastName"
-              placeholder="Last Name"
+              placeholder=""
             />
           </div>
         </div>
@@ -108,7 +179,7 @@ const RegisterPage = () => {
               type="email"
               className="form-control"
               id="inputEmail"
-              placeholder="Email"
+              placeholder=""
               required
             />
           </div>
@@ -122,7 +193,7 @@ const RegisterPage = () => {
               type="password"
               className="form-control"
               id="inputPassword"
-              placeholder="Password"
+              placeholder=""
               required
             />
           </div>

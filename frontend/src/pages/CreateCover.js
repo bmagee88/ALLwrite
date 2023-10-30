@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 // import { Form } from "react-bootstrap";
 
 /**
@@ -7,32 +8,61 @@ import React from "react";
  */
 const CreateCover = () => {
   const CREATE_COVER_ENDPOINT = "http://localhost:8000/create-cover";
-  const ACTIVE_USER = "Sam";
-  const FIRST_PAGE = 100;
-  let sample_insert = {
-    title: "7th Day",
-    author: "Necrotroph",
-    genre: "Adventure",
-    summary: "This is the 7th sample book im entering.",
-    first_page: 23,
+  const CREATE_PAGE_ENDPOINT = "http://localhost:8000/create-page-for/0";
+  const ACTIVE_USER = sessionStorage.getItem("username");
+  // const FIRST_PAGE = 100;
+
+  const navigate = useNavigate();
+  // let sample_insert = {
+  //   title: "7th Day",
+  //   author: "Necrotroph",
+  //   genre: "Adventure",
+  //   summary: "This is the 7th sample book im entering.",
+  //   first_page: 23,
+  // };
+
+  const postPage = async (e) => {
+    console.log("creating page");
+    var page_data = {
+      prompt: 0,
+      body_text: e.target.elements.body.value,
+      page_num: 1,
+      author: ACTIVE_USER,
+    };
+
+    let resp = await fetch(CREATE_PAGE_ENDPOINT, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      //   body: JSON.stringify(sample_insert),
+      body: JSON.stringify(page_data),
+    })
+    let data = await resp.json();
+    console.log("resp data after page insert", data);
+    // if (res.status !== 200) {
+    //   console.log("status code not 200");
+    //   throw new Error(res.statusText);
+    // }
+    console.log("createPage success");
+    console.log("returning", data);
+    return data;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    //validate form and format for sending
-    //get data
-
+  const postCover = async (e, first_page) => {
+    console.log("posting cover");
     var form_data = {
       title: e.target.elements.title.value,
       author: ACTIVE_USER,
       genre: e.target.elements.genre.value,
       summary: e.target.elements.summary.value,
-      first_page: FIRST_PAGE,
+      first_page: first_page,
     };
 
-    console.log("1");
-    console.log("json obj", JSON.stringify(form_data));
-    console.log("e.target.action", e.target.action);
+    // console.log("1");
+    // console.log("json obj", JSON.stringify(form_data));
+    // console.log("e.target.action", e.target.action);
 
     fetch(e.target.action, {
       method: "POST",
@@ -48,12 +78,21 @@ const CreateCover = () => {
           console.log("status code not 200");
           throw new Error(response.statusText);
         }
-        console.log("success");
-        return response.json();
+        console.log("createCover success");
+        // return response.json();
+        navigate(`/browse`);
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    //validate form and format for sending
+    //get data
+    let page_data = await postPage(e);
+    await postCover(e, page_data.data[0].id);
   };
 
   return (
@@ -122,6 +161,7 @@ const CreateCover = () => {
               id="textAreaBody"
               rows="3"
               name="body"
+              required
             ></textarea>
           </div>
 

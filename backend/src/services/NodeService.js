@@ -1,5 +1,7 @@
+const bcrypt = require("bcryptjs");
+
 async function getChoices(client, parent_id, limit) {
-  console.log("pid, limit", parent_id, limit);
+  // console.log("pid, limit", parent_id, limit);
   const res = await client.query(
     `select * from page where parent_id = ${parent_id} order by RANDOM() limit ${limit}`
   );
@@ -8,6 +10,7 @@ async function getChoices(client, parent_id, limit) {
 }
 
 async function createCover(client, cover) {
+  // console.log("service: cover", cover);
   const res = await client.query(
     `insert into covers (title, author, genre, summary, first_page) values ('${cover.title}', '${cover.author}', '${cover.genre}', '${cover.summary}', ${cover.first_page});`
   );
@@ -15,15 +18,58 @@ async function createCover(client, cover) {
   return res.rows;
 }
 
+async function login(client, username, password) {
+  const empty_result = {
+    rowCount: 0,
+    rows: [],
+  };
+  // validate password
+  // get username stored hashed password
+  const res = await client
+    .query(`select password from user_profile where username = '${username}';`)
+    .then((get_hashed_pass_query_result) => {
+      if (
+        Array.isArray(get_hashed_pass_query_result) &&
+        get_hashed_pass_query_result.length === 0
+      ) {
+        return empty_result;
+      }
+      var hashed_password_from_db =
+        get_hashed_pass_query_result.rows[0].password;
+      if (bcrypt.compare(password, hashed_password_from_db)) {
+        return client.query(
+          `select user_id, username, firstname, lastname, email from user_profile where username = '${username}' and password = '${hashed_password_from_db}'`
+        );
+      } else {
+        return empty_result;
+      }
+    })
+    .catch((err) => {
+      // console.log("something went wrong:", err);
+    });
+
+  // console.log(res.rows);
+  return res.rows;
+}
+
+async function isUsernameTaken(client, username) {
+  console.log("given username", username);
+  const result = await client.query(
+    `select username from user_profile where username = '${username}';`
+  );
+  console.log("usernames", result.rows);
+  return Array.isArray(result.rows) && result.rows.length !== 0;
+}
+
 async function createUser(client, user) {
   const resUser = await client
     .query(`insert into allwrite_user (id) values (default) returning *;`)
     .then((resUser) => {
       // console.log("resUser.rows[0]", resUser.rows[0])
-        client.query(
-          `insert into user_profile (user_id, username, firstname, lastname, email, password) values (${resUser.rows[0].id}, '${user.username}', '${user.firstname}', '${user.lastname}', '${user.email}', '${user.password}');`
-        );
-        return resUser;
+      client.query(
+        `insert into user_profile (user_id, username, firstname, lastname, email, password) values (${resUser.rows[0].id}, '${user.username}', '${user.firstname}', '${user.lastname}', '${user.email}', '${user.password}');`
+      );
+      return resUser;
     })
     .then((resUser) => {
       if (resUser.rows.length !== 0) {
@@ -33,8 +79,16 @@ async function createUser(client, user) {
       }
       return resUser;
     })
+    .then((resUser) => {
+      if (resUser.rows.length !== 0) {
+        client.query(
+          `insert into user_settings (user_id) values (${resUser.rows[0].id});`
+        );
+      }
+      return resUser;
+    })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       return resUser;
     });
 
@@ -52,18 +106,19 @@ async function createUser(client, user) {
 }
 
 async function createPage(client, page) {
+  // console.log("service: Page", page);
   const id = await client.query("select id from page order by id desc limit 1");
-  console.log("id", id.rows[0].id);
+  // console.log("id", id.rows[0].id);
   const res = await client.query(
     `insert into page (id, parent_id, prompt, body, page_num, author) values (${
       id.rows[0].id + 1
-    }, ${page.parent_id}, '${page.prompt}', '${page.body_text.toString()}', ${
+    }, ${page.parent_id}, ${page.prompt}, '${page.body_text.toString()}', ${
       page.page_num
     }, '${page.author}' ) returning *;`
   );
   // const res = await client.query(`insert into page (id, parent_id, prompt, body, page_num, author) values (${id.rows[0].id+1}, ${page.parent_id}, ${page.prompt}, ${page.body}, ${page.page_num}, '${page.author}');`
   // );
-  console.log(res.rows);
+  // console.log(res.rows);
   return res.rows;
 }
 
@@ -125,12 +180,22 @@ async function readPage(client, read) {
     SELECT user_id, page_id FROM user_read_pages WHERE user_id = ${read.user_id} and page_id = ${read.page_id}
     ) returning *;`
   );
-  console.log("read page:::", res.rows);
+  // console.log("read page:::", res.rows);
+  return res.rows;
+}
+
+async function getIfPageRead(client, page_id, user_id) {
+  const res = await client.query(
+    `select * from user_read_pages where page_id=${page_id} and user_id=${user_id};`
+  );
+  // console.log("page is read", res.rows);
   return res.rows;
 }
 
 async function getCoverById(client, cover_id) {
-  const res = await client.query(`select * from covers where id = ${cover_id}`);
+  const res = await client.query(
+    `select * from covers where id = ${cover_id};`
+  );
   // console.log(res.rows);
   return res.rows;
 }
@@ -148,7 +213,17 @@ async function getCoverByPageId(client, page_id) {
     JOIN tree tr ON tr.parent_id = n2.id
   )
 
-select *, ${page_id} as leaf_node
+select  	  c.id as id
+, c.title
+, c.author
+, c.genre
+, c.summary
+, c.first_page
+, c.image_url
+, t.id as page_id
+, t.parent_id
+, t.hlevel
+, ${page_id} as leaf_node
 from covers c 
 join tree t
 on c.first_page = t.id
@@ -157,7 +232,7 @@ select tr.id
 from tree tr 
 where tr.parent_id is null)
 `);
-  console.log(res.rows);
+  // console.log("get cover by page id", res.rows);
   return res.rows;
 }
 
@@ -200,6 +275,7 @@ async function getHighestRatingChoices(client, p_id) {
 }
 
 async function getLongestStoryChoicesFrom(client, n_id) {
+  // console.log("longeststories:pageid:", n_id);
   const res = await client.query(
     `with recursive tree AS (
         SELECT n1.id, n1.parent_id, 1 as hlevel, n1.id as root
@@ -225,6 +301,7 @@ async function getLongestStoryChoicesFrom(client, n_id) {
       group by lvlc.root
       order by more_pages desc`
   );
+  // console.log("lngeststories:rows", res.rows);
   return res.rows;
 }
 
@@ -246,4 +323,7 @@ module.exports = {
   insertUserRatingByUserIdAndPageId,
   updateUserRatingByUserIdAndPageId,
   createUser,
+  getIfPageRead,
+  login,
+  isUsernameTaken,
 };

@@ -10,7 +10,7 @@ const CreatePage = () => {
   const [cover, setCover] = useState();
   const CREATE_PAGE_ENDPOINT = `http://localhost:8000/create-page-for/${parent_id}`;
   const CURRENT_COVER_ENDPOINT = `http://localhost:8000/cover-by/${parent_id}`;
-  const ACTIVE_USER = "Brian";
+  const ACTIVE_USERNAME = sessionStorage.getItem("username");
   // const parent_pg_num = 45
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const CreatePage = () => {
       body_text: e.target.elements.body_text.value,
       // page_num: cover.hlevel + 1,
       page_num: cover.hlevel + 1,
-      author: ACTIVE_USER,
+      author: ACTIVE_USERNAME,
     };
 
     // console.log("prompt", typeof e.target.elements.prompt.value);

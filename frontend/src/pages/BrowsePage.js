@@ -4,78 +4,6 @@ import TitleCard from "../components/nonexamples/TitleCard";
 import Button from "react-bootstrap/esm/Button";
 
 const BrowsePage = () => {
-  // const testListOfTitles = [
-  //     {
-  //         id:1,
-
-  //       title: "first story",
-  //       image: "img location",
-  //       description: "It was a dark stormy night",
-  //     },
-  //     {
-  //         id:2,
-
-  //       title: "second story",
-  //       image: "img location",
-  //       description: "lovely day for a run in the park",
-  //     },
-  //     {
-  //         id:3,
-
-  //       title: "third story",
-  //       image: "img location",
-  //       description: "blah blah blah",
-  //     },
-  //     {
-  //         id:4,
-
-  //       title: "fourth story",
-  //       image: "img location",
-  //       description: "werewolves and vampires",
-  //     },
-  //     {
-  //         id:5,
-
-  //       title: "fifth story",
-  //       image: "img location",
-  //       description: "the desc of the c of the c of the c of the fifth story",
-  //     },
-  //     {
-  //         id:6,
-
-  //       title: "sixth story",
-  //       image: "img location",
-  //       description: "the desc of the fifth story",
-  //     },
-  //     {
-  //         id:7,
-
-  //       title: "seventh story",
-  //       image: "img location",
-  //       description: "the c of the c of the c of the c of the th story",
-  //     },
-  //     {
-  //         id:8,
-
-  //       title: "eight story",
-  //       image: "img location",
-  //       description: "the dc of the c of the e fifth story",
-  //     },
-  //     {
-  //         id:9,
-
-  //       title: "nine story",
-  //       image: "img location",
-  //       description: "the desc of the fifth story",
-  //     },
-  //     {
-  //         id:10,
-  //       title: "ten story",
-  //       image: "img location",
-  //       description:
-  //         "the c of the c of the c of the c of the c of the c of the c of the c of the tory",
-  //     },
-  //   ];
 
   const [titles, setTitles] = useState([]);
   const [limit, setLimit] = useState(3);
@@ -83,7 +11,7 @@ const BrowsePage = () => {
   // const [isBooked, setIsBooked] = useState(false);
 
   const ADD_AMOUNT = 3;
-  const ACTIVE_USER_ID = 1;
+  const ACTIVE_USER_ID = sessionStorage.getItem("user_id") || null;
 
   useEffect(() => {
     const outer_stuff = async () => {
@@ -93,7 +21,7 @@ const BrowsePage = () => {
           `http://localhost:8000/bookmarks/${user_id}`
         );
         const bms = await response.json();
-        console.log("bms", bms);
+        // console.log("bms", bms);
         bms_outer = bms.data;
         // setBookmarks(() => bms.data);
       };
@@ -104,7 +32,7 @@ const BrowsePage = () => {
           `http://localhost:8000/covers?limit=${limit}`
         );
         const tits = await response.json();
-        console.log("tits", tits);
+        // console.log("tits", tits);
         tits_outer = tits.data;
         // console.log("tits outer inside", tits_outer); //works
         // setTitles(() => tits.data);
@@ -113,18 +41,18 @@ const BrowsePage = () => {
 
       const addBookMarksToTitles = async (t, b) => {
         var found = false;
-        console.log("in addbookmakrs to titles");
+        // console.log("in addbookmakrs to titles");
         const innerf = async () => {
-          console.log("first line in anon");
+          // console.log("first line in anon");
           for (var i = 0; i < t.length; i++) {
             found = false;
             for (var j = 0; j < b.length; j++) {
-              console.log(
-                "comparing",
-                t[i].cover_id,
-                "to",
-                parseInt(b[j].bm_cover_id)
-              );
+              // console.log(
+              //   "comparing",
+              //   t[i].cover_id,
+              //   "to",
+              //   parseInt(b[j].bm_cover_id)
+              // );
               if (t[i].cover_id === parseInt(b[j].bm_cover_id)) {
                 found = true;
                 break;
@@ -133,9 +61,9 @@ const BrowsePage = () => {
             }
             found === true ? (t[i].booked = true) : (t[i].booked = false);
           }
-          console.log("t", t);
+          // console.log("t", t);
           setTitles(() => t);
-          console.log("titles", titles);
+          // console.log("titles", titles);
         };
         innerf();
       };
@@ -159,7 +87,7 @@ const BrowsePage = () => {
   // }, []);
 
   const addItems = (amt) => {
-    console.log(limit + amt);
+    // console.log(limit + amt);
     setLimit((limit) => limit + amt);
   };
 

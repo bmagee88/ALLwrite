@@ -9,7 +9,7 @@ const Rating = ({ user_id, page_id, setIsRated, isRated }) => {
   const USER_RATING_FOR_PAGE_UPDATE_ENDPOINT = `http://localhost:8000/user-rating-for-page-update/`;
   const USER_RATING_FOR_PAGE_INSERT_ENDPOINT = `http://localhost:8000/user-rating-for-page-insert/`;
   //   let rating = 4;
-  const [rating, setRating] = useState(1);
+  const [rating, setRating] = useState(0);
 //   const [hasRating, setHasRating] = useState(false);
 
   useEffect(() => {
