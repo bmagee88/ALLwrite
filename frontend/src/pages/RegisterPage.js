@@ -7,6 +7,7 @@ const RegisterPage = () => {
   const CREATE_USER_ENDPOINT = `http://localhost:8000/create-user`;
   const IS_USERNAME_AVAILABLE_ENDPOINT = `http://localhost:8000/is-username-taken/`;
   const [usernameAvailable, setUsernameAvailable] = useState(false);
+  const [usernameIsBlank, setUsernameIsBlank] = useState(true);
 
   const navigate = useNavigate();
 
@@ -89,9 +90,12 @@ const RegisterPage = () => {
       }
     };
 
-    if(username === ""){
-      setUsernameAvailable(false)
+    if (username === "") {
+      setUsernameIsBlank(true);
+      setUsernameAvailable(false);
       return;
+    } else {
+      setUsernameIsBlank(false);
     }
     getTaken(username);
   });
@@ -128,6 +132,10 @@ const RegisterPage = () => {
         method="POST"
       >
         <div className="form-group row">
+          {/* <div>
+            usernameBlank: {String(usernameIsBlank)}, usernameAvailable:{" "}
+            {String(usernameAvailable)}
+          </div> */}
           <label htmlFor="inputUsername" className="col-sm-2 col-form-label">
             Username
           </label>
@@ -141,7 +149,9 @@ const RegisterPage = () => {
               required
             />
             {usernameAvailable && <div className="text-success">Available</div>}
-            {!usernameAvailable && <div className="text-danger">Taken</div>}
+            {!usernameIsBlank && !usernameAvailable && (
+              <div className="text-danger">Taken</div>
+            )}
           </div>
         </div>
         <div className="form-group row">

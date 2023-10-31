@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { FormCheck } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import ChoiceCard from "../components/nonexamples/ChoiceCard";
 import Rating from "../components/nonexamples/Rating";
 import { v4 as uuidv4 } from "uuid";
-import session_data from "../test/session";
 import Read from "../images/read.png";
 
 const ReadingPage = () => {

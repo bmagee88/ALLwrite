@@ -6,6 +6,8 @@ const CoverDetails = () => {
   const [cover, setCover] = useState({});
   const GET_COVER_ENDPOINT = `http://localhost:8000/cover-details/${cover_id}`;
 
+  const ACTIVE_USER_ID = sessionStorage.getItem("user_id") || null;
+
   useEffect(() => {
     const fetchCover = async () => {
       const response = await fetch(GET_COVER_ENDPOINT);
@@ -31,9 +33,16 @@ const CoverDetails = () => {
         <div className="row">
           <div className="col">{cover.summary}</div>
         </div>
-        <Link to={`/reading/${cover.title}/${cover.first_page}`}>
-          <button>start journey</button>
-        </Link>
+        {ACTIVE_USER_ID !== null && (
+          <Link to={`/reading/${cover.title}/${cover.first_page}`}>
+            <button>start journey</button>
+          </Link>
+        )}
+        {ACTIVE_USER_ID === null && (
+          <Link to={`/register`}>
+            <button>start journey</button>
+          </Link>
+        )}
       </div>
     </>
   );

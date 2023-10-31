@@ -3,12 +3,10 @@ import Button from "react-bootstrap/esm/Button";
 import LOGO from "../../images/logo.png";
 import { Link } from "react-router-dom";
 import ProfileMenu from "./ProfileMenu";
-import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [hasActiveUser, setHasActiveUser] = useState(false);
 
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (sessionStorage.getItem("username")) {

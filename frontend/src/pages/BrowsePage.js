@@ -4,7 +4,6 @@ import TitleCard from "../components/nonexamples/TitleCard";
 import Button from "react-bootstrap/esm/Button";
 
 const BrowsePage = () => {
-
   const [titles, setTitles] = useState([]);
   const [limit, setLimit] = useState(3);
   // const [bookmarks, setBookmarks] = useState([]);
@@ -103,9 +102,11 @@ const BrowsePage = () => {
       <div className="container-fluid border border-warning p-3">
         <div className="row justify-content-end">
           <div className="col-6 w-auto">
-            <Link to="/create-cover">
-              <Button className="btn btn-warning">+ New Cover</Button>
-            </Link>
+            {ACTIVE_USER_ID !== null && (
+              <Link to="/create-cover">
+                <Button className="btn btn-warning">+ New Cover</Button>
+              </Link>
+            )}
           </div>
         </div>
         <div className="row">
@@ -123,7 +124,6 @@ const BrowsePage = () => {
               />
             );
           })}
-          
         </div>
       </div>
       <div className="row">

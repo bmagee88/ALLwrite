@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import RatingDisplay from "./RatingDisplay";
-import session_data from "../../test/session";
 import Read from "../../images/read.png";
 
 const ChoiceCard = ({ title, choice, setTrigger, trigger, flags, depth }) => {
