@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import TitleCard from "../components/nonexamples/TitleCard";
+import TitleCard from "../../components/nonexamples/TitleCard";
 import Button from "react-bootstrap/esm/Button";
 
 const BrowsePage = () => {
@@ -14,11 +14,9 @@ const BrowsePage = () => {
 
   useEffect(() => {
     const outer_stuff = async () => {
-      var bms_outer, tits_outer, tits_with_bookmarks;
+      var bms_outer, tits_outer;
       const fetchBookmarksByUser = async (user_id) => {
-        const response = await fetch(
-          `http://localhost:8000/bookmarks/${user_id}`
-        );
+        const response = await fetch(`http://localhost:8000/bookmarks/${user_id}`);
         const bms = await response.json();
         // console.log("bms", bms);
         bms_outer = bms.data;
@@ -27,9 +25,7 @@ const BrowsePage = () => {
       await fetchBookmarksByUser(ACTIVE_USER_ID);
 
       const fetchTitles = async (limit) => {
-        const response = await fetch(
-          `http://localhost:8000/covers?limit=${limit}`
-        );
+        const response = await fetch(`http://localhost:8000/covers?limit=${limit}`);
         const tits = await response.json();
         // console.log("tits", tits);
         tits_outer = tits.data;
@@ -69,7 +65,7 @@ const BrowsePage = () => {
       await addBookMarksToTitles(tits_outer, bms_outer);
     };
     outer_stuff();
-  }, [limit]);
+  }, [limit, ACTIVE_USER_ID]);
 
   // useEffect(() => {
   //   const fetchBookmarksByUser = async (user_id) => {
@@ -93,23 +89,23 @@ const BrowsePage = () => {
   return (
     <>
       {/* <button onClick={() => printCovers()}>hgfjhgjhg</button> */}
-      <div className="row justify-content-center">
-        <div className="col-6 w-auto h1 my-4 border border-dark rounded bg-light p-1">
+      <div className='row justify-content-center'>
+        <div className='col-6 w-auto h1 my-4 border border-dark rounded bg-light p-1'>
           Browse Covers
         </div>
       </div>
 
-      <div className="container-fluid border border-warning p-3">
-        <div className="row justify-content-end">
-          <div className="col-6 w-auto">
+      <div className='container-fluid border border-warning p-3'>
+        <div className='row justify-content-end'>
+          <div className='col-6 w-auto'>
             {ACTIVE_USER_ID !== null && (
-              <Link to="/create-cover">
-                <Button className="btn btn-warning">+ New Cover</Button>
+              <Link to='/create-cover'>
+                <Button className='btn btn-warning'>+ New Cover</Button>
               </Link>
             )}
           </div>
         </div>
-        <div className="row">
+        <div className='row'>
           {titles.map((item, index) => {
             return (
               <TitleCard
@@ -126,11 +122,8 @@ const BrowsePage = () => {
           })}
         </div>
       </div>
-      <div className="row">
-        <Button onClick={() => addItems(ADD_AMOUNT)}>
-          {" "}
-          load {ADD_AMOUNT} more
-        </Button>
+      <div className='row'>
+        <Button onClick={() => addItems(ADD_AMOUNT)}> load {ADD_AMOUNT} more</Button>
       </div>
     </>
   );
