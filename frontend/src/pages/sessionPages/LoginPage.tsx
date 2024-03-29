@@ -5,21 +5,28 @@ import { useNavigate } from "react-router-dom";
 const LoginPage = () => {
   const LOGIN_ENDPOINT = `http://localhost:8000/login`;
 
+  const [formData, setFormData] = useState({ username: "", password: "" });
+
   const navigate = useNavigate();
-  useEffect(() => {}, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+  };
 
-    var form_data = {
-      username: e.target.username.value,
-      password: e.target.password.value,
+  const handleSubmit = async () => {
+    const form_data = {
+      username: formData.username,
+      password: formData.password,
     };
 
-    const response = await fetch(e.target.action, {
+    console.log("form_data", form_data);
+
+    const response = await fetch(LOGIN_ENDPOINT, {
       method: "POST",
       headers: {
-        Accept: "application/json",
+        // Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(form_data),
@@ -52,59 +59,53 @@ const LoginPage = () => {
 
   return (
     <>
-      <div className="bg-light pt-4">
-        <div className="row justify-content-center">
-          <div className="col-6 w-auto h1 border border-dark rounded p-2">
-            Login
-          </div>
+      <div className='bg-light pt-4'>
+        <div className='row justify-content-center'>
+          <div className='col-6 w-auto h1 border border-dark rounded p-2'>Login</div>
         </div>
         <form
-          className="px-4"
-          action={LOGIN_ENDPOINT}
-          method="POST"
-          onSubmit={handleSubmit}
+          className='px-4'
+          // action={LOGIN_ENDPOINT}
+          // method='POST'
+          // onSubmit={() => handleSubmit()}
         >
-          <div className="row justify-content-center">
-            <div className="form-group row mt-4 p-4 border border-dark rounded w-50">
-              {/* username */}
+          <div className='row justify-content-center'>
+            <div className='form-group row mt-4 p-4 border border-dark rounded w-50'>
               <label
-                htmlFor="inputUsername"
-                className="col-sm-2 col-form-label"
-              >
+                htmlFor='inputUsername'
+                className='col-sm-2 col-form-label'>
                 Username
               </label>
-              <div className="col-sm-10">
+              <div className='col-sm-10'>
                 <input
-                  type="text"
-                  className="form-control"
-                  id="inputUsername"
-                  name="username"
+                  type='text'
+                  className='form-control'
+                  id='inputUsername'
+                  name='username'
+                  onChange={(e) => handleOnChange(e)}
                 />
               </div>
 
-              {/* password */}
               <label
-                htmlFor="inputPassword"
-                className="col-sm-2 col-form-label mt-4"
-              >
+                htmlFor='inputPassword'
+                className='col-sm-2 col-form-label mt-4'>
                 Password
               </label>
-              <div className="col-sm-10 mt-4">
+              <div className='col-sm-10 mt-4'>
                 <input
-                  type="password"
-                  className="form-control"
-                  id="inputPassword"
-                  name="password"
+                  type='password'
+                  className='form-control'
+                  id='inputPassword'
+                  name='password'
                 />
               </div>
               {/* submit */}
-              <div className="row justify-content-end mt-4">
-                <div className="col-6 w-auto">
+              <div className='row justify-content-end mt-4'>
+                <div className='col-6 w-auto'>
                   <button
-                    type="submit"
-                    className="btn btn-primary"
-                    formAction={LOGIN_ENDPOINT}
-                  >
+                    type='submit'
+                    className='btn btn-primary'
+                    onClick={() => handleSubmit()}>
                     Login
                   </button>
                 </div>
