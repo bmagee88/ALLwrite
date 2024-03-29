@@ -34,8 +34,7 @@ async function login(client, username, password) {
       ) {
         return empty_result;
       }
-      var hashed_password_from_db =
-        get_hashed_pass_query_result.rows[0].password;
+      var hashed_password_from_db = get_hashed_pass_query_result.rows[0].password;
       if (bcrypt.compare(password, hashed_password_from_db)) {
         return client.query(
           `select user_id, username, firstname, lastname, email from user_profile where username = '${username}' and password = '${hashed_password_from_db}'`
@@ -45,9 +44,8 @@ async function login(client, username, password) {
       }
     })
     .catch((err) => {
-      // console.log("something went wrong:", err);
+      console.log("something went wrong:", err);
     });
-
   // console.log(res.rows);
   return res.rows;
 }
@@ -81,9 +79,7 @@ async function createUser(client, user) {
     })
     .then((resUser) => {
       if (resUser.rows.length !== 0) {
-        client.query(
-          `insert into user_settings (user_id) values (${resUser.rows[0].id});`
-        );
+        client.query(`insert into user_settings (user_id) values (${resUser.rows[0].id});`);
       }
       return resUser;
     })
@@ -112,9 +108,9 @@ async function createPage(client, page) {
   const res = await client.query(
     `insert into page (id, parent_id, prompt, body, page_num, author) values (${
       id.rows[0].id + 1
-    }, ${page.parent_id}, ${page.prompt}, '${page.body_text.toString()}', ${
-      page.page_num
-    }, '${page.author}' ) returning *;`
+    }, ${page.parent_id}, ${page.prompt}, '${page.body_text.toString()}', ${page.page_num}, '${
+      page.author
+    }' ) returning *;`
   );
   // const res = await client.query(`insert into page (id, parent_id, prompt, body, page_num, author) values (${id.rows[0].id+1}, ${page.parent_id}, ${page.prompt}, ${page.body}, ${page.page_num}, '${page.author}');`
   // );
@@ -122,12 +118,7 @@ async function createPage(client, page) {
   return res.rows;
 }
 
-async function insertUserRatingByUserIdAndPageId(
-  client,
-  user_id,
-  page_id,
-  rating
-) {
+async function insertUserRatingByUserIdAndPageId(client, user_id, page_id, rating) {
   const res = await client.query(
     `insert into rating (user_id, page_id, rating) values (${user_id}, ${page_id}, ${rating})
     returning *;`
@@ -145,12 +136,7 @@ async function avgRatingByPageId(client, page_id) {
   return res.rows;
 }
 
-async function updateUserRatingByUserIdAndPageId(
-  client,
-  user_id,
-  page_id,
-  rating
-) {
+async function updateUserRatingByUserIdAndPageId(client, user_id, page_id, rating) {
   const res = await client.query(
     `update rating
     set rating = ${rating}
@@ -193,9 +179,7 @@ async function getIfPageRead(client, page_id, user_id) {
 }
 
 async function getCoverById(client, cover_id) {
-  const res = await client.query(
-    `select * from covers where id = ${cover_id};`
-  );
+  const res = await client.query(`select * from covers where id = ${cover_id};`);
   // console.log(res.rows);
   return res.rows;
 }

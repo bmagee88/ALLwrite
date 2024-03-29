@@ -34,10 +34,7 @@ app.use(cors());
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "DELETE, PUT");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   if ("OPTIONS" == req.method) {
     res.sendStatus(200);
   } else {
@@ -72,41 +69,35 @@ app.get("/user-rating-for-page/:user_id/:page_id", (req, res) => {
     });
 });
 
-app.put(
-  "/user-rating-for-page-update/:user_id/:page_id/:rating",
-  (req, res) => {
-    NodeService.updateUserRatingByUserIdAndPageId(
-      client,
-      parseInt(req.params.user_id),
-      parseInt(req.params.page_id),
-      parseInt(req.params.rating)
-    )
-      .then((result) => {
-        res.status(200).json({ data: result });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-);
+app.put("/user-rating-for-page-update/:user_id/:page_id/:rating", (req, res) => {
+  NodeService.updateUserRatingByUserIdAndPageId(
+    client,
+    parseInt(req.params.user_id),
+    parseInt(req.params.page_id),
+    parseInt(req.params.rating)
+  )
+    .then((result) => {
+      res.status(200).json({ data: result });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
 
-app.post(
-  "/user-rating-for-page-insert/:user_id/:page_id/:rating",
-  (req, res) => {
-    NodeService.insertUserRatingByUserIdAndPageId(
-      client,
-      parseInt(req.params.user_id),
-      parseInt(req.params.page_id),
-      parseInt(req.params.rating)
-    )
-      .then((result) => {
-        res.status(200).json({ data: result });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-);
+app.post("/user-rating-for-page-insert/:user_id/:page_id/:rating", (req, res) => {
+  NodeService.insertUserRatingByUserIdAndPageId(
+    client,
+    parseInt(req.params.user_id),
+    parseInt(req.params.page_id),
+    parseInt(req.params.rating)
+  )
+    .then((result) => {
+      res.status(200).json({ data: result });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
 
 app.post("/create-user", (req, res) => {
   const user = new UserDto(
@@ -179,6 +170,7 @@ app.post("/read", (req, res) => {
 
 app.post("/login", (req, res) => {
   //validate
+  console.log("/login");
   NodeService.login(client, req.body.username, req.body.password)
     .then((result) => {
       res.status(200).json({ data: result });
@@ -277,11 +269,7 @@ app.get("/page-is-read", (req, res) => {
   //   parseInt(req.query.page_id),
   //   parseInt(req.query.user_id)
   // );
-  NodeService.getIfPageRead(
-    client,
-    parseInt(req.query.page_id),
-    parseInt(req.query.user_id)
-  )
+  NodeService.getIfPageRead(client, parseInt(req.query.page_id), parseInt(req.query.user_id))
     .then((result) => {
       res.status(200).json({ data: result });
     })
@@ -291,11 +279,7 @@ app.get("/page-is-read", (req, res) => {
 });
 
 app.get("/author-choices", (req, res) => {
-  NodeService.getAuthorChildForPage(
-    client,
-    req.query.author,
-    req.query.parent_id
-  )
+  NodeService.getAuthorChildForPage(client, req.query.author, req.query.parent_id)
     .then((result) => {
       res.status(200).json({ data: result });
     })

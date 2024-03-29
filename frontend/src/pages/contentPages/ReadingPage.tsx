@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import ChoiceCard from "../components/nonexamples/ChoiceCard";
-import Rating from "../components/nonexamples/Rating";
+import ChoiceCard from "../../components/nonexamples/ChoiceCard";
+import Rating from "../../components/nonexamples/Rating";
 import { v4 as uuidv4 } from "uuid";
-import Read from "../images/read.png";
+import Read from "../../images/read.png";
 
 const ReadingPage = () => {
   const { cover_title, first_page } = useParams();
@@ -37,8 +37,10 @@ const ReadingPage = () => {
   const CURRENT_PAGE_ENDPOINT = `http://localhost:8000/page/${this_page_id}`;
   const CURRENT_COVER_ENDPOINT = `http://localhost:8000/cover-by/${this_page_id}`;
   const CHOICES_ENDPOINT = `http://localhost:8000/choices-for/${this_page_id}?limit=${choiceLimit}`;
-  const AUTHOR_ENDPOINT = `http://localhost:8000/author-choices?author=${sessionStorage.getItem("username")}&parent_id=${this_page_id}`;
-  const RATING_ENDPOINT = `http://localhost:8000/rating-choices?parent_id=${this_page_id}`;
+  const AUTHOR_ENDPOINT = `http://localhost:8000/author-choices?author=${sessionStorage.getItem(
+    "username"
+  )}&parent_id=${this_page_id}`;
+  // const RATING_ENDPOINT = `http://localhost:8000/rating-choices?parent_id=${this_page_id}`;
   const SET_READ_ENDPOINT = `http://localhost:8000/read`;
   const CHOICE_DEPTHS_ENDPOINT = `http://localhost:8000/longest-stories`;
   //   const AUTHOR_BODY = {
@@ -113,9 +115,7 @@ const ReadingPage = () => {
       // console.log("random choice data", data.data);
 
       const fetchLongestStoryChoicesFrom_data = async (page_id) => {
-        const result = await fetch(
-          CHOICE_DEPTHS_ENDPOINT + `?page_id=${page_id}`
-        );
+        const result = await fetch(CHOICE_DEPTHS_ENDPOINT + `?page_id=${page_id}`);
         const data = await result.json();
         // console.log("fetchlongeststory:data.json", data.data);
         return data.data;
@@ -173,35 +173,35 @@ const ReadingPage = () => {
 
   return (
     <>
-      <div className="container bg=light">
-        <div className="row justify-content-between border border-dark mt-2">
-          <div className="col-1 w-auto">
-            {isFirstPage && (
-              <Link to={`../../../cover-details/${cover.id}`}>back</Link>
-            )}
+      <div className='container bg=light'>
+        <div className='row justify-content-between border border-dark mt-2'>
+          <div className='col-1 w-auto'>
+            {isFirstPage && <Link to={`../../../cover-details/${cover.id}`}>back</Link>}
             {!isFirstPage && (
-              <Link to={`../../../reading/${cover_title}/${page.parent_id}`}>
-                back
-              </Link>
+              <Link to={`../../../reading/${cover_title}/${page.parent_id}`}>back</Link>
             )}
           </div>
-          <div className="col-1 w-auto">
+          <div className='col-1 w-auto'>
             <Link to={`../../../cover-details/${cover.id}`}>{cover_title}</Link>
             {pageIsRead && (
               <span>
                 {" "}
-                <img src={Read} alt="read" height="15" width="15"></img>
+                <img
+                  src={Read}
+                  alt='read'
+                  height='15'
+                  width='15'></img>
                 {/* {"["}READ{"]"} */}
               </span>
             )}
           </div>
-          <div className="col-1 w-auto">{page.page_num}</div>
+          <div className='col-1 w-auto'>{page.page_num}</div>
         </div>
-        <div className="row mt-4 border border-dark p-3 justify-content-center">
-          <div className="col-6 border">{page.body}</div>
+        <div className='row mt-4 border border-dark p-3 justify-content-center'>
+          <div className='col-6 border'>{page.body}</div>
         </div>
-        <div className="row justify-content-center border border-dark mt-2">
-          <div className="col-1 w-auto">
+        <div className='row justify-content-center border border-dark mt-2'>
+          <div className='col-1 w-auto'>
             {/* rated: {isRatedByActiveUser.toString()} */}
             <Rating
               user_id={ACTIVE_USER_ID}
@@ -221,7 +221,7 @@ const ReadingPage = () => {
           </div>
         </div>
         {false && isRatedByActiveUser && (
-          <div className="row justify-content-evenly mt-2 border border-dark p-3">
+          <div className='row justify-content-evenly mt-2 border border-dark p-3'>
             {ratingChoices.map((item) => {
               return (
                 <ChoiceCard
@@ -238,7 +238,7 @@ const ReadingPage = () => {
         )}
 
         {false && isRatedByActiveUser && (
-          <div className="row justify-content-evenly mt-2 border border-dark p-3">
+          <div className='row justify-content-evenly mt-2 border border-dark p-3'>
             {authorChoices.map((item) => {
               return (
                 <ChoiceCard
@@ -255,7 +255,7 @@ const ReadingPage = () => {
         )}
 
         {isRatedByActiveUser && (
-          <div className="row justify-content-evenly mt-2 border border-dark p-3">
+          <div className='row justify-content-evenly mt-2 border border-dark p-3'>
             {choices.map((item) => {
               return (
                 <ChoiceCard
@@ -269,8 +269,8 @@ const ReadingPage = () => {
                 />
               );
             })}
-            <div className="row justify-content-end mt-2">
-              <div className="col-1 w-auto">
+            <div className='row justify-content-end mt-2'>
+              <div className='col-1 w-auto'>
                 <Link to={`../../../create-page/${this_page_id}`}>
                   <button>+ add new choice</button>
                 </Link>

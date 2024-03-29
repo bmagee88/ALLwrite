@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import RatingDropFull from "../../images/rating_drop_full.png";
 import RatingDropEmpty from "../../images/rating_drop_empty.png";
+import WaterDropIcon from "@mui/icons-material/WaterDrop";
 
 const RatingDisplay = ({ page_id }) => {
   const [rating, setRating] = useState(0);
@@ -18,7 +19,7 @@ const RatingDisplay = ({ page_id }) => {
 
       if (data.data.length !== 0) {
         setRating(() => data.data[0].avg_rating);
-        setTotal(()=> data.data[0].total)
+        setTotal(() => data.data[0].total);
       }
     };
     fetchAvgRatingForPage();
@@ -28,36 +29,38 @@ const RatingDisplay = ({ page_id }) => {
       {Array.from({ length: Math.round(rating) }).map((x, index) => {
         // console.log("full: index, rating", index + 1, parseInt(rating));
         return (
-          <img
-            key={rating + index + 1}
-            id={String(parseInt(index) + 1)}
-            src={RatingDropFull}
-            height="10"
-            width="10"
-            alt="asdf"
-          ></img>
+          <WaterDropIcon />
+          // <img
+          //   key={rating + index + 1}
+          //   id={String(parseInt(index) + 1)}
+          //   src={RatingDropFull}
+          //   height="10"
+          //   width="10"
+          //   alt="asdf"
+          // ></img>
         );
       })}
-      {Array.from({ length: MAX_RATING - Math.round(rating) }).map(
-        (x, index) => {
-          // console.log(
-          //   "empty: index, rating",
-          //   index + 1,
-          //   MAX_RATING - parseInt(rating)
-          // );
-          return (
-            <img
-              key={rating + index + 1}
-              id={String(parseInt(rating) + parseInt(index) + 1)}
-              src={RatingDropEmpty}
-              height="10"
-              width="10"
-              alt="asdf"
-            ></img>
-          );
-        }
-      )}{" "}
-      <span className="text-nowrap">{parseFloat(rating) || 0} {'('}{total}{')'}</span>
+      {Array.from({ length: MAX_RATING - Math.round(rating) }).map((x, index) => {
+        // console.log(
+        //   "empty: index, rating",
+        //   index + 1,
+        //   MAX_RATING - parseInt(rating)
+        // );
+        return (
+          <img
+            key={rating + index + 1}
+            id={String(parseInt(rating) + parseInt(index) + 1)}
+            src={RatingDropEmpty}
+            height='10'
+            width='10'
+            alt='asdf'></img>
+        );
+      })}{" "}
+      <span className='text-nowrap'>
+        {parseFloat(rating) || 0} {"("}
+        {total}
+        {")"}
+      </span>
     </>
   );
 };

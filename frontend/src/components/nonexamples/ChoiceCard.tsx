@@ -52,7 +52,7 @@ const ChoiceCard = ({ title, choice, setTrigger, trigger, flags, depth }) => {
     //   });
 
     // console.log("choice", choice);
-  }, [choice]);
+  }, [choice, GET_READ_ENDPOINT]);
   return (
     <>
       <div className="col-12 col-md-5 col-lg-3 border border-dark mt-2">
