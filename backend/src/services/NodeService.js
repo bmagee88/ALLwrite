@@ -28,25 +28,30 @@ async function login(client, username, password) {
   const res = await client
     .query(`select password from user_profile where username = '${username}';`)
     .then((get_hashed_pass_query_result) => {
+      console.log("query results", get_hashed_pass_query_result);
       if (
         Array.isArray(get_hashed_pass_query_result) &&
         get_hashed_pass_query_result.length === 0
       ) {
+        console.log("array empty or length 0, returning empty result");
         return empty_result;
       }
-      var hashed_password_from_db = get_hashed_pass_query_result.rows[0].password;
+      let hashed_password_from_db = get_hashed_pass_query_result.rows[0].password;
       if (bcrypt.compare(password, hashed_password_from_db)) {
-        return client.query(
+        const userInfo = client.query(
           `select user_id, username, firstname, lastname, email from user_profile where username = '${username}' and password = '${hashed_password_from_db}'`
         );
+        console.log("userInfo:", userInfo);
+        return userInfo;
       } else {
+        console.log("password bad, returning empty result");
         return empty_result;
       }
     })
     .catch((err) => {
       console.log("something went wrong:", err);
     });
-  // console.log(res.rows);
+  console.log(res.rows);
   return res.rows;
 }
 

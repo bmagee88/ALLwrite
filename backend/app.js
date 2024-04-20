@@ -1,7 +1,6 @@
 const NodeService = require("./src/services/NodeService");
 const express = require("express");
 require("dotenv").config();
-const dbManager = require("./src/utils/DBManager");
 const { Client } = require("pg");
 
 const { CoverDto } = require("./src/dtos/CoverDto.js");
@@ -10,11 +9,10 @@ const { ReadDto } = require("./src/dtos/ReadDto");
 const { UserDto } = require("./src/dtos/UserDto");
 
 const cors = require("cors");
+const helmet = require("helmet");
 const app = express();
 
 const bodyParser = require("body-parser");
-
-const SERVER_PORT = 8000;
 
 const client = new Client({
   host: process.env.HOST,
@@ -25,11 +23,21 @@ const client = new Client({
 });
 client.connect();
 
-app.listen(SERVER_PORT, () => {
-  console.log("listening...");
-});
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"], // Allow resources from the same origin
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"], // Allow inline scripts and eval
+      styleSrc: ["'self'", "'unsafe-inline'"], // Allow inline styles
+      connectSrc: ["self", "http://localhost:8080"],
+      // Add more directives as needed
+    },
+  })
+);
 
-app.use(cors());
+app.listen(process.env.SERVER_PORT, () => {
+  console.log(`listening on port ${process.env.SERVER_PORT}...`);
+});
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -41,6 +49,8 @@ app.use(function (req, res, next) {
     next();
   }
 });
+
+app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -171,6 +181,7 @@ app.post("/read", (req, res) => {
 app.post("/login", (req, res) => {
   //validate
   console.log("/login");
+  console.log(`un+pw ${req.body.username}, ${req.body.password}`);
   NodeService.login(client, req.body.username, req.body.password)
     .then((result) => {
       res.status(200).json({ data: result });
