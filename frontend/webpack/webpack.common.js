@@ -2,8 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  mode: "development",
-  entry: "./src/index.tsx", // Entry point of your application
+  entry: path.resolve(__dirname, "..", "./src/index.tsx"), // Entry point of your application
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
     fallback: {
@@ -12,10 +11,6 @@ module.exports = {
       buffer: require.resolve("buffer"),
       stream: require.resolve("stream-browserify"),
     },
-  },
-  output: {
-    path: path.resolve(__dirname, "/dist"), // Output directory
-    filename: "bundle.js", // Output filename
   },
   module: {
     rules: [
@@ -35,17 +30,30 @@ module.exports = {
         },
       },
       {
-        test: /\.css$/i,
+        test: /\.css$/,
         use: ["style-loader", "css-loader"],
       },
+      // {
+      //   test: /\.(?:ico|gif|png|jpg|jpeg)$/i,
+      //   type: "asset/resource",
+      // },
+      // {
+      //   test: /\.(woff(2)?|eot|tff|oft|svg|)$/,
+      //   type: "asset/inline",
+      // },
     ],
   },
+  output: {
+    path: path.resolve(__dirname, "..", "./build"), // Output directory
+    filename: "bundle.js", // Output filename
+  },
+  // mode: "development",
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "src", "index.html"), // Path to your HTML template
+      template: path.resolve(__dirname, "..", "./src/index.html"), // Path to your HTML template
     }),
   ],
   // devServer: {
-  //   contentBase: "./dist", // Serve content from the 'dist' directory
+  //   contentBase: "./build", // Serve content from the 'build' directory
   // },
 };
