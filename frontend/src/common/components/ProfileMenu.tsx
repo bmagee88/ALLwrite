@@ -15,44 +15,54 @@ const ProfileMenu = () => {
   //dropdown list includes; My account, My Profile, My Settings, My Covers, My Pages, My Bookmarks, Logout
   return (
     <>
-      <div className="text-white w-auto mx-2">
-        hellow, {sessionStorage.getItem("username")}
-      </div>
-      <div className="row justify-content-end">
-        <Dropdown className="bg-light rounded w-auto">
-          <Dropdown.Toggle variant="" id="dropdown-basic">
+      <div className='text-white w-auto mx-2'>hellow, {sessionStorage.getItem("username")}</div>
+      <div className='row justify-content-end'>
+        <Dropdown className='bg-light rounded w-auto'>
+          <Dropdown.Toggle
+            variant=''
+            id='dropdown-basic'>
             <img
               src={AnonUserImage}
-              alt=""
-              height="25"
-              width="25"
-              className="rounded m-1"
-            ></img>
+              alt=''
+              height='25'
+              width='25'
+              className='rounded m-1'></img>
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            <Dropdown.Item as={Link} to="account">
+            <Dropdown.Item
+              as={Link}
+              to='account'>
               Account
             </Dropdown.Item>
             <Dropdown.Item
               as={Link}
-              to={`profile/${sessionStorage.getItem("user_id")}`}
-            >
+              to={`profile/${sessionStorage.getItem("user_id")}`}>
               Profile
             </Dropdown.Item>
-            <Dropdown.Item as={Link} to="my-bookmarks">
+            <Dropdown.Item
+              as={Link}
+              to='my-bookmarks'>
               My Bookmarks
             </Dropdown.Item>
-            <Dropdown.Item as={Link} to="my-covers">
+            <Dropdown.Item
+              as={Link}
+              to='my-covers'>
               My Covers
             </Dropdown.Item>
-            <Dropdown.Item as={Link} to="my-pages">
+            <Dropdown.Item
+              as={Link}
+              to='my-pages'>
               My Pages
             </Dropdown.Item>
-            <Dropdown.Item as={Link} to="settings">
+            <Dropdown.Item
+              as={Link}
+              to='settings'>
               Settings
             </Dropdown.Item>
-            <Dropdown.Item as={Link} to="logout">
+            <Dropdown.Item
+              as={Link}
+              to='logout'>
               Logout
             </Dropdown.Item>
           </Dropdown.Menu>

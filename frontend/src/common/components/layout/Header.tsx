@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/esm/Button";
 import LOGO from "../images/logo.png";
 import { Link } from "react-router-dom";
-import ProfileMenu from "../components/nonexamples/ProfileMenu";
+import ProfileMenu from "../ProfileMenu";
 
 const Header = () => {
   const [hasActiveUser, setHasActiveUser] = useState(false);

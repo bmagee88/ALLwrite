@@ -9,6 +9,10 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    console.log("form _data(useEffect):", formData);
+  }, [formData]);
+
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
@@ -16,17 +20,19 @@ const LoginPage = () => {
   };
 
   const handleSubmit = async () => {
+    console.log("formData(handleSumbit):", formData);
     const form_data = {
       username: formData.username,
       password: formData.password,
     };
 
-    console.log("form_data", form_data);
+    console.log("form_data(handleSumbit):", form_data);
 
+    console.log("form_data(handleSumbit) stringifyd:", JSON.stringify(form_data));
     const response = await fetch(LOGIN_ENDPOINT, {
       method: "POST",
       headers: {
-        // Accept: "application/json",
+        Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(form_data),
@@ -49,11 +55,11 @@ const LoginPage = () => {
       sessionStorage.setItem("lastname", data.data[0].lastname);
       sessionStorage.setItem("email", data.data[0].email);
       console.log("success");
-      navigate(`/browse`);
-      navigate(0);
+      navigate(`../browse`);
+      // navigate(0);
     } else {
       console.log("login failed: user/pass key/val incorrect");
-      navigate("/login");
+      navigate("../login");
     }
   };
 
@@ -63,56 +69,57 @@ const LoginPage = () => {
         <div className='row justify-content-center'>
           <div className='col-6 w-auto h1 border border-dark rounded p-2'>Login</div>
         </div>
-        <form
+        {/* <form
           className='px-4'
           // action={LOGIN_ENDPOINT}
           // method='POST'
           // onSubmit={() => handleSubmit()}
-        >
-          <div className='row justify-content-center'>
-            <div className='form-group row mt-4 p-4 border border-dark rounded w-50'>
-              <label
-                htmlFor='inputUsername'
-                className='col-sm-2 col-form-label'>
-                Username
-              </label>
-              <div className='col-sm-10'>
-                <input
-                  type='text'
-                  className='form-control'
-                  id='inputUsername'
-                  name='username'
-                  onChange={(e) => handleOnChange(e)}
-                />
-              </div>
+        > */}
+        <div className='row justify-content-center'>
+          <div className='form-group row mt-4 p-4 border border-dark rounded w-50'>
+            <label
+              htmlFor='inputUsername'
+              className='col-sm-2 col-form-label'>
+              Username
+            </label>
+            <div className='col-sm-10'>
+              <input
+                type='text'
+                className='form-control'
+                id='inputUsername'
+                name='username'
+                onChange={(e) => handleOnChange(e)}
+              />
+            </div>
 
-              <label
-                htmlFor='inputPassword'
-                className='col-sm-2 col-form-label mt-4'>
-                Password
-              </label>
-              <div className='col-sm-10 mt-4'>
-                <input
-                  type='password'
-                  className='form-control'
-                  id='inputPassword'
-                  name='password'
-                />
-              </div>
-              {/* submit */}
-              <div className='row justify-content-end mt-4'>
-                <div className='col-6 w-auto'>
-                  <button
-                    type='submit'
-                    className='btn btn-primary'
-                    onClick={() => handleSubmit()}>
-                    Login
-                  </button>
-                </div>
+            <label
+              htmlFor='inputPassword'
+              className='col-sm-2 col-form-label mt-4'>
+              Password
+            </label>
+            <div className='col-sm-10 mt-4'>
+              <input
+                type='password'
+                className='form-control'
+                id='inputPassword'
+                name='password'
+                onChange={(e) => handleOnChange(e)}
+              />
+            </div>
+            {/* submit */}
+            <div className='row justify-content-end mt-4'>
+              <div className='col-6 w-auto'>
+                <button
+                  type='submit'
+                  className='btn btn-primary'
+                  onClick={() => handleSubmit()}>
+                  Login
+                </button>
               </div>
             </div>
           </div>
-        </form>
+        </div>
+        {/* </form> */}
       </div>
     </>
   );

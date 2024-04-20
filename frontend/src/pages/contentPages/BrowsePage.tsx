@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import TitleCard from "../../components/nonexamples/TitleCard";
+import TitleCard from "../../common/components/TitleCard";
 import Button from "react-bootstrap/esm/Button";
 
 const BrowsePage = () => {
@@ -24,7 +24,7 @@ const BrowsePage = () => {
       };
       await fetchBookmarksByUser(ACTIVE_USER_ID);
 
-      const fetchTitles = async (limit) => {
+      const fetchTitles = async (limit: number) => {
         const response = await fetch(`http://localhost:8000/covers?limit=${limit}`);
         const tits = await response.json();
         // console.log("tits", tits);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import ChoiceCard from "../../components/nonexamples/ChoiceCard";
-import Rating from "../../components/nonexamples/Rating";
+import ChoiceCard from "../../common/components/ChoiceCard";
+import Rating from "../../common/components/Rating";
 import { v4 as uuidv4 } from "uuid";
 import Read from "../../images/read.png";
 

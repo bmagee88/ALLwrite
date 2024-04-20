@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import LandingPage from "./pages/contentPages/LandingPage";
+import LandingPage from "./pages/contentPages/LandingPage/LandingPage_old";
 import BrowsePage from "./pages/contentPages/BrowsePage";
 import FeedbackPage from "./pages/ctaPages/FeedbackPage";
 import DonationPage from "./pages/ctaPages/DonationPage";
@@ -9,7 +9,7 @@ import LoginPage from "./pages/sessionPages/LoginPage";
 import SharePage from "./pages/ctaPages/SharePage";
 import CoverDetailsPage from "./pages/contentPages/CoverDetailsPage";
 import Testing from "./test/Testing";
-import Header from "./layout/Header";
+import Header from "./common/components/layout/Header";
 import CreateCover from "./pages/creationPages/CreateCover";
 import CreatePage from "./pages/creationPages/CreatePage";
 import AccountPage from "./pages/profilePages/AccountPage";

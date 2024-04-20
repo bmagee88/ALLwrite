@@ -2,9 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <link
+      rel="icon"
+      href="favicon.ico"
+      type="image/x-icon" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' data:" />
+      content="default-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:8000; connect-src 'self' http://localhost:8000; img-src 'self' http://localhost:8080/favicon.ico data:;" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1" />
