@@ -19,6 +19,8 @@ async function createCover(client, cover) {
 }
 
 async function login(client, username, password) {
+  console.log("username", username);
+  console.log("password", password);
   const empty_result = {
     rowCount: 0,
     rows: [],
@@ -26,17 +28,37 @@ async function login(client, username, password) {
   const testing = true;
   if (testing) {
     console.log("testing");
-    const res = await client
-      .query(`select test_text_password from user_profile where username = '${username}';`)
-      .then((text_password) => {
-        console.log("password", text_password);
-        if (Array.isArray(text_password) && text_password.length === 0) {
-          console.log("array empty or length 0, returning empty result");
-          return empty_result;
-        }
-      });
-    console.log("response", res);
-    return res.rows;
+
+    const userInfo = await client.query(
+      `select user_id, username, firstname, lastname, email from user_profile where username = '${username}' and test_text_password = '${password}'`
+    );
+    console.log("userInfo:", userInfo.rows[0]);
+
+    if (Array.isArray(userInfo.rows) && userInfo.rows.length === 0) {
+      console.log("Array is empty or length is 0, returning empty result");
+      return empty_result;
+    } else {
+      console.log("userInfo", userInfo.rows[0]);
+      return userInfo.rows;
+    }
+
+    // try {
+    //   const text_password = await client.query(
+    //     `SELECT test_text_password FROM user_profile WHERE username = '${username}';`
+    //   );
+
+    //   if (Array.isArray(text_password.rows) && text_password.rows.length === 0) {
+    //     console.log("Array is empty or length is 0, returning empty result");
+    //     return empty_result;
+    //   } else {
+    //   console.log("password", text_password.rows[0]);
+    //   if
+    //     return text_password.rows;
+    //   }
+    // } catch (error) {
+    //   console.error("Error querying database:", error);
+    //   return empty_result; // Handle error case by returning empty result
+    // }
   }
   // validate password
   // get username stored hashed password

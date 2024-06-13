@@ -1,6 +1,8 @@
 const NodeService = require("./src/services/NodeService");
 const express = require("express");
 
+const { createProxyMiddleware } = require("http-proxy-middleware");
+
 const path = require("path");
 require("dotenv").config();
 const { Client } = require("pg");
@@ -57,6 +59,17 @@ app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+// app.use(
+//   "/api",
+//   createProxyMiddleware({
+//     target: "http://localhost:8000/api",
+//     changeOrigin: true,
+//     pathRewrite: {
+//       "^/api": "", // Remove the /api prefix when forwarding the request
+//     },
+//   })
+// );
 
 // app.use(express.static(path.join(__dirname, "build")));
 
@@ -263,7 +276,8 @@ app.get("/bookmarks/:user_id", (req, res) => {
     });
 });
 
-app.get("/covers", (req, res) => {
+app.get("/api/covers", (req, res) => {
+  console.log("getting covers");
   NodeService.getCovers(client, req.query.limit)
     .then((result) => {
       res.status(200).json({ data: result });

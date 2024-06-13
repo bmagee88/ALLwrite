@@ -38,6 +38,7 @@
     "react-scripts": "5.0.1",
     "sass": "^1.75.0",
     "stream-browserify": "^3.0.0",
+    "styled-components": "^6.1.11",
     "url-loader": "^4.1.1",
     "vm-browserify": "^1.1.2",
     "webpack": "^5.91.0",
