@@ -34,25 +34,49 @@ function App() {
             path=''
             element={<LandingPage />}
           />
+
+          <Route
+            path='register'
+            element={<RegisterPage />}
+          />
+          <Route
+            path='login'
+            element={<LoginPage />}
+          />
+          <Route
+            path='logout'
+            element={<LogoutPage />}
+          />
+
+          <Route
+            path='donate'
+            element={<DonationPage />}
+          />
+          <Route
+            path='feedback'
+            element={<FeedbackPage />}
+          />
+          <Route
+            path='share'
+            element={<SharePage />}
+          />
+
+          <Route
+            path='test2'
+            element={<Test2 />}
+          />
+          <Route
+            path='test3'
+            element={<Test3 />}
+          />
+          <Route
+            path='testing'
+            element={<Testing />}
+          />
+
           <Route
             path='dashboard'
             element={<DashboardPage />}>
-            <Route
-              path='testing'
-              element={<Testing />}
-            />
-            <Route
-              path='register'
-              element={<RegisterPage />}
-            />
-            <Route
-              path='login'
-              element={<LoginPage />}
-            />
-            <Route
-              path='logout'
-              element={<LogoutPage />}
-            />
             <Route
               path='browse'
               element={<BrowsePage />}
@@ -108,14 +132,6 @@ function App() {
             <Route
               path='my-bookmarks'
               element={<MyBookmarksPage />}
-            />
-            <Route
-              path='test2'
-              element={<Test2 />}
-            />
-            <Route
-              path='test3'
-              element={<Test3 />}
             />
           </Route>
         </Routes>
