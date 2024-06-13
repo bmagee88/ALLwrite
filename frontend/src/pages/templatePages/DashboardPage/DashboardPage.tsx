@@ -5,11 +5,11 @@ import Footer from "../../../common/components/layout/Footer";
 import Box from "@mui/material/Box";
 import CallToAction from "../../../common/components/layout/CallToAction/CallToAction";
 
-const Dashboard = () => {
+const DashboardPage = () => {
   return (
-    <div>
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Header />
-      {/* <Outlet /> */}
+      <Outlet />
 
       <Box
         sx={{
@@ -19,8 +19,8 @@ const Dashboard = () => {
         <CallToAction />
       </Box>
       {/* <Footer /> */}
-    </div>
+    </Box>
   );
 };
 
-export default Dashboard;
+export default DashboardPage;

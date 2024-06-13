@@ -1,4 +1,6 @@
-import { Box, Link, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+// import { Link } from "@mui/material";
+import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import { menu_items } from "./config";
 import SelectableIcon from "../SelectableIcon/SelectableIcon";
@@ -32,12 +34,13 @@ const ControlPanel: React.FC = () => {
               //   padding: ".5rem",
               // }),
             }}>
-            <Link
+            {/* <Link
               href='/browse' //{item.link}
               // href='/'
               underline='none'
               variant='body2'
-              color={"secondary"}>
+              color={"secondary"}> */}
+            <Link to={item.link}>
               <Box
                 sx={{
                   display: "flex",

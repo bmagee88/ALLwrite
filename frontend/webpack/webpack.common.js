@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require("webpack");
 
 module.exports = {
   entry: path.resolve(__dirname, "..", "./src/index.tsx"), // Entry point of your application
@@ -46,12 +47,20 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "..", "./build"), // Output directory
     filename: "bundle.js", // Output filename
+    publicPath: "/",
+  },
+  devServer: {
+    static: path.resolve(__dirname, "..", "./build"),
+    compress: true,
+    port: 8080,
+    historyApiFallback: true, // This tells the server to fallback to index.html for 404s
   },
   // mode: "development",
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "..", "./src/index.html"), // Path to your HTML template
     }),
+    new webpack.HotModuleReplacementPlugin(), // Enable HMR
   ],
   // devServer: {
   //   contentBase: "./build", // Serve content from the 'build' directory

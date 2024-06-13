@@ -26,7 +26,7 @@ const LandingPage_old = () => {
               <div className='row justify-content-end'>
                 <div className='col-4'></div>
                 <div className='col-4'>
-                  <Link to='/browse'>
+                  <Link to='/dashboard/browse'>
                     <Button className='btn-success mb-2 text-nowrap'>Wander -{">"}</Button>
                   </Link>
                 </div>

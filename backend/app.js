@@ -1,5 +1,7 @@
 const NodeService = require("./src/services/NodeService");
 const express = require("express");
+
+const path = require("path");
 require("dotenv").config();
 const { Client } = require("pg");
 const { query, validationResult } = require("express-validator");
@@ -55,6 +57,12 @@ app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+// app.use(express.static(path.join(__dirname, "build")));
+
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "build", "index.html"));
+// });
 
 app.get("/", query("query").isNumeric(), query("value").isAlpha(), (req, res) => {
   const result = validationResult(req);

@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const MyBookmarksPage = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+  return <div>my bookmarks</div>;
+};
 
-export default MyBookmarksPage
+export default MyBookmarksPage;

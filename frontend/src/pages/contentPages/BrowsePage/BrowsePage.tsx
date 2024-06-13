@@ -84,13 +84,13 @@ const BrowsePage = () => {
   //   fetchBookmarksByUser(ACTIVE_USER_ID);
   // }, []);
 
-  const addItems = (amt) => {
+  const addItems = (amt: number) => {
     // console.log(limit + amt);
     setLimit((limit) => limit + amt);
   };
 
   return (
-    <>
+    <Box>
       {/* <button onClick={() => printCovers()}>hgfjhgjhg</button> */}
       {/** put here the control panel for signed in users */}
       {/* <Divider sx={{ marginY: ".5rem" }} /> */}
@@ -138,7 +138,7 @@ const BrowsePage = () => {
       <div className='row'>
         <Button onClick={() => addItems(ADD_AMOUNT)}> load {ADD_AMOUNT} more</Button>
       </div>
-    </>
+    </Box>
   );
 };
 
