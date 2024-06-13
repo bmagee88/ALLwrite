@@ -4,12 +4,18 @@ import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import { menu_items } from "./config";
 import SelectableIcon from "../SelectableIcon/SelectableIcon";
+import styled from "styled-components";
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+`;
 
 const ControlPanel: React.FC = () => {
   const [selected, setSelected] = useState<number>(2);
 
-  const onClick = (e) => {
-    setSelected(e.target.value);
+  const onClick = (index: number) => {
+    setSelected(index);
   };
   return (
     <Box
@@ -26,21 +32,9 @@ const ControlPanel: React.FC = () => {
             sx={{
               paddingY: ".5rem",
               paddingX: "1rem",
-
-              // ...(index === 2 && {
-              //   border: "2px solid black",
-              //   borderRadius: "25%",
-              //   width: "6rem",
-              //   padding: ".5rem",
-              // }),
-            }}>
-            {/* <Link
-              href='/browse' //{item.link}
-              // href='/'
-              underline='none'
-              variant='body2'
-              color={"secondary"}> */}
-            <Link to={item.link}>
+            }}
+            onClick={() => onClick(index)}>
+            <StyledLink to={item.link}>
               <Box
                 sx={{
                   display: "flex",
@@ -67,11 +61,11 @@ const ControlPanel: React.FC = () => {
                     sx={{
                       whiteSpace: "nowrap",
                     }}>
-                    {item.label} {selected}
+                    {item.label}
                   </Box>
                 </Typography>
               </Box>
-            </Link>
+            </StyledLink>
           </Box>
         );
       })}
