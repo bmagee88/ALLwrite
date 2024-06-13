@@ -8,7 +8,11 @@ export interface User {
   email: string;
 }
 
-let initialState = { user: {} as User };
+interface UserState {
+  user: User | null; // user can be null or of type User
+}
+
+let initialState: UserState = { user: null };
 
 const userSlice = createSlice({
   name: "user",
@@ -18,7 +22,7 @@ const userSlice = createSlice({
       state.user = action.payload;
     },
     logoutUser: (state) => {
-      state.user = {} as User;
+      state.user = null;
     },
   },
 });
