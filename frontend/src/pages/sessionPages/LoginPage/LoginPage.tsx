@@ -1,29 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { useNavigate } from "react-router-dom";
+import { User, loginUser } from "../../../common/store/user/userSlice";
+import { useDispatch } from "react-redux";
+import NoAccount from "./NoAccount/NoAccount";
+import Box from "@mui/material/Box";
+import { Input, Typography } from "@mui/material";
 
 const LoginPage = () => {
   const LOGIN_ENDPOINT = `http://localhost:8000/login`;
-
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const dispatch = useDispatch();
+  const usernameRef = useRef<HTMLInputElement | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log("form _data(useEffect):", formData);
-  }, [formData]);
-
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => {
-      return { ...prev, [e.target.name]: e.target.value };
-    });
-  };
-
   const handleSubmit = async () => {
-    console.log("formData(handleSumbit):", formData);
     const form_data = {
-      username: formData.username,
-      password: formData.password,
+      username: usernameRef.current?.value,
+      password: passwordRef.current?.value,
     };
 
     console.log("form_data(handleSumbit):", form_data);
@@ -37,6 +32,7 @@ const LoginPage = () => {
       },
       body: JSON.stringify(form_data),
     });
+    console.log(response);
 
     const data = await response.json();
     console.log("data = ", data);
@@ -49,14 +45,9 @@ const LoginPage = () => {
     }
 
     if (data.data.length !== 0) {
-      sessionStorage.setItem("user_id", data.data[0].user_id);
-      sessionStorage.setItem("username", data.data[0].username);
-      sessionStorage.setItem("firstname", data.data[0].firstname);
-      sessionStorage.setItem("lastname", data.data[0].lastname);
-      sessionStorage.setItem("email", data.data[0].email);
+      dispatch(loginUser(data.data[0] as User));
       console.log("success");
-      navigate(`../browse`);
-      // navigate(0);
+      navigate(`../`);
     } else {
       console.log("login failed: user/pass key/val incorrect");
       navigate("../login");
@@ -69,12 +60,6 @@ const LoginPage = () => {
         <div className='row justify-content-center'>
           <div className='col-6 w-auto h1 border border-dark rounded p-2'>Login</div>
         </div>
-        {/* <form
-          className='px-4'
-          // action={LOGIN_ENDPOINT}
-          // method='POST'
-          // onSubmit={() => handleSubmit()}
-        > */}
         <div className='row justify-content-center'>
           <div className='form-group row mt-4 p-4 border border-dark rounded w-50'>
             <label
@@ -88,7 +73,7 @@ const LoginPage = () => {
                 className='form-control'
                 id='inputUsername'
                 name='username'
-                onChange={(e) => handleOnChange(e)}
+                ref={usernameRef}
               />
             </div>
 
@@ -103,10 +88,9 @@ const LoginPage = () => {
                 className='form-control'
                 id='inputPassword'
                 name='password'
-                onChange={(e) => handleOnChange(e)}
+                ref={passwordRef}
               />
             </div>
-            {/* submit */}
             <div className='row justify-content-end mt-4'>
               <div className='col-6 w-auto'>
                 <button
@@ -117,10 +101,25 @@ const LoginPage = () => {
                 </button>
               </div>
             </div>
+            <NoAccount />
           </div>
         </div>
-        {/* </form> */}
       </div>
+      {/* <Box className='container'>
+        <Box>
+          <Typography>Login</Typography>
+        </Box>
+        <Box>
+          <FormField props={}/>
+        </Box>
+        <Box>
+          <FormField props={}/>
+        </Box>
+        <Box>Forgot Password</Box>
+        <Box>
+          <NoAccount />
+        </Box>
+      </Box> */}
     </>
   );
 };

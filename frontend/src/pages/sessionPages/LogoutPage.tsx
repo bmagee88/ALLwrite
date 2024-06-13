@@ -1,19 +1,19 @@
 import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { logoutUser } from "../../common/store/user/userSlice";
 
 const LogoutPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    sessionStorage.removeItem("user_id");
-    sessionStorage.removeItem("username");
-    sessionStorage.removeItem("firstname");
-    sessionStorage.removeItem("lastname");
-    sessionStorage.removeItem("email");
+    dispatch(logoutUser());
     navigate("/");
     navigate(0);
   }, []);
-  return <>logging out</>;
+
+  return <div>logging out...</div>;
 };
 
 export default LogoutPage;

@@ -1,8 +1,8 @@
 import Button from "react-bootstrap/esm/Button";
-import LOGO from "../../images/logo.png";
+import LOGO from "../../../assets/images/logo.png";
 import { Link } from "react-router-dom";
 
-const LandingPage = () => {
+const LandingPage_old = () => {
   return (
     <>
       <div className='bg-secondary'>
@@ -39,4 +39,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default LandingPage_old;

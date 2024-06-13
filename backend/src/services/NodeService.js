@@ -23,6 +23,21 @@ async function login(client, username, password) {
     rowCount: 0,
     rows: [],
   };
+  const testing = true;
+  if (testing) {
+    console.log("testing");
+    const res = await client
+      .query(`select test_text_password from user_profile where username = '${username}';`)
+      .then((text_password) => {
+        console.log("password", text_password);
+        if (Array.isArray(text_password) && text_password.length === 0) {
+          console.log("array empty or length 0, returning empty result");
+          return empty_result;
+        }
+      });
+    console.log("response", res);
+    return res.rows;
+  }
   // validate password
   // get username stored hashed password
   const res = await client

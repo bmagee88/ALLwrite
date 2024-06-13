@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-import RatingDropFull from "../../images/rating_drop_full.png";
-import RatingDropEmpty from "../../images/rating_drop_empty.png";
+import RatingDropFull from "../../assets/images/rating_drop_full.png";
+import RatingDropEmpty from "../../assets/images/rating_drop_empty.png";
 import WaterDropIcon from "@mui/icons-material/WaterDrop";
 
 const RatingDisplay = ({ page_id }) => {

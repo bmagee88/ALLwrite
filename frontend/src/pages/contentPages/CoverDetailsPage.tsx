@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { RootState } from "../../common/store/store";
 
 const CoverDetails = () => {
   const { cover_id } = useParams();
   const [cover, setCover] = useState({});
   const GET_COVER_ENDPOINT = `http://localhost:8000/cover-details/`;
 
-  const ACTIVE_USER_ID = sessionStorage.getItem("user_id") || null;
+  const ACTIVE_USER_ID = useSelector((state: RootState) => state.user.user.user_id);
 
   useEffect(() => {
     const fetchCover = async () => {

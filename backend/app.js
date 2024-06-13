@@ -2,6 +2,7 @@ const NodeService = require("./src/services/NodeService");
 const express = require("express");
 require("dotenv").config();
 const { Client } = require("pg");
+const { query, validationResult } = require("express-validator");
 
 const { CoverDto } = require("./src/dtos/CoverDto.js");
 const { PageDto } = require("./src/dtos/PageDto");
@@ -54,6 +55,17 @@ app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.get("/", query("query").isNumeric(), query("value").isAlpha(), (req, res) => {
+  const result = validationResult(req);
+  console.log(result);
+  const {
+    query: { query, value },
+  } = req;
+  console.log("query", query);
+  console.log("value", value);
+  res.send("all good");
+});
 
 app.get("/page/:page_id", (req, res) => {
   NodeService.getPageById(client, req.params.page_id)

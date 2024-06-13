@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
+import { RootState } from "../../common/store/store";
+import { useSelector } from "react-redux";
 
 const CreatePage = () => {
   const { parent_id } = useParams();
@@ -10,7 +12,7 @@ const CreatePage = () => {
   const [cover, setCover] = useState();
   const CREATE_PAGE_ENDPOINT = `http://localhost:8000/create-page-for/${parent_id}`;
   const CURRENT_COVER_ENDPOINT = `http://localhost:8000/cover-by/${parent_id}`;
-  const ACTIVE_USERNAME = sessionStorage.getItem("username");
+  const ACTIVE_USERNAME = useSelector((state: RootState) => state.user.user.username);
   // const parent_pg_num = 45
 
   useEffect(() => {
@@ -58,7 +60,7 @@ const CreatePage = () => {
         }
         console.log("success");
         // return response.json();
-        navigate(`/reading/${cover.title}/${parent_id}`)
+        navigate(`/reading/${cover.title}/${parent_id}`);
       })
       .catch((err) => {
         console.log(err);
@@ -67,71 +69,72 @@ const CreatePage = () => {
 
   return (
     <>
-      <div className="bg-light pt-4">
-        <div className="row justify-content-center">
-          <div className="col-6 w-auto h1 border border-dark rounded p-2">
-            Create Page
-          </div>
+      <div className='bg-light pt-4'>
+        <div className='row justify-content-center'>
+          <div className='col-6 w-auto h1 border border-dark rounded p-2'>Create Page</div>
         </div>
         <form
-          className="px-4"
+          className='px-4'
           action={CREATE_PAGE_ENDPOINT}
-          method="POST"
-          onSubmit={handleSubmit}
-        >
-          <div className="form-group row mt-4 p-4 border border-dark rounded">
-            <label htmlFor="inputParentId" className="col-sm-2 col-form-label">
+          method='POST'
+          onSubmit={handleSubmit}>
+          <div className='form-group row mt-4 p-4 border border-dark rounded'>
+            <label
+              htmlFor='inputParentId'
+              className='col-sm-2 col-form-label'>
               For page..
             </label>
-            <div className="col-sm-10">
+            <div className='col-sm-10'>
               <input
-                type="text"
-                className="form-control"
-                id="inputparentId"
+                type='text'
+                className='form-control'
+                id='inputparentId'
                 placeholder={parent_id}
-                name="parent_id"
+                name='parent_id'
                 disabled
               />
             </div>
 
-            <label htmlFor="textAreaPrompt" className="col mt-2">
+            <label
+              htmlFor='textAreaPrompt'
+              className='col mt-2'>
               Prompt
             </label>
-            <div className="col-10">
+            <div className='col-10'>
               <textarea
-                type="text"
-                className="form-control my-2"
-                id="textAreaPrompt"
-                rows="3"
-                name="prompt"
+                type='text'
+                className='form-control my-2'
+                id='textAreaPrompt'
+                rows='3'
+                name='prompt'
                 required
               />
             </div>
 
-            <div className="row">
-              <label htmlFor="textAreaBody" className="col mt-2">
+            <div className='row'>
+              <label
+                htmlFor='textAreaBody'
+                className='col mt-2'>
                 Body
               </label>
-              <div className="col-10">
+              <div className='col-10'>
                 <textarea
-                  type="text"
-                  className="form-control my-2"
-                  id="textAreaBody"
-                  rows="3"
-                  name="body_text"
-                  required
-                ></textarea>
+                  type='text'
+                  className='form-control my-2'
+                  id='textAreaBody'
+                  rows='3'
+                  name='body_text'
+                  required></textarea>
               </div>
             </div>
           </div>
 
-          <div className="form-group row justify-content-end mt-4">
-            <div className="col-6 w-auto">
+          <div className='form-group row justify-content-end mt-4'>
+            <div className='col-6 w-auto'>
               <button
-                type="submit"
-                className="btn btn-primary"
-                formAction={CREATE_PAGE_ENDPOINT}
-              >
+                type='submit'
+                className='btn btn-primary'
+                formAction={CREATE_PAGE_ENDPOINT}>
                 Publish!
               </button>
             </div>

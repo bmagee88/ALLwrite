@@ -3,7 +3,9 @@ import { Link, useParams } from "react-router-dom";
 import ChoiceCard from "../../common/components/ChoiceCard";
 import Rating from "../../common/components/Rating";
 import { v4 as uuidv4 } from "uuid";
-import Read from "../../images/read.png";
+import Read from "../../assets/images/read.png";
+import { RootState } from "../../common/store/store";
+import { useSelector } from "react-redux";
 
 const ReadingPage = () => {
   const { cover_title, first_page } = useParams();
@@ -30,16 +32,16 @@ const ReadingPage = () => {
 
   // const FLAGS = { author: "Author", longest: "Longest", rating: "Rating" };
 
-  const ACTIVE_USER_ID = sessionStorage.getItem("user_id") || null;
+  const { user_id: ACTIVE_USER_ID, username } = useSelector(
+    (state: RootState) => state.user.user.user
+  );
   //   const TEST_ID = 22;
 
   // console.log("this page id",this_page_id)
   const CURRENT_PAGE_ENDPOINT = `http://localhost:8000/page/${this_page_id}`;
   const CURRENT_COVER_ENDPOINT = `http://localhost:8000/cover-by/${this_page_id}`;
   const CHOICES_ENDPOINT = `http://localhost:8000/choices-for/${this_page_id}?limit=${choiceLimit}`;
-  const AUTHOR_ENDPOINT = `http://localhost:8000/author-choices?author=${sessionStorage.getItem(
-    "username"
-  )}&parent_id=${this_page_id}`;
+  const AUTHOR_ENDPOINT = `http://localhost:8000/author-choices?author=${username}&parent_id=${this_page_id}`;
   // const RATING_ENDPOINT = `http://localhost:8000/rating-choices?parent_id=${this_page_id}`;
   const SET_READ_ENDPOINT = `http://localhost:8000/read`;
   const CHOICE_DEPTHS_ENDPOINT = `http://localhost:8000/longest-stories`;
@@ -62,7 +64,7 @@ const ReadingPage = () => {
       // console.log(
       //   `attempting to have active user${ACTIVE_USER_ID} insert into user_read_pages`
       // );
-      if (ACTIVE_USER_ID == null) {
+      if (!ACTIVE_USER_ID) {
         // console.log("not recording page read");
         return;
       }

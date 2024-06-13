@@ -1,12 +1,14 @@
 import React from "react";
+import "./landing-page.styles.scss";
 
 const LandingPage = () => {
   return (
-    <div className='app-container'>
-      <HeaderNew />
+    <div className='md-container'>
+      asdf
+      {/* <HeaderNew />
       <MobileNavNew />
       <ExploreNew />
-      <CTANew />
+      <CTANew /> */}
     </div>
   );
 };

@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/esm/Button";
-import LOGO from "../images/logo.png";
+import LOGO from "../../../assets/images/logo.png";
 import { Link } from "react-router-dom";
-import ProfileMenu from "../ProfileMenu";
+import ProfileMenu from "../../ProfileMenu/ProfileMenu";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
 
-const Header = () => {
+const Header_old = () => {
   const [hasActiveUser, setHasActiveUser] = useState(false);
+  const username: string | undefined = useSelector((state: RootState) => state.user.user.username);
 
   useEffect(() => {
-    if (sessionStorage.getItem("username")) {
+    if (username) {
       setHasActiveUser(true);
     } else {
       setHasActiveUser(false);
@@ -73,4 +76,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Header_old;
