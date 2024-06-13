@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { redirect, useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../common/store/store";
 import { useSelector } from "react-redux";
@@ -12,8 +12,11 @@ const CreatePage = () => {
   const [cover, setCover] = useState();
   const CREATE_PAGE_ENDPOINT = `http://localhost:8000/create-page-for/${parent_id}`;
   const CURRENT_COVER_ENDPOINT = `http://localhost:8000/cover-by/${parent_id}`;
-  const ACTIVE_USERNAME = useSelector((state: RootState) => state.user.user.username);
+  const ACTIVE_USERNAME = useSelector((state: RootState) => state.user.user?.username);
   // const parent_pg_num = 45
+  if (!ACTIVE_USERNAME) {
+    redirect("/login");
+  }
 
   useEffect(() => {
     const fetchCover = async () => {
