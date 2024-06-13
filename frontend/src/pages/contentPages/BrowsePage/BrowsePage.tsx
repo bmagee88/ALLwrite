@@ -13,7 +13,7 @@ const BrowsePage = () => {
   // const [isBooked, setIsBooked] = useState(false);
 
   const ADD_AMOUNT = 3;
-  const ACTIVE_USER_ID = useSelector((state: RootState) => state.user.user.user_id) || 0;
+  const ACTIVE_USER_ID = useSelector((state: RootState) => state.user.user?.user_id) || 0;
 
   useEffect(() => {
     const outer_stuff = async () => {
@@ -28,7 +28,7 @@ const BrowsePage = () => {
       await fetchBookmarksByUser(ACTIVE_USER_ID);
 
       const fetchTitles = async (limit: number) => {
-        const response = await fetch(`http://localhost:8000/covers?limit=${limit}`);
+        const response = await fetch(`/api/covers?limit=${limit}`);
         const tits = await response.json();
         // console.log("tits", tits);
         tits_outer = tits.data;
@@ -112,7 +112,7 @@ const BrowsePage = () => {
         <div className='row justify-content-end'>
           <div className='col-6 w-auto'>
             {ACTIVE_USER_ID !== null && (
-              <Link to='/create-cover'>
+              <Link to='../create-cover'>
                 <Button variant='contained'>Add</Button>
               </Link>
             )}
