@@ -9,12 +9,12 @@ const ProfileMenuItems = () => {
   const user_id = useSelector((state: RootState) => state.user.user.user_id);
   const accountItems = [
     { to: "account", label: "Account" },
-    { to: `/profile/${user_id}`, label: "Profile" },
+    { to: `profile/${user_id}`, label: "Profile" },
     { to: "my-bookmarks", label: "My Bookmarks" },
     { to: "my-covers", label: "My Covers" },
     { to: "my-pages", label: "My Pages" },
     { to: "settings", label: "Settings" },
-    { to: "logout", label: "Logout" },
+    { to: "/logout", label: "Logout" },
   ];
   return (
     <Box>

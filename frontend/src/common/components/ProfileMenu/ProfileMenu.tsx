@@ -6,27 +6,24 @@ import ProfileMenuItems from "./ProfileMenuItems/ProfileMenuItems";
 
 const ProfileMenu = () => {
   return (
-    <>
-      <Box>
-        <div className='row justify-content-end'>
-          <Dropdown className='bg-light rounded w-auto'>
-            <Dropdown.Toggle
-              variant=''
-              id='dropdown-basic'>
-              <img
-                src={AnonUserImage}
-                alt=''
-                width='25'
-                className='rounded m-1'
-              />
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <ProfileMenuItems />
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
-      </Box>
-    </>
+    <Box className='row justify-content-end'>
+      <Dropdown>
+        <Dropdown.Toggle
+          variant=''
+          id='dropdown-basic'>
+          <Box
+            component='img'
+            sx={{ borderRadius: "50%", width: "2.5rem", height: "auto" }}
+            src={AnonUserImage}
+            alt=''
+            width='25'
+          />
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+          <ProfileMenuItems />
+        </Dropdown.Menu>
+      </Dropdown>
+    </Box>
   );
 };
 
