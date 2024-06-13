@@ -54,6 +54,14 @@ module.exports = {
     compress: true,
     port: 8080,
     historyApiFallback: true, // This tells the server to fallback to index.html for 404s
+    proxy: {
+      "/api": {
+        target: "http://localhost:8000", // Proxy API requests to your backend server
+        // changeOrigin: true,
+        // secure: false,
+      },
+    },
+    hot: true,
   },
   // mode: "development",
   plugins: [

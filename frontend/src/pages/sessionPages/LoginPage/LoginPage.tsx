@@ -47,10 +47,10 @@ const LoginPage = () => {
     if (data.data.length !== 0) {
       dispatch(loginUser(data.data[0] as User));
       console.log("success");
-      navigate(`../`);
+      navigate(`/dashboard/browse`);
     } else {
       console.log("login failed: user/pass key/val incorrect");
-      navigate("../login");
+      navigate("/dashboard/login");
     }
   };
 

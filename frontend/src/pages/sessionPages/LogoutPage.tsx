@@ -7,10 +7,12 @@ const LogoutPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  console.log("loggout");
+
   useEffect(() => {
     dispatch(logoutUser());
-    navigate("/");
-    navigate(0);
+    navigate("/login");
+    // navigate(0);
   }, []);
 
   return <div>logging out...</div>;
