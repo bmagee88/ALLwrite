@@ -33,7 +33,7 @@ const ReadingPage = () => {
   // const FLAGS = { author: "Author", longest: "Longest", rating: "Rating" };
 
   const { user_id: ACTIVE_USER_ID, username } = useSelector(
-    (state: RootState) => state.user.user.user
+    (state: RootState) => state.user.user ?? { user_id: 0, username: "" }
   );
   //   const TEST_ID = 22;
 
