@@ -8,7 +8,7 @@ import { RootState } from "../../../store/store";
 
 const Header_old = () => {
   const [hasActiveUser, setHasActiveUser] = useState(false);
-  const username: string | undefined = useSelector((state: RootState) => state.user.user.username);
+  const username: string | undefined = useSelector((state: RootState) => state.user.user?.username);
 
   useEffect(() => {
     if (username) {
