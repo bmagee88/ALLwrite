@@ -1,15 +1,21 @@
-import MyTreeIcon from "@mui/icons-material/Park";
+// import MyTreeIcon from "@mui/icons-material/Park";
+// import ExploreIcon from "@mui/icons-material/Explore";
 // import HomeIcon from "@mui/icons-material/Home";
-import HomeSelected from "@mui/icons-material/HomeRounded";
+
 import HomeUnselected from "@mui/icons-material/HomeOutlined";
-import SeedIcon from "@mui/icons-material/Adjust";
-import DogEarIcon from "@mui/icons-material/Bookmark";
-import ContinueReadingIcon from "@mui/icons-material/More";
-import ExploreIcon from "@mui/icons-material/Explore";
-import SelectableIcon from "../SelectableIcon/SelectableIcon";
+import HomeSelected from "@mui/icons-material/HomeRounded";
+
+import ContinueReadingIconUnselected from "@mui/icons-material/MoreOutlined";
+import ContinueReadingIconSelected from "@mui/icons-material/More";
+
+import SeedIconSelected from "@mui/icons-material/ArrowDropDownCircle";
+import SeedIconUnselected from "@mui/icons-material/ArrowDropDownCircleOutlined";
+
+import DogEarIconUnselected from "@mui/icons-material/BookmarkBorderOutlined";
+import DogEarIconSelected from "@mui/icons-material/Bookmark";
 
 import AddIconSelected from "@mui/icons-material/AddCircle";
-import AddIconNotSelected from "@mui/icons-material/AddCircleOutlined";
+import AddIconUnselected from "@mui/icons-material/AddCircleOutlineOutlined";
 
 interface MenuItem {
   label: string;
@@ -19,36 +25,37 @@ interface MenuItem {
 }
 
 const fontSize = "medium";
+const featuredItemFontSize = "large";
 
 export const menu_items: MenuItem[] = [
   {
     label: "Seeds",
-    selectedIcon: () => <SeedIcon fontSize={fontSize} />,
-    unselectedIcon: () => <SeedIcon fontSize={fontSize} />,
+    selectedIcon: () => <SeedIconSelected fontSize={fontSize} />,
+    unselectedIcon: () => <SeedIconUnselected fontSize={fontSize} />,
     link: "/dashboard/my-covers",
   },
   {
     label: "Bookmarks",
-    selectedIcon: () => <ContinueReadingIcon fontSize={fontSize} />,
-    unselectedIcon: () => <ContinueReadingIcon fontSize={fontSize} />,
+    selectedIcon: () => <ContinueReadingIconSelected fontSize={fontSize} />,
+    unselectedIcon: () => <ContinueReadingIconUnselected fontSize={fontSize} />,
     link: "/dashboard/my-bookmarks",
   },
   {
     label: "Home",
-    selectedIcon: () => <HomeSelected fontSize={"large"} />,
-    unselectedIcon: () => <HomeUnselected fontSize={"large"} />,
+    selectedIcon: () => <HomeSelected fontSize={featuredItemFontSize} />,
+    unselectedIcon: () => <HomeUnselected fontSize={featuredItemFontSize} />,
     link: "/dashboard/browse",
   },
   {
     label: "Dog Ears",
-    selectedIcon: () => <DogEarIcon fontSize={fontSize} />,
-    unselectedIcon: () => <DogEarIcon fontSize={fontSize} />,
+    selectedIcon: () => <DogEarIconSelected fontSize={fontSize} />,
+    unselectedIcon: () => <DogEarIconUnselected fontSize={fontSize} />,
     link: "/dashboard/my-pages",
   },
   {
     label: "Plant",
     selectedIcon: () => <AddIconSelected fontSize={fontSize} />,
-    unselectedIcon: () => <AddIconNotSelected fontSize={fontSize} />,
+    unselectedIcon: () => <AddIconUnselected fontSize={fontSize} />,
     link: "/dashboard/create-cover",
   },
 ];
