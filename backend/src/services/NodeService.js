@@ -39,7 +39,7 @@ async function login(client, username, password) {
       return empty_result;
     } else {
       console.log("userInfo", userInfo.rows[0]);
-      return userInfo.rows;
+      return userInfo.rows[0];
     }
 
     // try {
