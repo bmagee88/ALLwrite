@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { RootState } from "../../common/store/store";
 
 const CoverDetails = () => {
   const { cover_id } = useParams();
   const [cover, setCover] = useState({});
+  const navigate = useNavigate();
   const GET_COVER_ENDPOINT = `http://localhost:8000/cover-details/`;
 
-  const ACTIVE_USER_ID = useSelector((state: RootState) => state.user.user.user_id);
+  const ACTIVE_USER_ID = useSelector((state: RootState) => state.user.user?.user_id);
+
+  if (!ACTIVE_USER_ID) {
+    navigate("/login");
+  }
 
   useEffect(() => {
     const fetchCover = async () => {
@@ -36,7 +41,7 @@ const CoverDetails = () => {
           <div className='col'>{cover.summary}</div>
         </div>
         {ACTIVE_USER_ID !== null ? (
-          <Link to={`/reading/${cover.title}/${cover.first_page}`}>
+          <Link to={`/dashboard/reading/${cover.title}/${cover.first_page}`}>
             <button>start journey</button>
           </Link>
         ) : (

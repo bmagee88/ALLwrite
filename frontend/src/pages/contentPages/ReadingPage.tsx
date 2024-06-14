@@ -30,11 +30,17 @@ const ReadingPage = () => {
   const [pageIsRead, setPageIsRead] = useState(false);
   const [isFirstPage, setIsFirstPage] = useState(false);
 
+  const navigate = useNavigate();
+
   // const FLAGS = { author: "Author", longest: "Longest", rating: "Rating" };
 
   const { user_id: ACTIVE_USER_ID, username } = useSelector(
     (state: RootState) => state.user.user ?? { user_id: 0, username: "" }
   );
+
+  if (!ACTIVE_USER_ID) {
+    navigate("/login");
+  }
   //   const TEST_ID = 22;
 
   // console.log("this page id",this_page_id)
