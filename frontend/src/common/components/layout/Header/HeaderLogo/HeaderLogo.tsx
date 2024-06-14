@@ -5,7 +5,7 @@ import LOGO from "../../../../../assets/images/logo.png";
 const HeaderLogo = () => {
   return (
     <div className=''>
-      <Link to=''>
+      <Link to='/dashboard/browse'>
         <img
           src={LOGO}
           alt='ALLwrite'
