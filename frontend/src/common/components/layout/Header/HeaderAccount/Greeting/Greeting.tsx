@@ -7,7 +7,14 @@ interface GreetingProps {
 
 const Greeting: React.FC<GreetingProps> = ({ username }) => {
   return (
-    <Box sx={{ flexBasis: "content" }}>
+    <Box
+      sx={{
+        display: "none",
+        flexBasis: "content",
+        "@media (min-width: 500px)": {
+          display: "block",
+        },
+      }}>
       Hello, <br></br>
       {username}
     </Box>
