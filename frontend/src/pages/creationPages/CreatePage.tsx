@@ -63,7 +63,7 @@ const CreatePage = () => {
         }
         console.log("success");
         // return response.json();
-        navigate(`/reading/${cover.title}/${parent_id}`);
+        navigate(`/dashboard/reading/${cover.title}/${parent_id}`);
       })
       .catch((err) => {
         console.log(err);

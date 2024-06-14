@@ -80,7 +80,7 @@ const ChoiceCard = ({ title, choice, setTrigger, trigger, flags, depth }) => {
         </div>
         <div className='row justify-content-end flex-column align-items-end'>
           <div className='col-1 w-auto pb-1'>
-            <Link to={`/reading/${title}/${choice[0].id}`}>
+            <Link to={`/dashboard/reading/${title}/${choice[0].id}`}>
               <button
                 onClick={() => {
                   setTrigger(!trigger);

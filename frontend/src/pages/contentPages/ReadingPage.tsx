@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ChoiceCard from "../../common/components/ChoiceCard";
 import Rating from "../../common/components/Rating";
 import { v4 as uuidv4 } from "uuid";
@@ -184,13 +184,13 @@ const ReadingPage = () => {
       <div className='container bg=light'>
         <div className='row justify-content-between border border-dark mt-2'>
           <div className='col-1 w-auto'>
-            {isFirstPage && <Link to={`../../../cover-details/${cover.id}`}>back</Link>}
+            {isFirstPage && <Link to={`/dashboard/cover-details/${cover.id}`}>back</Link>}
             {!isFirstPage && (
-              <Link to={`../../../reading/${cover_title}/${page.parent_id}`}>back</Link>
+              <Link to={`/dashboard/reading/${cover_title}/${page.parent_id}`}>back</Link>
             )}
           </div>
           <div className='col-1 w-auto'>
-            <Link to={`../../../cover-details/${cover.id}`}>{cover_title}</Link>
+            <Link to={`/dashboard/cover-details/${cover.id}`}>{cover_title}</Link>
             {pageIsRead && (
               <span>
                 {" "}
@@ -279,7 +279,7 @@ const ReadingPage = () => {
             })}
             <div className='row justify-content-end mt-2'>
               <div className='col-1 w-auto'>
-                <Link to={`../../../create-page/${this_page_id}`}>
+                <Link to={`/dashboard/create-page/${this_page_id}`}>
                   <button>+ add new choice</button>
                 </Link>
               </div>
