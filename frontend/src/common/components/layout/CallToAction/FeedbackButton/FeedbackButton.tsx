@@ -1,13 +1,18 @@
 import { Button } from "@mui/material";
 import React from "react";
+import { Link } from "react-router-dom";
 
-const FeedbackButton = () => {
+const WHERE_TO = "/dashboard/feedback";
+
+const FeedbackButton: React.FC = () => {
   return (
-    <Button
-      variant='contained'
-      size='small'>
-      Feedback
-    </Button>
+    <Link to={WHERE_TO}>
+      <Button
+        variant='contained'
+        size='small'>
+        Feedback
+      </Button>
+    </Link>
   );
 };
 
