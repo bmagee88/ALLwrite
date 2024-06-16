@@ -43,9 +43,10 @@ const LoginPage = () => {
       console.log("not 200");
       throw new Error(response.statusText);
     }
+    console.log("data.data", data.data);
 
-    if (data.data.length !== 0) {
-      dispatch(loginUser(data.data[0] as User));
+    if (data.data) {
+      dispatch(loginUser(data.data as User));
       console.log("success");
       navigate(`/dashboard/browse`);
     } else {
