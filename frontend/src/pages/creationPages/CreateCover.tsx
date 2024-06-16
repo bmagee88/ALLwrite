@@ -11,10 +11,15 @@ import { RootState } from "../../common/store/store";
 const CreateCover = () => {
   const CREATE_COVER_ENDPOINT = "http://localhost:8000/create-cover";
   const CREATE_PAGE_ENDPOINT = "http://localhost:8000/create-page-for/0";
-  const ACTIVE_USER = useSelector((state: RootState) => state.user.user.username);
-  // const FIRST_PAGE = 100;
+  const ACTIVE_USER = useSelector((state: RootState) => state.user.user?.username);
 
   const navigate = useNavigate();
+  if (!ACTIVE_USER) {
+    navigate("/login");
+  }
+
+  // const FIRST_PAGE = 100;
+
   // let sample_insert = {
   //   title: "7th Day",
   //   author: "Necrotroph",
