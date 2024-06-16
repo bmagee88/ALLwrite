@@ -6,7 +6,11 @@ const NoAccount = () => {
   return (
     <Box sx={{ display: "flex", marginTop: "1rem", justifyContent: "flex-end" }}>
       <Typography>
-        <Box sx={{ whiteSpace: "nowrap" }}>Don't have an account? </Box>
+        <Box
+          component='span'
+          sx={{ whiteSpace: "nowrap" }}>
+          Don't have an account?{" "}
+        </Box>
         <Link to='register'>Register Here</Link>
       </Typography>
     </Box>
