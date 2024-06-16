@@ -1,11 +1,10 @@
 import React from "react";
 import Header from "../../../common/components/layout/Header/Header";
 import { Outlet } from "react-router";
-import Footer from "../../../common/components/layout/Footer";
 import Box from "@mui/material/Box";
 import CallToAction from "../../../common/components/layout/CallToAction/CallToAction";
 
-const DashboardPage = () => {
+const DashboardPage: React.FC = () => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <Header />
