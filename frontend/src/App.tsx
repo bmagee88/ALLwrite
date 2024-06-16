@@ -49,19 +49,6 @@ function App() {
           />
 
           <Route
-            path='donate'
-            element={<DonationPage />}
-          />
-          <Route
-            path='feedback'
-            element={<FeedbackPage />}
-          />
-          <Route
-            path='share'
-            element={<SharePage />}
-          />
-
-          <Route
             path='test2'
             element={<Test2 />}
           />
@@ -80,6 +67,18 @@ function App() {
             <Route
               path='browse'
               element={<BrowsePage />}
+            />
+            <Route
+              path='donate'
+              element={<DonationPage />}
+            />
+            <Route
+              path='feedback'
+              element={<FeedbackPage />}
+            />
+            <Route
+              path='share'
+              element={<SharePage />}
             />
             <Route
               path='reading/:cover_title/:first_page'
