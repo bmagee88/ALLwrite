@@ -266,7 +266,7 @@ app.post("/create-page-for/:parent_id", (req, res) => {
     });
 });
 
-app.get("/bookmarks/:user_id", (req, res) => {
+app.get("/api/bookmarks/:user_id", (req, res) => {
   NodeService.getBookmarksByUserId(client, req.params.user_id)
     .then((result) => {
       res.status(200).json({ data: result });
