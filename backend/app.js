@@ -159,7 +159,7 @@ app.post("/create-user", (req, res) => {
     });
 });
 
-app.get("/avg-rating/:page_id", (req, res) => {
+app.get("/api/avg-rating/:page_id", (req, res) => {
   // console.log("avg-rating page id", req.params.page_id);
   NodeService.avgRatingByPageId(client, parseInt(req.params.page_id))
     .then((result) => {
