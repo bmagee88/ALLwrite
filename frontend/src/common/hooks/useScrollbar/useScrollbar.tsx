@@ -11,7 +11,7 @@ export const useScrollbar = (containerRef: RefObject<HTMLDivElement> | null) => 
       console.log("container", container);
       if (container) {
         const { scrollLeft, scrollWidth, clientWidth } = container;
-        console.log(`${scrollLeft}-${clientWidth}-${scrollWidth}`);
+        console.log(`${Math.ceil(scrollLeft)}-${clientWidth}-${scrollWidth}`);
 
         // Check if at the top
         // setIsAtTop(false);
@@ -19,7 +19,7 @@ export const useScrollbar = (containerRef: RefObject<HTMLDivElement> | null) => 
 
         // Check if at the bottom
         // setIsAtBottom(false);
-        setIsAtBottom(scrollLeft + clientWidth === scrollWidth);
+        setIsAtBottom(Math.ceil(scrollLeft + clientWidth) === scrollWidth);
       }
     };
     if (container) {
