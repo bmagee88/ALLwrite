@@ -21,7 +21,14 @@ const TagList: React.FC<TagListProps> = ({ tags }) => {
         <Button
           key={index}
           variant='outlined'
-          sx={{ minWidth: "auto", whiteSpace: "nowrap", borderRadius: "15%" }}>
+          sx={{
+            minWidth: "auto",
+            whiteSpace: "nowrap",
+            borderRadius: "10%",
+            fontSize: "14px",
+            paddingY: ".05rem",
+            marginY: ".5rem",
+          }}>
           {tag}
         </Button>
       ))}
