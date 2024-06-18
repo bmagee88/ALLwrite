@@ -4,6 +4,25 @@ import TitleCard from "../../../common/components/CoverCard";
 import { Box, Button, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../common/store/store";
+import ScrollableTagsContainer, {
+  Tag,
+} from "../../../common/components/ScrollableTags/ScrollableTags";
+
+const tags: Tag[] = [
+  "Genre1",
+  "Genre1",
+  "Genre1",
+  "Genre1",
+  "Genre1",
+  "Genre1",
+  "Genre1",
+  "Genre1",
+  "Genre1",
+  "Genre1",
+  "Genre1",
+  "Genre1",
+  "Genre1",
+];
 
 interface Cover {
   cover_id: number;
@@ -112,6 +131,10 @@ const BrowsePage: React.FC = () => {
         </Typography>
       </Box>
 
+      <Box>
+        <ScrollableTagsContainer tags={tags} />
+      </Box>
+
       <Box
         sx={{
           "@media (min-width: 500px)": {
@@ -119,15 +142,17 @@ const BrowsePage: React.FC = () => {
           },
         }}>
         <div className='row justify-content-end'>
-          <div className='col-6 w-auto'>
-            {ACTIVE_USER_ID !== null && (
+          <Box className='col-6 w-auto'>
+            {ACTIVE_USER_ID !== 0 && (
               <Link to='../create-cover'>
                 <Button variant='contained'>Add</Button>
               </Link>
             )}
-          </div>
+          </Box>
         </div>
-        <div className='row'>
+        <Box
+          className='row'
+          sx={{ marginTop: ".5rem" }}>
           {covers.map((cover: Cover, index) => {
             return (
               <TitleCard
@@ -142,7 +167,7 @@ const BrowsePage: React.FC = () => {
               />
             );
           })}
-        </div>
+        </Box>
       </Box>
       <div className='row'>
         <Button onClick={() => addItems(ADD_AMOUNT)}> load {ADD_AMOUNT} more</Button>
