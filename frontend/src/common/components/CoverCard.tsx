@@ -7,6 +7,7 @@ import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import StarOutlinedIcon from "@mui/icons-material/StarOutlined";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import { Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 interface CoverCardProps {
   cover_id: number;
@@ -33,18 +34,20 @@ const CoverCard: React.FC<CoverCardProps> = ({
       sx={{}}>
       <Box
         sx={{ display: "flex", flexDirection: "column", marginTop: "1rem", marginBottom: "1rem" }}>
-        <Box
-          id='image'
-          sx={{
-            height: "200px",
-            overflow: "hidden",
-          }}>
+        <Link to={`/dashboard/cover-details/${cover_id}`}>
           <Box
-            component='img'
-            sx={{ width: "100%", height: "100%", objectFit: "cover" }}
-            src={CoverSample}
-          />
-        </Box>
+            id='image'
+            sx={{
+              height: "200px",
+              overflow: "hidden",
+            }}>
+            <Box
+              component='img'
+              sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+              src={CoverSample}
+            />
+          </Box>
+        </Link>
 
         <Box
           id='cover-details'
@@ -54,14 +57,19 @@ const CoverCard: React.FC<CoverCardProps> = ({
             marginTop: ".25rem",
             paddingRight: ".5rem",
           }}>
-          <Box
-            id='author'
-            sx={{ paddingLeft: ".4rem", marginTop: ".2rem" }}>
-            <BasicAvatar
-              firstName={author}
-              lastName=''
-            />
-          </Box>
+          <Link
+            to={`/dashboard/profile/${1}`}
+            // author id needed TODO
+            style={{ textDecoration: "none", color: "inherit" }}>
+            <Box
+              id='author'
+              sx={{ paddingLeft: ".4rem", marginTop: ".2rem" }}>
+              <BasicAvatar
+                firstName={author}
+                lastName=''
+              />
+            </Box>
+          </Link>
           <Box
             id='details'
             sx={{
@@ -72,28 +80,34 @@ const CoverCard: React.FC<CoverCardProps> = ({
               paddingLeft: ".5rem",
               paddingTop: ".25rem",
             }}>
-            <Box
-              id='title'
-              sx={{ lineHeight: "14px", fontWeight: "bold" }}>
-              {title}
-            </Box>
-            <Box id='stats'>
+            <Link
+              to={`/dashboard/cover-details/${cover_id}`}
+              style={{ textDecoration: "none", color: "inherit" }}>
               <Box
-                id='summary'
-                sx={
-                  {
+                id='title'
+                sx={{ lineHeight: "14px", fontWeight: "bold" }}>
+                {title}
+              </Box>
+            </Link>
+            <Box id='stats'>
+              <Link
+                to={`/dashboard/cover-details/${cover_id}`}
+                style={{ textDecoration: "none", color: "inherit" }}>
+                <Box
+                  id='summary'
+                  sx={{
                     // width: "100%",
                     // height: "18px",
                     // overflow: "hidden",
-                    // textOverflow: "ellipsis",
+                    textOverflow: "ellipsis",
                     // // display: "-webkit-box",
                     // // WebkitBoxOrient: "vertical",
                     // // WebkitLineClamp: "1",
-                    // lineHeight: "16px",//
-                  }
-                }>
-                {summary}
-              </Box>
+                    lineHeight: "18px", //
+                  }}>
+                  {summary}
+                </Box>
+              </Link>
               <Box
                 sx={{
                   display: "flex",
