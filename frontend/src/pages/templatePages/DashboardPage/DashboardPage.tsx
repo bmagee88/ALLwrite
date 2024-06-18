@@ -6,7 +6,13 @@ import CallToAction from "../../../common/components/layout/CallToAction/CallToA
 
 const DashboardPage: React.FC = () => {
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+    <Box
+      id='dashboard'
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+      }}>
       <Header />
       <Outlet />
 
