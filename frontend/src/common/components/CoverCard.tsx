@@ -1,29 +1,12 @@
 import Box from "@mui/material/Box";
 import React from "react";
-import { Link } from "react-router-dom";
 import CoverSample from "../../assets/images/sample_cover_image.png";
 import BasicAvatar from "./user/BasicAvatar/BasicAvatar";
 import MoreOptions from "@mui/icons-material/MoreVert";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import StarOutlinedIcon from "@mui/icons-material/StarOutlined";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
-import ScrollableTagsContainer, { Tag } from "./ScrollableTags/ScrollableTags";
-
-const tags: Tag[] = [
-  "first",
-  "second",
-  "third",
-  "fourth",
-  "fifth",
-  "sixth",
-  "seventh",
-  "either",
-  "ninth",
-  "tenth",
-  "eleventh",
-  "twelf",
-  "tirteen",
-];
+import { Typography } from "@mui/material";
 
 interface CoverCardProps {
   cover_id: number;
@@ -48,7 +31,8 @@ const CoverCard: React.FC<CoverCardProps> = ({
     <Box
       id='container'
       sx={{}}>
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Box
+        sx={{ display: "flex", flexDirection: "column", marginTop: "1rem", marginBottom: "1rem" }}>
         <Box
           id='image'
           sx={{
@@ -61,12 +45,18 @@ const CoverCard: React.FC<CoverCardProps> = ({
             src={CoverSample}
           />
         </Box>
+
         <Box
           id='cover-details'
-          sx={{ display: "flex", justifyContent: "space-between" }}>
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: ".25rem",
+            paddingRight: ".5rem",
+          }}>
           <Box
             id='author'
-            sx={{ padding: ".2rem" }}>
+            sx={{ paddingLeft: ".4rem", marginTop: ".2rem" }}>
             <BasicAvatar
               firstName={author}
               lastName=''
@@ -74,10 +64,17 @@ const CoverCard: React.FC<CoverCardProps> = ({
           </Box>
           <Box
             id='details'
-            sx={{ display: "flex", flexDirection: "column", flexGrow: "1", marginTop: ".2rem" }}>
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              flexGrow: "1",
+              marginTop: ".2rem",
+              paddingLeft: ".5rem",
+              paddingTop: ".25rem",
+            }}>
             <Box
               id='title'
-              sx={{ lineHeight: "14px" }}>
+              sx={{ lineHeight: "14px", fontWeight: "bold" }}>
               {title}
             </Box>
             <Box id='stats'>
@@ -101,22 +98,32 @@ const CoverCard: React.FC<CoverCardProps> = ({
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  alignItems: "flex-end",
+                  alignItems: "flex-start",
                 }}>
-                <Box id='rating'>
-                  {" "}
+                <Box
+                  id='rating'
+                  sx={{ display: "flex" }}>
+                  <Typography
+                    component='span'
+                    id='rating-number'
+                    sx={{ paddingRight: ".35rem", alignSelf: "center" }}>
+                    4.2
+                  </Typography>
                   <StarOutlinedIcon color='warning' />
                   <StarOutlinedIcon color='warning' />
                   <StarOutlinedIcon color='warning' />
                   <StarOutlinedIcon color='warning' />
                   <StarOutlineIcon color='warning' />
-                  (32)
+                  <Typography
+                    component='span'
+                    id='rating-number'
+                    sx={{ paddingLeft: ".15rem", alignSelf: "center" }}>
+                    (32)
+                  </Typography>
                 </Box>
                 <Box id='pages'>
-                  <AutoStoriesIcon /> 2567 (2367)
-                </Box>
-                <Box>
-                  <ScrollableTagsContainer tags={tags} />
+                  <AutoStoriesIcon /> 127 (52){" "}
+                  {/**TODO how to indicate that these numbers represent total number of pages and longest story*/}
                 </Box>
               </Box>
             </Box>
