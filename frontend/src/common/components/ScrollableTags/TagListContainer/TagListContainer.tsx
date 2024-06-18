@@ -17,7 +17,7 @@ const TagListContainer: React.FC<TagListContainerProps> = ({ tags, setChildRef }
     <Box
       id='scrollable-container'
       sx={{
-        width: "300px",
+        width: "100%",
         // height: "48px",
         overflowX: "auto",
         overflowY: "hidden",
@@ -30,14 +30,14 @@ const TagListContainer: React.FC<TagListContainerProps> = ({ tags, setChildRef }
           display: "none", // Hides scrollbar on Chrome and Safari
         },
         // "&::after": {
-        //   //   content: '""',
-        //   //   position: "absolute",
-        //   //   top: 0,
-        //   //   right: 0,
-        //   //   width: "16px",
-        //   //   height: "100%",
+        //   content: '""',
+        //   position: "absolute",
+        //   top: 0,
+        //   right: 0,
+        //   width: "16px",
+        //   height: "100%",
         //   background: "linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1))",
-        //   //   pointerEvents: "none",
+        //   pointerEvents: "none",
         // },
         //   display: "flex",
         //   alignItems: "center",
