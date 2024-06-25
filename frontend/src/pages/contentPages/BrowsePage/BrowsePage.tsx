@@ -1,14 +1,42 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import TitleCard from "../../../common/components/TitleCard";
+import TitleCard from "../../../common/components/CoverCard";
 import { Box, Button, Typography } from "@mui/material";
-import ControlPanel from "../../../common/components/ControlPanel/ControlPanel";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../common/store/store";
+import ScrollableTagsContainer, {
+  Tag,
+} from "../../../common/components/ScrollableTags/ScrollableTags";
 
-const BrowsePage = () => {
-  const [titles, setTitles] = useState([]);
+const tags: Tag[] = [
+  "Genre1",
+  "Genre1",
+  "Genre1",
+  "Genre1",
+  "Genre1",
+  "Genre1",
+  "Genre1",
+  "Genre1",
+  "Genre1",
+  "Genre1",
+  "Genre1",
+  "Genre1",
+  "Genre1",
+];
+
+interface Cover {
+  cover_id: number;
+  title: string;
+  author: string;
+  genre: string;
+  summary: string;
+  image_url: string;
+  booked: boolean;
+}
+
+const BrowsePage: React.FC = () => {
   const [limit, setLimit] = useState(3);
+  const [covers, setCovers] = useState([]);
   // const [bookmarks, setBookmarks] = useState([]);
   // const [isBooked, setIsBooked] = useState(false);
 
@@ -19,7 +47,7 @@ const BrowsePage = () => {
     const outer_stuff = async () => {
       var bms_outer, tits_outer;
       const fetchBookmarksByUser = async (user_id: number) => {
-        const response = await fetch(`http://localhost:8000/bookmarks/${user_id}`);
+        const response = await fetch(`/api/bookmarks/${user_id}`);
         const bms = await response.json();
         // console.log("bms", bms);
         bms_outer = bms.data;
@@ -29,9 +57,9 @@ const BrowsePage = () => {
 
       const fetchTitles = async (limit: number) => {
         const response = await fetch(`/api/covers?limit=${limit}`);
-        const tits = await response.json();
+        const covers = await response.json();
         // console.log("tits", tits);
-        tits_outer = tits.data;
+        tits_outer = covers.data;
         // console.log("tits outer inside", tits_outer); //works
         // setTitles(() => tits.data);
       };
@@ -60,7 +88,7 @@ const BrowsePage = () => {
             found === true ? (t[i].booked = true) : (t[i].booked = false);
           }
           // console.log("t", t);
-          setTitles(() => t);
+          setCovers(() => t);
           // console.log("titles", titles);
         };
         innerf();
@@ -103,6 +131,10 @@ const BrowsePage = () => {
         </Typography>
       </Box>
 
+      <Box>
+        <ScrollableTagsContainer tags={tags} />
+      </Box>
+
       <Box
         sx={{
           "@media (min-width: 500px)": {
@@ -110,30 +142,32 @@ const BrowsePage = () => {
           },
         }}>
         <div className='row justify-content-end'>
-          <div className='col-6 w-auto'>
-            {ACTIVE_USER_ID !== null && (
+          <Box className='col-6 w-auto'>
+            {ACTIVE_USER_ID !== 0 && (
               <Link to='../create-cover'>
                 <Button variant='contained'>Add</Button>
               </Link>
             )}
-          </div>
+          </Box>
         </div>
-        <div className='row'>
-          {titles.map((item, index) => {
+        <Box
+          className='row'
+          sx={{ marginTop: ".5rem" }}>
+          {covers.map((cover: Cover, index) => {
             return (
               <TitleCard
                 key={index}
-                cover_id={item.cover_id}
-                title={item.title}
-                author={item.author}
-                genre={item.genre}
-                summary={item.summary.slice(0, 75) + "..."}
-                image={item.image_url}
-                isBookmarked={item.booked}
+                cover_id={cover.cover_id}
+                title={cover.title}
+                author={cover.author}
+                genre={cover.genre}
+                summary={cover.summary.slice(0, 75) + "..."}
+                image={cover.image_url}
+                isBookmarked={cover.booked}
               />
             );
           })}
-        </div>
+        </Box>
       </Box>
       <div className='row'>
         <Button onClick={() => addItems(ADD_AMOUNT)}> load {ADD_AMOUNT} more</Button>
