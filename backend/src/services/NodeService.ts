@@ -1,6 +1,9 @@
 import { compare } from "bcryptjs";
 import { Client, QueryResult } from "pg";
 import User from "../entities/User.entity";
+import Page from "../entities/Page.entity";
+import Read from "../entities/Read.entity";
+import Cover from "../entities/Cover.entity";
 
 export async function getChoices(client: Client, parent_id: string, limit: string) {
   // console.log("pid, limit", parent_id, limit);
@@ -11,7 +14,7 @@ export async function getChoices(client: Client, parent_id: string, limit: strin
   return res.rows;
 }
 
-export async function createCover(client: Client, cover) {
+export async function createCover(client: Client, cover: Cover) {
   // should be of type Cover
   // console.log("service: cover", cover);
   const res = await client.query(
@@ -130,7 +133,7 @@ export async function createUser(client: Client, user: User) {
   return resUser.rows;
 }
 
-export async function createPage(client: Client, page) {
+export async function createPage(client: Client, page: Page) {
   // page:Page
   // console.log("service: Page", page);
   const id = await client.query("select id from page order by id desc limit 1");
@@ -196,7 +199,7 @@ export async function getRatingByUserAndPage(client: Client, user_id: string, pa
   return res.rows;
 }
 
-export async function readPage(client: Client, read) {
+export async function readPage(client: Client, read: Read) {
   // should be of type Read
   const res = await client.query(
     // `insert into user_read_pages (user_id, page_id) values (${read.user_id}, ${read.page_id});`
