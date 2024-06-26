@@ -29,15 +29,14 @@ const RatingDisplay = ({ page_id }) => {
       {Array.from({ length: Math.round(rating) }).map((x, index) => {
         // console.log("full: index, rating", index + 1, parseInt(rating));
         return (
-          <WaterDropIcon />
-          // <img
-          //   key={rating + index + 1}
-          //   id={String(parseInt(index) + 1)}
-          //   src={RatingDropFull}
-          //   height="10"
-          //   width="10"
-          //   alt="asdf"
-          // ></img>
+          // <WaterDropIcon />
+          <img
+            key={rating + index + 1}
+            id={String(parseInt(index) + 1)}
+            src={RatingDropFull}
+            height='10'
+            width='10'
+            alt='asdf'></img>
         );
       })}
       {Array.from({ length: MAX_RATING - Math.round(rating) }).map((x, index) => {
