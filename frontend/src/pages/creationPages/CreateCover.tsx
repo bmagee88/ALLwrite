@@ -9,8 +9,8 @@ import { RootState } from "../../common/store/store";
  * @returns
  */
 const CreateCover = () => {
-  const CREATE_COVER_ENDPOINT = "http://localhost:8000/create-cover";
-  const CREATE_PAGE_ENDPOINT = "http://localhost:8000/create-page-for/0";
+  const CREATE_COVER_ENDPOINT = "/api/cover/create-cover";
+  const CREATE_PAGE_ENDPOINT = "/api/page/create-page-for/0";
   const ACTIVE_USER = useSelector((state: RootState) => state.user.user?.username);
 
   const navigate = useNavigate();

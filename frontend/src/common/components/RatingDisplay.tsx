@@ -8,7 +8,7 @@ const RatingDisplay = ({ page_id }) => {
   const [rating, setRating] = useState(0);
   const [total, setTotal] = useState(0);
   const MAX_RATING = 10;
-  const AVG_RATING_FOR_PAGE_ENDPOINT = "http://localhost:8000/avg-rating/";
+  const AVG_RATING_FOR_PAGE_ENDPOINT = "/api/rating/avg-rating/";
 
   useEffect(() => {
     //fetch

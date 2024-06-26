@@ -5,9 +5,9 @@ import RatingDropEmpty from "../../assets/images/rating_drop_empty.png";
 
 const Rating = ({ user_id, page_id, setIsRated, isRated }) => {
   const MAX_RATING = 10;
-  const USER_RATING_FOR_PAGE_ENDPOINT = `http://localhost:8000/user-rating-for-page/`;
-  const USER_RATING_FOR_PAGE_UPDATE_ENDPOINT = `http://localhost:8000/user-rating-for-page-update/`;
-  const USER_RATING_FOR_PAGE_INSERT_ENDPOINT = `http://localhost:8000/user-rating-for-page-insert/`;
+  const USER_RATING_FOR_PAGE_ENDPOINT = `/api/rating/user-rating-for-page/`;
+  const USER_RATING_FOR_PAGE_UPDATE_ENDPOINT = `/api/rating//user-rating-for-page-update/`;
+  const USER_RATING_FOR_PAGE_INSERT_ENDPOINT = `/api/rating//user-rating-for-page-insert/`;
   //   let rating = 4;
   const [rating, setRating] = useState(0);
   //   const [hasRating, setHasRating] = useState(false);

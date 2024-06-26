@@ -44,13 +44,13 @@ const ReadingPage = () => {
   //   const TEST_ID = 22;
 
   // console.log("this page id",this_page_id)
-  const CURRENT_PAGE_ENDPOINT = `http://localhost:8000/page/${this_page_id}`;
-  const CURRENT_COVER_ENDPOINT = `http://localhost:8000/cover-by/${this_page_id}`;
-  const CHOICES_ENDPOINT = `http://localhost:8000/choices-for/${this_page_id}?limit=${choiceLimit}`;
-  const AUTHOR_ENDPOINT = `http://localhost:8000/author-choices?author=${username}&parent_id=${this_page_id}`;
-  // const RATING_ENDPOINT = `http://localhost:8000/rating-choices?parent_id=${this_page_id}`;
-  const SET_READ_ENDPOINT = `http://localhost:8000/read`;
-  const CHOICE_DEPTHS_ENDPOINT = `http://localhost:8000/longest-stories`;
+  const CURRENT_PAGE_ENDPOINT = `/api/page/page/${this_page_id}`;
+  const CURRENT_COVER_ENDPOINT = `/api/cover/cover-by/${this_page_id}`;
+  const CHOICES_ENDPOINT = `/api/choice/choices-for/${this_page_id}?limit=${choiceLimit}`;
+  const AUTHOR_ENDPOINT = `/api/cover/author-choices?author=${username}&parent_id=${this_page_id}`;
+  // const RATING_ENDPOINT = `/api/rating-choices?parent_id=${this_page_id}`;
+  const SET_READ_ENDPOINT = `/api/page/read`;
+  const CHOICE_DEPTHS_ENDPOINT = `/api/page/longest-stories`;
   //   const AUTHOR_BODY = {
   //     author: "Necrotroph",
   //     parent_id: 4,

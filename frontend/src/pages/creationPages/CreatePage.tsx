@@ -10,8 +10,8 @@ const CreatePage = () => {
   const navigate = useNavigate();
 
   const [cover, setCover] = useState();
-  const CREATE_PAGE_ENDPOINT = `http://localhost:8000/create-page-for/${parent_id}`;
-  const CURRENT_COVER_ENDPOINT = `http://localhost:8000/cover-by/${parent_id}`;
+  const CREATE_PAGE_ENDPOINT = `/api/page/create-page-for/${parent_id}`;
+  const CURRENT_COVER_ENDPOINT = `/api/cover/cover-by/${parent_id}`;
   const ACTIVE_USERNAME = useSelector((state: RootState) => state.user.user?.username);
   // const parent_pg_num = 45
   if (!ACTIVE_USERNAME) {

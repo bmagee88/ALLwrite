@@ -1,18 +1,22 @@
 import express from "express";
-import Client from "pg/lib/client";
 const router = express.Router();
-const { query, validationResult } = require("express-validator");
+import { query, validationResult } from "express-validator";
 
-export default (client: Client) => {
-  router.get("/", query("query").isNumeric(), query("value").isAlpha(), (req, res) => {
-    const result = validationResult(req);
-    console.log(result);
-    const {
-      query: { query, value },
-    } = req;
-    console.log("query", query);
-    console.log("value", value);
-    res.send("all good");
-  });
-  return router;
-};
+router.get("/", query("query").isNumeric(), query("value").isAlpha(), async (req, res) => {
+  console.log("in router for /");
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    return res.status(400).json({ errors: result.array() });
+  }
+  console.log(result);
+  if (req.query) {
+    const { query: queryParam, value: valueParam } = req.query;
+    console.log("query", queryParam);
+    console.log("value", valueParam);
+  }
+  console.log("query.query", req.query?.query);
+  console.log("query.value", req.query?.value);
+  res.send("all good");
+});
+
+export default router;

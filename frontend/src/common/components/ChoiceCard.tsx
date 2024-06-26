@@ -11,7 +11,7 @@ const ChoiceCard = ({ title, choice, setTrigger, trigger, flags, depth }) => {
 
   const user_id = useSelector((state: RootState) => state.user.user.user_id);
 
-  const GET_READ_ENDPOINT = `http://localhost:8000/page-is-read`;
+  const GET_READ_ENDPOINT = `/api/page/page-is-read`;
   // const GET_MAX_DEPTH_ENDPOINT = `http://localhost:8000/page-is-read`;
 
   useEffect(() => {

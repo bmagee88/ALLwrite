@@ -7,7 +7,7 @@ const CoverDetails = () => {
   const { cover_id } = useParams();
   const [cover, setCover] = useState({});
   const navigate = useNavigate();
-  const GET_COVER_ENDPOINT = `http://localhost:8000/cover-details/`;
+  const GET_COVER_ENDPOINT = `/api/cover/cover-details/`;
 
   const ACTIVE_USER_ID = useSelector((state: RootState) => state.user.user?.user_id);
 
