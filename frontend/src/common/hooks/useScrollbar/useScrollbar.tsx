@@ -1,35 +1,19 @@
 import { RefObject, useEffect, useState } from "react";
+import { handleScroll } from "./utils/handlers";
 
 export const useScrollbar = (containerRef: RefObject<HTMLDivElement> | null) => {
-  const [isAtTop, setIsAtTop] = useState(true); // Initially assume at top
-  const [isAtBottom, setIsAtBottom] = useState(false); // Initially assume not at bottom
+  const [isAtTop, setIsAtTop] = useState(true);
+  const [isAtBottom, setIsAtBottom] = useState(false);
 
   useEffect(() => {
     const container = containerRef?.current;
 
-    const handleScroll = () => {
-      console.log("container", container);
-      if (container) {
-        const { scrollLeft, scrollWidth, clientWidth } = container;
-        console.log(`${Math.ceil(scrollLeft)}-${clientWidth}-${scrollWidth}`);
-
-        // Check if at the top
-        // setIsAtTop(false);
-        setIsAtTop(scrollLeft === 0);
-
-        // Check if at the bottom
-        // setIsAtBottom(false);
-        setIsAtBottom(Math.ceil(scrollLeft + clientWidth) === scrollWidth);
-      }
-    };
     if (container) {
-      console.log("adding listener");
-      container.addEventListener("scroll", handleScroll);
+      container.addEventListener("scroll", handleScroll(container, setIsAtTop, setIsAtBottom));
     }
     return () => {
       if (container) {
-        console.log("removing listener");
-        container.removeEventListener("scroll", handleScroll);
+        container.removeEventListener("scroll", handleScroll(container, setIsAtTop, setIsAtBottom));
       }
     };
   }, [containerRef]);

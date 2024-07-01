@@ -1,55 +1,61 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { RootState } from "../../common/store/store";
+import { Cover } from "./BrowsePage/BrowsePage";
+import Button from "@mui/material/Button";
+import { Box, Typography } from "@mui/material";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-const CoverDetails = () => {
+const CoverDetails: React.FC = () => {
   const { cover_id } = useParams();
-  const [cover, setCover] = useState({});
+  const [cover, setCover] = useState<Cover>({} as Cover);
   const navigate = useNavigate();
   const GET_COVER_ENDPOINT = `/api/cover/cover-details/`;
 
   const ACTIVE_USER_ID = useSelector((state: RootState) => state.user.user?.user_id);
 
-  if (!ACTIVE_USER_ID) {
-    navigate("/login");
-  }
-
   useEffect(() => {
     const fetchCover = async () => {
       const response = await fetch(GET_COVER_ENDPOINT + cover_id);
       const data = await response.json();
-      console.log(data.data[0]);
-      setCover(() => data.data[0]);
+      const cover = data.data[0] as Cover;
+      setCover(cover);
     };
     fetchCover();
   }, [GET_COVER_ENDPOINT, cover_id]);
 
+  const handleClick = () => {
+    if (ACTIVE_USER_ID) {
+      navigate(`/dashboard/reading/${cover.title}/${cover.first_page}`);
+    } else {
+      navigate(`/login`);
+    }
+  };
+
   return (
     <>
-      <div className='container'>
-        <div className='row'>
-          <div className='col'>{cover.title}</div>
-        </div>
-        <div className='row'>
-          <div className='col'>by {cover.author}</div>
-        </div>
-        <div className='row'>
-          <div className='col'>{cover.genre}</div>
-        </div>
-        <div className='row'>
-          <div className='col'>{cover.summary}</div>
-        </div>
-        {ACTIVE_USER_ID !== null ? (
-          <Link to={`/dashboard/reading/${cover.title}/${cover.first_page}`}>
-            <button>start journey</button>
-          </Link>
-        ) : (
-          <Link to={`/register`}>
-            <button>start journey</button>
-          </Link>
-        )}
-      </div>
+      <Box className='container'>
+        <Box className='row'>
+          <Box className='col'>{cover.title}</Box>
+        </Box>
+        <Box className='row'>
+          <Box className='col'>by {cover.author}</Box>
+        </Box>
+        <Box className='row'>
+          <Box className='col'>{cover.genre}</Box>
+        </Box>
+        <Box className='row'>
+          <Box className='col'>{cover.summary}</Box>
+        </Box>
+        <Button
+          sx={{ alignItems: "center" }}
+          variant={"contained"}
+          onClick={handleClick}>
+          <Typography>Open</Typography>
+          <ArrowForwardIcon />
+        </Button>
+      </Box>
     </>
   );
 };

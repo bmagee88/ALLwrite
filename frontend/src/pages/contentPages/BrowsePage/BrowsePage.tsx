@@ -24,7 +24,7 @@ const tags: Tag[] = [
   "Genre1",
 ];
 
-interface Cover {
+export interface Cover {
   cover_id: number;
   title: string;
   author: string;
@@ -32,27 +32,30 @@ interface Cover {
   summary: string;
   image_url: string;
   booked: boolean;
+  first_page?: string;
+}
+
+interface Bookmark {
+  bm_cover_id: string;
 }
 
 const BrowsePage: React.FC = () => {
-  const [limit, setLimit] = useState(3);
-  const [covers, setCovers] = useState([]);
-  // const [bookmarks, setBookmarks] = useState([]);
-  // const [isBooked, setIsBooked] = useState(false);
+  const [limit, setLimit] = useState<number>(3);
+  const [covers, setCovers] = useState<Cover[]>([]);
 
   const ADD_AMOUNT = 3;
   const ACTIVE_USER_ID = useSelector((state: RootState) => state.user.user?.user_id) || 0;
 
   useEffect(() => {
     const outer_stuff = async () => {
-      var bms_outer, tits_outer;
+      let bms_outer: Bookmark[] = [],
+        tits_outer: Cover[] = [];
       const fetchBookmarksByUser = async (user_id: number) => {
         console.log("in bookmarks by user on browse page");
         const response = await fetch(`/api/cover/bookmarks/${user_id}`);
         const bms = await response.json();
-        // console.log("bms", bms);
+        console.log("bms", bms);
         bms_outer = bms.data;
-        // setBookmarks(() => bms.data);
       };
       await fetchBookmarksByUser(ACTIVE_USER_ID);
 
@@ -60,40 +63,26 @@ const BrowsePage: React.FC = () => {
         console.log("getching from api cover covers");
         const response = await fetch(`/api/cover/covers?limit=${limit}`);
         const covers = await response.json();
-        // console.log("tits", tits);
         console.log("covers", covers);
         tits_outer = covers.data;
-        // console.log("tits outer inside", tits_outer); //works
-        // setTitles(() => tits.data);
       };
       await fetchTitles(limit);
 
-      const addBookMarksToTitles = async (t, b) => {
+      const addBookMarksToTitles = async (t: Cover[], b: Bookmark[]) => {
         console.log("in add bookmarks to titles on browse page");
         var found = false;
-        // console.log("in addbookmakrs to titles");
         const innerf = async () => {
-          // console.log("first line in anon");
           for (var i = 0; i < t.length; i++) {
             found = false;
             for (var j = 0; j < b.length; j++) {
-              // console.log(
-              //   "comparing",
-              //   t[i].cover_id,
-              //   "to",
-              //   parseInt(b[j].bm_cover_id)
-              // );
               if (t[i].cover_id === parseInt(b[j].bm_cover_id)) {
                 found = true;
                 break;
               }
-              // t[i].booked = t[i].cover_id === b[j].bm_cover_id ? true : false;
             }
             found === true ? (t[i].booked = true) : (t[i].booked = false);
           }
-          // console.log("t", t);
-          setCovers(() => t);
-          // console.log("titles", titles);
+          setCovers(t);
         };
         innerf();
       };
@@ -117,22 +106,13 @@ const BrowsePage: React.FC = () => {
   // }, []);
 
   const addItems = (amt: number) => {
-    // console.log(limit + amt);
     setLimit((limit) => limit + amt);
   };
 
   return (
     <Box>
-      {/* <button onClick={() => printCovers()}>hgfjhgjhg</button> */}
-      {/** put here the control panel for signed in users */}
-      {/* <Divider sx={{ marginY: ".5rem" }} /> */}
       <Box sx={{ paddingLeft: ".5rem", paddingTop: ".5rem" }}>
-        <Typography
-          fontSize={20}
-          // fontWeight={"bold"}
-        >
-          Explore
-        </Typography>
+        <Typography fontSize={20}>Explore</Typography>
       </Box>
 
       <Box>

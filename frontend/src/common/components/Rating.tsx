@@ -3,40 +3,39 @@ import React, { useEffect, useState } from "react";
 import RatingDropFull from "../../assets/images/rating_drop_full.png";
 import RatingDropEmpty from "../../assets/images/rating_drop_empty.png";
 
-const Rating = ({ user_id, page_id, setIsRated, isRated }) => {
+interface RatingProps {
+  user_id: string;
+  page_id: string;
+  setIsRated: React.Dispatch<React.SetStateAction<boolean>>;
+  isRated: boolean;
+}
+
+const Rating: React.FC<RatingProps> = ({ user_id, page_id, setIsRated, isRated }) => {
   const MAX_RATING = 10;
   const USER_RATING_FOR_PAGE_ENDPOINT = `/api/rating/user-rating-for-page/`;
   const USER_RATING_FOR_PAGE_UPDATE_ENDPOINT = `/api/rating//user-rating-for-page-update/`;
   const USER_RATING_FOR_PAGE_INSERT_ENDPOINT = `/api/rating//user-rating-for-page-insert/`;
-  //   let rating = 4;
   const [rating, setRating] = useState(0);
-  //   const [hasRating, setHasRating] = useState(false);
 
   useEffect(() => {
-    //fetch
-    // console.log("uid, pid", user_id, page_id)
     const fetchUserRatingForPage = async () => {
       const response = await fetch(USER_RATING_FOR_PAGE_ENDPOINT + `${user_id}/${page_id}`);
       const data = await response.json();
-      if (data.data.length === 0) {
-        // setHasRating(() => false);
-        setIsRated(() => false);
-        setRating(() => 0);
+      const userRating = data.data;
+      if (userRating.length === 0) {
+        setIsRated(false);
+        setRating(0);
       } else {
-        // setHasRating(() => true);
-        setIsRated(() => true);
-        setRating(() => data.data[0].rating);
+        setIsRated(true);
+        setRating(userRating[0].rating);
       }
     };
     fetchUserRatingForPage();
-    // console.log("testing");
-    //if fetch returns non-null, set has rating true
-  }, [page_id]);
+  }, [USER_RATING_FOR_PAGE_ENDPOINT, page_id, setIsRated, user_id]);
 
-  const changeRating = async (e) => {
-    let tempRating = e.target.id;
-    await setRating(() => e.target.id);
-    // console.log("clicked");
+  const changeRating = async (e: React.MouseEvent<HTMLImageElement>) => {
+    let tempRating = e.currentTarget.id;
+    await setRating(parseInt(tempRating));
     if (isRated) {
       const response = await fetch(
         USER_RATING_FOR_PAGE_UPDATE_ENDPOINT + `${user_id}/${page_id}/${tempRating}`,
@@ -48,8 +47,9 @@ const Rating = ({ user_id, page_id, setIsRated, isRated }) => {
           },
         }
       );
-      const data_update = await response.json();
-      console.log("update rating", data_update.data[0].rating);
+      const data = await response.json();
+      const updateData = data.data;
+      console.log("update rating", updateData[0].rating);
     } else {
       const response = await fetch(
         USER_RATING_FOR_PAGE_INSERT_ENDPOINT + `${user_id}/${page_id}/${tempRating}`,
@@ -69,35 +69,28 @@ const Rating = ({ user_id, page_id, setIsRated, isRated }) => {
 
   return (
     <>
-      {/* {rating} */}
-      {Array.from({ length: rating }).map((x, index) => {
-        // console.log("full: index, rating", index + 1, parseInt(rating));
+      {Array.from({ length: rating }).map((_, index: number) => {
         return (
           <img
             key={rating + index + 1}
-            id={parseInt(index) + 1}
+            id={index + 1 + ""}
             src={RatingDropFull}
             height='15'
             width='15'
             alt='asdf'
-            onClick={(e) => changeRating(e)}></img>
+            onClick={changeRating}></img>
         );
       })}
-      {Array.from({ length: MAX_RATING - rating }).map((x, index) => {
-        // console.log(
-        //   "empty: index, rating",
-        //   index + 1,
-        //   MAX_RATING - parseInt(rating)
-        // );
+      {Array.from({ length: MAX_RATING - rating }).map((_, index) => {
         return (
           <img
             key={rating + index + 1}
-            id={parseInt(rating) + parseInt(index) + 1}
+            id={rating + index + 1 + ""}
             src={RatingDropEmpty}
             height='15'
             width='15'
             alt='asdf'
-            onClick={(e) => changeRating(e)}></img>
+            onClick={changeRating}></img>
         );
       })}
     </>

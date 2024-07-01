@@ -3,11 +3,16 @@ import Box from "@mui/material/Box";
 import { Popover as MUIPopover } from "@mui/material";
 import "./popover.scss";
 
-const Popover = ({ children: any, content: any }) => {
-  const child = Children.toArray(children)[0];
-  const [anchorEl, setAnchorEl] = React.useState(null);
+interface PopoverProps {
+  children: any;
+  content: any;
+}
 
-  const handleClick = (event: { currentTarget: React.SetStateAction<null> }) => {
+const Popover: React.FC<PopoverProps> = ({ children, content }) => {
+  const child = Children.toArray(children)[0];
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -22,6 +27,7 @@ const Popover = ({ children: any, content: any }) => {
     <Box>
       <Box
         id='clickable-box'
+        component='div'
         className='clickable-child-wrapper'
         onClick={handleClick}>
         {child}

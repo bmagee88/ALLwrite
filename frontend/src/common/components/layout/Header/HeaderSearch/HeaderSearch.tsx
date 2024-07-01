@@ -1,9 +1,9 @@
-import { Box, Button, InputAdornment, TextField } from "@mui/material";
+import { Box, InputAdornment, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router-dom";
 
-const HeaderSearch = () => {
+const HeaderSearch: React.FC = () => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -11,11 +11,10 @@ const HeaderSearch = () => {
       setScreenWidth(window.innerWidth);
     };
 
-    handleResize(); // Check on initial render
+    handleResize();
 
     window.addEventListener("resize", handleResize);
 
-    // Clean up event listener on component unmount
     return () => {
       window.removeEventListener("resize", handleResize);
     };

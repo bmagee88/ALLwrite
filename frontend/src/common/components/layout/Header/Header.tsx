@@ -4,8 +4,9 @@ import HeaderAccount from "./HeaderAccount/HeaderAccount";
 import "./header.styles.scss";
 import Box from "@mui/material/Box";
 import ControlPanel from "../../ControlPanel/ControlPanel";
+import React from "react";
 
-const Header = () => {
+const Header: React.FC = () => {
   return (
     <Box
       sx={{

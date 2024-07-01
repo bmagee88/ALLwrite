@@ -142,7 +142,7 @@ export async function createPage(client: Client, page: PageDto) {
   const res = await client.query(
     `insert into page (id, parent_id, prompt, body, page_num, author) values (${
       id.rows[0].id + 1
-    }, ${page.parent_id}, ${page.prompt}, '${page.body_text.toString()}', ${page.page_num}, '${
+    }, ${page.parent_id}, '${page.prompt}', '${page.body_text}', ${page.page_num}, '${
       page.author
     }' ) returning *;`
   );

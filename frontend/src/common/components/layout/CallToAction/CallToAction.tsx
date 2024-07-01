@@ -4,7 +4,7 @@ import FeedbackButton from "./FeedbackButton/FeedbackButton";
 import ShareButton from "./ShareButton/ShareButton";
 import DonateButton from "./DonateButton/DonateButton";
 
-const CallToAction = () => {
+const CallToAction: React.FC = () => {
   return (
     <Box
       sx={{

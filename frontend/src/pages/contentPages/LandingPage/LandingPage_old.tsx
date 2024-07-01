@@ -2,7 +2,7 @@ import Button from "react-bootstrap/esm/Button";
 import LOGO from "../../../assets/images/logo.png";
 import { Link } from "react-router-dom";
 
-const LandingPage_old = () => {
+const LandingPage_old: React.FC = () => {
   return (
     <>
       <div className='bg-secondary'>

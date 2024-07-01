@@ -37,29 +37,31 @@ router.post("/read", (req, res) => {
 });
 
 router.post("/create-page-for/:parent_id", (req, res) => {
+  console.log("in createpagefor parentid");
   const client = req.client;
   // console.log("param value of pid", req.params.parent_id);
 
-  let adjusted_pid = "-1";
-  let adjusted_prompt = "";
+  let adjusted_pid = null;
+  let adjusted_prompt = null;
 
-  if (req.params.parent_id !== "0") {
-    adjusted_pid = req.params.parent_id;
+  if (parseInt(req.params.parent_id) !== 0) {
+    adjusted_pid = parseInt(req.params.parent_id);
   }
-  if (req.body.prompt !== 0) {
-    // console.log("using non-null value (value passed in)");
-    adjusted_prompt = "'" + req.body.prompt + "'";
-  }
+  // if (req.body.prompt !== 0) {
+  //   // console.log("using non-null value (value passed in)");
+  //   adjusted_prompt = "'" + req.body.prompt + "'";
+  // }
   let page = new PageDto(
     adjusted_pid,
     adjusted_prompt,
     req.body.body_text,
-    req.body.page_num,
+    parseInt(req.body.page_num),
     req.body.author
   );
-  // console.log("page at endpoint", page);
+  console.log("page at before createing page");
   createPage(client, page)
     .then((result) => {
+      console.log("returned from createPage");
       res.json({ data: result });
     })
     .catch((err: Error) => {

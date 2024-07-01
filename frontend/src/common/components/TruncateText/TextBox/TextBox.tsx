@@ -1,26 +1,27 @@
-import Box from '@mui/material/Box';
-import { useContext } from 'react';
-import TruncateTextContext from '../contexts/TruncateTextContext';
+import Box from "@mui/material/Box";
+import { useContext } from "react";
+import TruncateTextContext from "../contexts/TruncateTextContext";
+import { TruncatedTextProps } from "../interfaces/truncate-text.interface";
 
-const TextBox = () => {
-  const { id, lineHeight, isReadingMore, maxLines, ref, text } =
-    useContext(TruncateTextContext);
+const TextBox: React.FC = () => {
+  const { id, lineHeight, isReadingMore, maxLines, ref, text } = useContext(
+    TruncateTextContext
+  ) as TruncatedTextProps;
   return (
     <Box
       id={id}
       sx={{
-        overflowWrap: 'break-word',
-        width: '300px',
+        overflowWrap: "break-word",
+        width: "300px",
         lineHeight: lineHeight,
         ...(!isReadingMore
           ? {
               maxHeight: `calc(${lineHeight} * ${maxLines})`,
-              overflow: 'hidden',
+              overflow: "hidden",
             }
           : {}),
       }}
-      ref={ref}
-    >
+      ref={ref}>
       {text}
     </Box>
   );

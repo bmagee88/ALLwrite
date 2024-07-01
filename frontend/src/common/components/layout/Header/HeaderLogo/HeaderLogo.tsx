@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import LOGO from "../../../../../assets/images/logo.png";
 
-const HeaderLogo = () => {
+const HeaderLogo: React.FC = () => {
   return (
     <div className=''>
       <Link to='/dashboard/browse'>

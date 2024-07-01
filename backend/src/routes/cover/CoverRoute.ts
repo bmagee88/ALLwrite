@@ -18,6 +18,7 @@ router.use("/", (req, res, next) => {
 });
 
 router.post("/create-cover", (req, res) => {
+  console.log("in create-cover");
   const client = req.client;
   let cover = new CoverDto(
     req.body.title,

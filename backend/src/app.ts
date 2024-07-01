@@ -87,12 +87,17 @@ async function main() {
     // Connect to the MongoDB cluster
     await Client.connect();
     console.log("Connected to Postgres Client");
+
     app.use("/", (req, res, next) => {
       req.client = Client;
       console.log("Setting req.client globally");
       next();
     });
 
+    app.use((req, res, next) => {
+      console.log(`Received ${req.method} request for ${req.url}`);
+      next();
+    });
     // app.use("/", indexRouter);
     app.use("/api/users", userRouter);
     app.use("/api/access", accessRouter);

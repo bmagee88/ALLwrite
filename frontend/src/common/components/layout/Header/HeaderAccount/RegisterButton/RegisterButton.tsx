@@ -2,7 +2,7 @@ import { Box, Button } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 
-const RegisterButton = () => {
+const RegisterButton: React.FC = () => {
   return (
     <Box
       sx={{
@@ -12,7 +12,7 @@ const RegisterButton = () => {
         },
       }}>
       <Link to='register'>
-        <Button variant='outlined' /*className='btn-info btn-sm'*/>
+        <Button variant='outlined'>
           <span className='text-nowrap'>Sign Up</span>
         </Button>
       </Link>
