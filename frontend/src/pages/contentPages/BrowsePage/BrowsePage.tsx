@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import TitleCard from "../../../common/components/CoverCard";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Fab, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../common/store/store";
 import ScrollableTagsContainer, {
   Tag,
 } from "../../../common/components/ScrollableTags/ScrollableTags";
+import AddIcon from "@mui/icons-material/Add";
 
 const tags: Tag[] = [
   "Genre1",
@@ -128,9 +129,15 @@ const BrowsePage: React.FC = () => {
         <div className='row justify-content-end'>
           <Box className='col-6 w-auto'>
             {ACTIVE_USER_ID !== 0 && (
-              <Link to='../create-cover'>
-                <Button variant='contained'>Add</Button>
-              </Link>
+              <Box sx={{ position: "absolute", right: "1rem", bottom: "1rem" }}>
+                <Link to='/dashboard/create-cover'>
+                  <Fab
+                    color='primary'
+                    aria-label='add'>
+                    <AddIcon />
+                  </Fab>
+                </Link>
+              </Box>
             )}
           </Box>
         </div>
