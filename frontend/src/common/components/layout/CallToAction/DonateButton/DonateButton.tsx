@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import React from "react";
 
-const DonateButton = () => {
+const DonateButton: React.FC = () => {
   return (
     <Button
       variant='contained'

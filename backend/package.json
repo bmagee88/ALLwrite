@@ -5,8 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/app.js"
+    "start": "tsc && node dist/app.js",
+    "dev": "ts-node -r tsconfig-paths/register src/app.ts"
   },
   "keywords": [],
   "author": "Brian Magee",
@@ -22,10 +24,12 @@
     "http-proxy-middleware": "^3.0.0",
     "pg": "^8.11.3",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.4.3"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/pg": "^8.11.6"
   }

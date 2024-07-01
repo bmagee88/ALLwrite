@@ -6,7 +6,7 @@ import ProfileMenu from "../../ProfileMenu/ProfileMenu";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 
-const Header_old = () => {
+const Header_old: React.FC = () => {
   const [hasActiveUser, setHasActiveUser] = useState(false);
   const username: string | undefined = useSelector((state: RootState) => state.user.user?.username);
 

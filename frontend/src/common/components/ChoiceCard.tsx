@@ -4,25 +4,38 @@ import RatingDisplay from "./RatingDisplay";
 import Read from "../../assets/images/read.png";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
+import { Choice, Flag } from "../../pages/contentPages/ReadingPage";
 
-const ChoiceCard = ({ title, choice, setTrigger, trigger, flags, depth }) => {
-  // const [morePages, setMorePages] = useState(1);
+interface ChoiceCardProps {
+  title: string;
+  choice: Choice[];
+  setTrigger: React.Dispatch<React.SetStateAction<boolean>>;
+  trigger: boolean;
+  flags: Flag[];
+  depth: number;
+}
+
+const ChoiceCard: React.FC<ChoiceCardProps> = ({
+  title,
+  choice,
+  setTrigger,
+  trigger,
+  flags,
+  depth,
+}) => {
   const [isRead, setIsRead] = useState(false);
 
-  const user_id = useSelector((state: RootState) => state.user.user.user_id);
+  const user_id = useSelector((state: RootState) => state.user.user?.user_id);
 
-  const GET_READ_ENDPOINT = `http://localhost:8000/page-is-read`;
+  const GET_READ_ENDPOINT = `/api/page/page-is-read`;
   // const GET_MAX_DEPTH_ENDPOINT = `http://localhost:8000/page-is-read`;
 
   useEffect(() => {
-    // setMorePages(() => Math.floor(Math.random() * 100));
-
-    // console.log("choice object:", choice[0]);
-
-    const userReadPage = async (choice_id) => {
+    const userReadPage = async (choice_id: number) => {
       console.log("userReadPage values:", choice_id);
       const result = await fetch(GET_READ_ENDPOINT + `?page_id=${choice_id}&user_id=${user_id}`);
       const data = await result.json();
+
       console.log("user read page", data.data);
       if (data.data.length === 0) {
         setIsRead(() => false);
@@ -52,17 +65,15 @@ const ChoiceCard = ({ title, choice, setTrigger, trigger, flags, depth }) => {
     //     return data.data;
     //   });
 
-    // console.log("choice", choice);
-  }, [choice, GET_READ_ENDPOINT]);
+    // console.log("choice", choice)
+  }, [choice, GET_READ_ENDPOINT, user_id]);
   return (
     <>
       <div className='col-12 col-md-5 col-lg-3 border border-dark mt-2'>
         <div className='row'>
           <div className='col-4'>{choice[0].author}</div>
           <div className='col-5'>
-            <RatingDisplay page_id={choice[0].id} />
-            {/* <span className="text-warning">&#9956;&#9956;&#9956;</span>
-            &#9956;&#9956; */}
+            <RatingDisplay page_id={choice[0].id + ""} />
           </div>
           <div className='col-3 text-end'>+{depth}</div>
         </div>
@@ -87,7 +98,6 @@ const ChoiceCard = ({ title, choice, setTrigger, trigger, flags, depth }) => {
                   console.log("id should be node id of choice", choice[0]);
                 }}>
                 {isRead && (
-                  // <div>adsf: {isRead}</div>
                   <img
                     src={Read}
                     alt='read choice'

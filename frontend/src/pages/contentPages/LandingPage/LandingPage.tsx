@@ -1,7 +1,7 @@
 import React from "react";
 import "./landing-page.styles.scss";
 
-const LandingPage = () => {
+const LandingPage: React.FC = () => {
   return (
     <div className='md-container'>
       asdf

@@ -1,11 +1,11 @@
-import { useState, useLayoutEffect } from 'react';
+import { useState, useLayoutEffect } from "react";
 
-export const useTruncatedElement = (callback) => {
+export const useTruncatedElement = (callback: () => {}) => {
   const [isTruncated, setIsTruncated] = useState(false);
-  const [el, setEl] = useState(null);
+  const [el, setEl] = useState<any>(null);
 
   useLayoutEffect(() => {
-    if (callback && typeof callback === 'function') {
+    if (callback && typeof callback === "function") {
       setTimeout(() => {
         const element = callback();
         setEl(element);
@@ -16,13 +16,6 @@ export const useTruncatedElement = (callback) => {
   useLayoutEffect(() => {
     if (el) {
       const { offsetHeight, scrollHeight } = el;
-
-      console.log(offsetHeight, scrollHeight);
-      console.log(el.clientWidth, el.scrollHeight);
-      console.log(el.offsetHeight === 58);
-
-      console.log('setting isTruncated to ', offsetHeight + 10 < scrollHeight);
-
       setIsTruncated(offsetHeight + 10 < scrollHeight);
     }
   }, [el]);

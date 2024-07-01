@@ -18,7 +18,6 @@ import MyBookmarksPage from "./pages/profilePages/MyBookmarksPage";
 import LogoutPage from "./pages/sessionPages/LogoutPage";
 import Test2 from "./test/Test2";
 import Test3 from "./test/Test3";
-import Header from "./common/components/layout/Header/Header";
 import LoginPage from "./pages/sessionPages/LoginPage/LoginPage";
 import BrowsePage from "./pages/contentPages/BrowsePage/BrowsePage";
 import { Provider } from "react-redux";

@@ -1,19 +1,19 @@
-import Box from '@mui/material/Box';
-import { useState } from 'react';
-import { useTruncatedElement } from '../../hooks/useTruncatedElement/useTrunctatedElement';
-import PropTypes from 'prop-types';
-import TextBox from './TextBox';
-import ShowMore from './ShowMore';
-import TruncateTextContext from './contexts/TruncateTextContext';
-import { TruncatedTextProps } from './interfaces/truncate-text.interface';
-import { useTruncateTextReferences } from './hooks/useTruncateTextReferences';
+import Box from "@mui/material/Box";
+import { useState } from "react";
+import { useTruncatedElement } from "../../hooks/useTruncatedElement/useTrunctatedElement";
+import PropTypes from "prop-types";
+import TextBox from "./TextBox";
+import ShowMore from "./ShowMore";
+import TruncateTextContext from "./contexts/TruncateTextContext";
+import { TruncatedTextProps } from "./interfaces/truncate-text.interface";
+import { useTruncateTextReferences } from "./hooks/useTruncateTextReferences";
 
 const TruncatedText = ({
   children: text,
   maxLines = 3,
-  lineHeight = '1.2em',
-  moreText = 'Read More',
-  lessText = 'Read Less',
+  lineHeight = "1.2em",
+  moreText = "Read More",
+  lessText = "Read Less",
   expandButtonStyles,
   id,
 }: TruncatedTextProps) => {
@@ -21,7 +21,7 @@ const TruncatedText = ({
 
   const { isTruncated } = useTruncatedElement(refCallback);
 
-  const [isReadingMore, setIsReadingMore] = useState(false);
+  const [isReadingMore, setIsReadingMore] = useState<boolean>(false);
 
   const contextValue = {
     children: text,
@@ -40,7 +40,7 @@ const TruncatedText = ({
 
   return (
     <TruncateTextContext.Provider value={contextValue}>
-      <Box id="needed-dont-question-it">
+      <Box id='needed-dont-question-it'>
         <TextBox />
         <ShowMore />
       </Box>

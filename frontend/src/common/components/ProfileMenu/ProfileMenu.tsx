@@ -6,8 +6,9 @@ import ProfileMenuItems from "./ProfileMenuItems/ProfileMenuItems";
 import BasicAvatar from "../user/BasicAvatar/BasicAvatar";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import React from "react";
 
-const ProfileMenu = () => {
+const ProfileMenu: React.FC = () => {
   const user = useSelector((state: RootState) => state.user.user);
   return (
     <Box className='row justify-content-end'>
@@ -19,13 +20,6 @@ const ProfileMenu = () => {
             firstName={user?.firstname || "0"}
             lastName={user?.lastname || "0"}
           />
-          {/* <Box
-            component='img'
-            sx={{ borderRadius: "50%", width: "2.5rem", height: "auto" }}
-            src={AnonUserImage}
-            alt=''
-            width='25'
-          /> */}
         </Dropdown.Toggle>
         <Dropdown.Menu>
           <ProfileMenuItems />

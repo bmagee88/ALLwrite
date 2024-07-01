@@ -6,6 +6,11 @@ export interface TruncatedTextProps {
   moreText?: string;
   lessText?: string;
   expandButtonStyles?: TruncateTextExpandButtonStyles;
+  isReadingMore?: boolean;
+  text?: string;
+  ref?: React.MutableRefObject<any>;
+  isTruncated?: boolean;
+  setIsReadingMore: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface TruncateTextExpandButtonStyles {

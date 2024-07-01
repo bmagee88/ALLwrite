@@ -6,10 +6,10 @@ class PageDto {
   author;
 
   constructor(
-    parent_id: string,
-    prompt: string,
+    parent_id: number | null,
+    prompt: string | null,
     body_text: string,
-    page_num: string,
+    page_num: number,
     author: string
   ) {
     this.parent_id = parent_id;

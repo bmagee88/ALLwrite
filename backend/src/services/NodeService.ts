@@ -4,6 +4,7 @@ import User from "../entities/User.entity";
 import Page from "../entities/Page.entity";
 import Read from "../entities/Read.entity";
 import Cover from "../entities/Cover.entity";
+import PageDto from "../dtos/PageDto";
 
 export async function getChoices(client: Client, parent_id: string, limit: string) {
   // console.log("pid, limit", parent_id, limit);
@@ -133,7 +134,7 @@ export async function createUser(client: Client, user: User) {
   return resUser.rows;
 }
 
-export async function createPage(client: Client, page: Page) {
+export async function createPage(client: Client, page: PageDto) {
   // page:Page
   // console.log("service: Page", page);
   const id = await client.query("select id from page order by id desc limit 1");
@@ -141,7 +142,7 @@ export async function createPage(client: Client, page: Page) {
   const res = await client.query(
     `insert into page (id, parent_id, prompt, body, page_num, author) values (${
       id.rows[0].id + 1
-    }, ${page.parent_id}, ${page.prompt}, '${page.body_text.toString()}', ${page.page_num}, '${
+    }, ${page.parent_id}, '${page.prompt}', '${page.body_text}', ${page.page_num}, '${
       page.author
     }' ) returning *;`
   );
@@ -281,6 +282,8 @@ export async function getBookmarksByUserId(client: Client, user_id: string) {
 }
 
 export async function getCovers(client: Client, limit: string) {
+  console.log("node service typeof", typeof client);
+  client.query;
   const res = await client.query(
     `select c.id as cover_id, c.title, c.author, c.genre, c.image_url, c.summary from covers c order by c.id limit ${limit}`
   );
@@ -333,25 +336,25 @@ export async function getLongestStoryChoicesFrom(client: Client, n_id: string) {
   return res.rows;
 }
 
-module.exports = {
-  createCover,
-  avgRatingByPageId,
-  createPage,
-  getChoices,
-  getCoverById,
-  getPageById,
-  getBookmarksByUserId,
-  getCovers,
-  getAuthorChildForPage,
-  getHighestRatingChoices,
-  getLongestStoryChoicesFrom,
-  getCoverByPageId,
-  readPage,
-  getRatingByUserAndPage,
-  insertUserRatingByUserIdAndPageId,
-  updateUserRatingByUserIdAndPageId,
-  createUser,
-  getIfPageRead,
-  // login,
-  isUsernameTaken,
-};
+// module.exports = {
+//   createCover,
+//   avgRatingByPageId,
+//   createPage,
+//   getChoices,
+//   getCoverById,
+//   getPageById,
+//   getBookmarksByUserId,
+//   getCovers,
+//   getAuthorChildForPage,
+//   getHighestRatingChoices,
+//   getLongestStoryChoicesFrom,
+//   getCoverByPageId,
+//   readPage,
+//   getRatingByUserAndPage,
+//   insertUserRatingByUserIdAndPageId,
+//   updateUserRatingByUserIdAndPageId,
+//   createUser,
+//   getIfPageRead,
+//   // login,
+//   isUsernameTaken,
+// };

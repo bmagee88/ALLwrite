@@ -4,9 +4,10 @@ import { Dropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../../../store/store";
+import React from "react";
 
-const ProfileMenuItems = () => {
-  const user_id = useSelector((state: RootState) => state.user.user.user_id);
+const ProfileMenuItems: React.FC = () => {
+  const user_id = useSelector((state: RootState) => state.user.user?.user_id || 0);
   const accountItems = [
     { to: "account", label: "Account" },
     { to: `profile/${user_id}`, label: "Profile" },

@@ -1,0 +1,7 @@
+need to use nested routes with outlets to avoid rerendering the header and footer
+
+need to make sure icons are being selected correctly.
+header -> ControlPanel hasSelect, imports config -> map
+
+
+The public/index.html file serves as a template for your app’s HTML. Webpack will inject the necessary script and link tags into this file, and the resulting HTML will be placed in the build folder.

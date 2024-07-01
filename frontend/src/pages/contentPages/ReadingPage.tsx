@@ -6,8 +6,39 @@ import { v4 as uuidv4 } from "uuid";
 import Read from "../../assets/images/read.png";
 import { RootState } from "../../common/store/store";
 import { useSelector } from "react-redux";
+import { Cover } from "./BrowsePage/BrowsePage";
 
-const ReadingPage = () => {
+export interface Choice {
+  author: string;
+  body: string;
+  created_at: string;
+  deleted_at: string | null;
+  id: number;
+  page_num: string;
+  parent_id: string;
+  prompt: string;
+  updated_at: string;
+  depth: number;
+}
+
+interface Page {
+  author: string;
+  body: string;
+  created_at: string | null;
+  deleted_at: string | null;
+  id: number;
+  page_num: string;
+  parent_id: string | null;
+  prompt: string | null;
+  updated_at: string;
+}
+
+export interface Flag {
+  author: boolean;
+  rating: boolean;
+}
+
+const ReadingPage: React.FC = () => {
   const { cover_title, first_page } = useParams();
   const this_page_id = first_page;
   // here we have the title of the story and the current page's id
@@ -18,46 +49,35 @@ const ReadingPage = () => {
 
   // dont wanna fetch cover info or previous page every time.  cache them.
 
-  const [choices, setChoices] = useState([]);
+  const [choices, setChoices] = useState<Choice[]>([]);
   // const [choiceDepths, setChoiceDepths] = useState([]);
-  const [ratingChoices, setRatingChoices] = useState([]);
-  const [authorChoices, setAuthorChoices] = useState([]);
-  const [page, setPage] = useState({});
+  const [ratingChoices] = useState<Choice[]>([]);
+  const [authorChoices, setAuthorChoices] = useState<Choice[]>([]);
+  const [page, setPage] = useState<Page>({} as Page);
   const [isRatedByActiveUser, setIsRatedByActiveUser] = useState(false);
-  const [choiceLimit, setChoiceLimit] = useState(3);
+  const [choiceLimit] = useState(3);
   const [trigger, setTrigger] = useState(false);
-  const [cover, setCover] = useState({});
+  const [cover, setCover] = useState<Cover>({} as Cover);
   const [pageIsRead, setPageIsRead] = useState(false);
   const [isFirstPage, setIsFirstPage] = useState(false);
 
   const navigate = useNavigate();
 
-  // const FLAGS = { author: "Author", longest: "Longest", rating: "Rating" };
-
   const { user_id: ACTIVE_USER_ID, username } = useSelector(
-    (state: RootState) => state.user.user ?? { user_id: 0, username: "" }
+    (state: RootState) => state.user.user ?? { user_id: 0, username: "Anon" }
   );
 
   if (!ACTIVE_USER_ID) {
     navigate("/login");
   }
-  //   const TEST_ID = 22;
 
-  // console.log("this page id",this_page_id)
-  const CURRENT_PAGE_ENDPOINT = `http://localhost:8000/page/${this_page_id}`;
-  const CURRENT_COVER_ENDPOINT = `http://localhost:8000/cover-by/${this_page_id}`;
-  const CHOICES_ENDPOINT = `http://localhost:8000/choices-for/${this_page_id}?limit=${choiceLimit}`;
-  const AUTHOR_ENDPOINT = `http://localhost:8000/author-choices?author=${username}&parent_id=${this_page_id}`;
-  // const RATING_ENDPOINT = `http://localhost:8000/rating-choices?parent_id=${this_page_id}`;
-  const SET_READ_ENDPOINT = `http://localhost:8000/read`;
-  const CHOICE_DEPTHS_ENDPOINT = `http://localhost:8000/longest-stories`;
-  //   const AUTHOR_BODY = {
-  //     author: "Necrotroph",
-  //     parent_id: 4,
-  //   };
-  //   const RATING_BODY = {
-  //     parent_id: 4,
-  //   };
+  const CURRENT_PAGE_ENDPOINT = `/api/page/page/${this_page_id}`;
+  const CURRENT_COVER_ENDPOINT = `/api/cover/cover-by/${this_page_id}`;
+  const CHOICES_ENDPOINT = `/api/choice/choices-for/${this_page_id}?limit=${choiceLimit}`;
+  const AUTHOR_ENDPOINT = `/api/cover/author-choices?author=${username}&parent_id=${this_page_id}`;
+  // const RATING_ENDPOINT = `/api/rating-choices?parent_id=${this_page_id}`;
+  const SET_READ_ENDPOINT = `/api/page/read`;
+  const CHOICE_DEPTHS_ENDPOINT = `/api/page/longest-stories`;
 
   useEffect(() => {
     //fetch first page
@@ -67,15 +87,9 @@ const ReadingPage = () => {
     reset();
 
     const postRead = async () => {
-      // console.log(
-      //   `attempting to have active user${ACTIVE_USER_ID} insert into user_read_pages`
-      // );
       if (!ACTIVE_USER_ID) {
-        // console.log("not recording page read");
         return;
       }
-
-      // console.log("proceeding to save page as read by user");
 
       let post_data = {
         page_id: first_page,
@@ -91,106 +105,99 @@ const ReadingPage = () => {
         body: JSON.stringify(post_data),
       });
       const data = await result.json();
-      // console.log("insert result", data.data);
-      setPageIsRead(() => data.data.length === 0);
+      const pageIsRead = data.data;
+      setPageIsRead(() => pageIsRead.length === 0);
     };
 
     const fetchCover = async () => {
       const result = await fetch(CURRENT_COVER_ENDPOINT);
       const data = await result.json();
-      // console.log("fetch cover data", data.data[0]);
-      // setPage(data.data[0]);
-      setCover(() => data.data[0]);
+      const cover = data.data[0] as Cover;
+      setCover(cover);
     };
 
     const fetchPage = async () => {
       const result = await fetch(CURRENT_PAGE_ENDPOINT);
       const data = await result.json();
-      // console.log("fetch page data", data.data[0]);
-      setPage(data.data[0]);
-      if (data.data[0].parent_id === null) {
+      const page = data.data[0] as Page;
+      setPage(page);
+      if (page.parent_id === null) {
         setIsFirstPage(() => true);
       } else {
         setIsFirstPage(() => false);
       }
-      //untick checkbox
     };
-    // fetchPage(first_page);
-    //fetch choices
     const fetchRandomChoices = async () => {
       const result = await fetch(CHOICES_ENDPOINT);
-      const choices_data = await result.json();
-      // console.log("random choice data", data.data);
+      const data = await result.json();
+      const choices_data = data.data as Choice[];
 
-      const fetchLongestStoryChoicesFrom_data = async (page_id) => {
+      const fetchLongestStoryChoicesFrom_data = async (page_id: string | undefined) => {
+        if (!page_id) {
+          return;
+        }
         const result = await fetch(CHOICE_DEPTHS_ENDPOINT + `?page_id=${page_id}`);
         const data = await result.json();
-        // console.log("fetchlongeststory:data.json", data.data);
         return data.data;
       };
       const depth_data = await fetchLongestStoryChoicesFrom_data(this_page_id);
-      // const depth_data = await longest_story_res.json();
 
-      //append depth into choice
-      const addDepthToChoices = async (c_data) => {
-        // console.log("adddepthtochoices:cdata:", c_data.data);
-        for (var c = 0; c < c_data.data.length; c++) {
-          // console.log("cdata.data[c]", c_data.data[c])
-          c_data.data[c]["depth"] = depth_data[c].more_pages;
+      const addDepthToChoices = async (choices: Choice[]) => {
+        for (let i = 0; i < choices.length; i++) {
+          choices[i]["depth"] = depth_data[i].more_pages;
         }
-        // console.log("choices after adding more pages", c_data);
       };
       await addDepthToChoices(choices_data);
 
-      setChoices(() => {
-        return choices_data.data;
-      });
+      setChoices(choices_data);
     };
-    // fetchRandomChoices();
 
-    const fetchAuthorChoice = async (title, page_id) => {
+    const fetchAuthorChoice = async () => {
       const result = await fetch(AUTHOR_ENDPOINT);
       const data = await result.json();
-      // console.log("author data", data.data);
-      setAuthorChoices(() => {
-        return data.data;
-      });
+      const authorChoices = data.data as Choice[];
+      setAuthorChoices(authorChoices);
     };
-    // fetchAuthorChoice();
 
     // const fetchRatingChoice = async (page_id) => {
     //   const result = await fetch(RATING_ENDPOINT);
     //   const data = await result.json();
+    //   const ratingData = data.data as Choice[];
     //   // console.log("rating data", data.data);
-    //   setRatingChoices(() => {
-    //     return data.data;
-    //   });
+    //   setRatingChoices(ratingData);
     // };
 
     // fetchRatingChoice(this_page_id);
-    fetchAuthorChoice(cover_title, this_page_id); //buggy
-    fetchPage(this_page_id);
+    fetchAuthorChoice(); //buggy
+    fetchPage();
     fetchRandomChoices();
     fetchCover();
     postRead();
-  }, [trigger, first_page]);
-
-  //   useEffect(() => {
-  //     setIsRatedByActiveUser((isRatedByActiveUser) => !isRatedByActiveUser);
-  //   }, [isRatedByActiveUser]);
+  }, [
+    trigger,
+    first_page,
+    ACTIVE_USER_ID,
+    SET_READ_ENDPOINT,
+    CURRENT_COVER_ENDPOINT,
+    CURRENT_PAGE_ENDPOINT,
+    CHOICES_ENDPOINT,
+    this_page_id,
+    CHOICE_DEPTHS_ENDPOINT,
+    AUTHOR_ENDPOINT,
+  ]);
 
   return (
     <>
       <div className='container bg=light'>
         <div className='row justify-content-between border border-dark mt-2'>
           <div className='col-1 w-auto'>
-            {isFirstPage && <Link to={`/dashboard/cover-details/${cover.id}`}>back</Link>}
+            {isFirstPage && <Link to={`/dashboard/cover-details/${cover.cover_id}`}>back</Link>}
             {!isFirstPage && (
               <Link to={`/dashboard/reading/${cover_title}/${page.parent_id}`}>back</Link>
             )}
           </div>
           <div className='col-1 w-auto'>
-            <Link to={`/dashboard/cover-details/${cover.id}`}>{cover_title}</Link>
+            <Link to={`/dashboard/cover-details/${cover.cover_id}`}>{cover_title}</Link>
             {pageIsRead && (
               <span>
                 {" "}
@@ -199,7 +206,6 @@ const ReadingPage = () => {
                   alt='read'
                   height='15'
                   width='15'></img>
-                {/* {"["}READ{"]"} */}
               </span>
             )}
           </div>
@@ -210,35 +216,26 @@ const ReadingPage = () => {
         </div>
         <div className='row justify-content-center border border-dark mt-2'>
           <div className='col-1 w-auto'>
-            {/* rated: {isRatedByActiveUser.toString()} */}
             <Rating
-              user_id={ACTIVE_USER_ID}
-              page_id={first_page}
+              user_id={ACTIVE_USER_ID + ""}
+              page_id={first_page + ""}
               setIsRated={setIsRatedByActiveUser}
               isRated={isRatedByActiveUser}
             />
-            {/* <FormCheck
-              onClick={() => {
-                // console.log("clicked");
-                setIsRatedByActiveUser(() => !isRatedByActiveUser);
-                // console.log("choices", choices);
-                // console.log("achoices", authorChoices);
-                // console.log("rchoices", ratingChoices);
-              }}
-            ></FormCheck> */}
           </div>
         </div>
         {false && isRatedByActiveUser && (
           <div className='row justify-content-evenly mt-2 border border-dark p-3'>
-            {ratingChoices.map((item) => {
+            {ratingChoices.map((ratingChoice) => {
               return (
                 <ChoiceCard
                   key={uuidv4()}
-                  title={cover_title}
-                  choice={[item]}
+                  title={cover_title || ""}
+                  choice={[ratingChoice]}
                   setTrigger={setTrigger}
                   trigger={trigger}
-                  flags={[{ author: false, rating: true }]}
+                  flags={[{ author: false, rating: true } as Flag]}
+                  depth={ratingChoice.depth}
                 />
               );
             })}
@@ -247,15 +244,16 @@ const ReadingPage = () => {
 
         {false && isRatedByActiveUser && (
           <div className='row justify-content-evenly mt-2 border border-dark p-3'>
-            {authorChoices.map((item) => {
+            {authorChoices.map((authorChoice) => {
               return (
                 <ChoiceCard
                   key={uuidv4()}
-                  title={cover_title}
-                  choice={[item]}
+                  title={cover_title || ""}
+                  choice={[authorChoice]}
                   setTrigger={setTrigger}
                   trigger={trigger}
-                  flags={[{ author: true, rating: false }]}
+                  flags={[{ author: true, rating: false } as Flag]}
+                  depth={authorChoice.depth}
                 />
               );
             })}
@@ -264,16 +262,16 @@ const ReadingPage = () => {
 
         {isRatedByActiveUser && (
           <div className='row justify-content-evenly mt-2 border border-dark p-3'>
-            {choices.map((item) => {
+            {choices.map((choice) => {
               return (
                 <ChoiceCard
                   key={uuidv4()}
-                  title={cover_title}
-                  choice={[item]}
+                  title={cover_title || ""}
+                  choice={[choice]}
                   setTrigger={setTrigger}
                   trigger={trigger}
-                  flags={[{ author: false, rating: false }]}
-                  depth={item.depth}
+                  flags={[{ author: false, rating: false } as Flag]}
+                  depth={choice.depth}
                 />
               );
             })}

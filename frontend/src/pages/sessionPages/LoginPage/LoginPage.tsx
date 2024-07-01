@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import { Input, Typography } from "@mui/material";
 
 const LoginPage = () => {
-  const LOGIN_ENDPOINT = `http://localhost:8000/login`;
+  const LOGIN_ENDPOINT = `/api/access/login`;
   const dispatch = useDispatch();
   const usernameRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);

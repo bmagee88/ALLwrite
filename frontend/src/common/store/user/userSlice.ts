@@ -9,7 +9,7 @@ export interface User {
 }
 
 interface UserState {
-  user: User | null; // user can be null or of type User
+  user: User | null;
 }
 
 let initialState: UserState = { user: null };

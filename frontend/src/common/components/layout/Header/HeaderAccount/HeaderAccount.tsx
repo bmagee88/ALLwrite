@@ -5,8 +5,9 @@ import ProfileMenu from "../../../ProfileMenu/ProfileMenu";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store/store";
 import Greeting from "./Greeting/Greeting";
+import React from "react";
 
-const HeaderAccount = () => {
+const HeaderAccount: React.FC = () => {
   const activeUser = useSelector((state: RootState) => state.user.user);
 
   return (

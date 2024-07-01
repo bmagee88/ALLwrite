@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
-const Footer = () => {
-  return (
-    <>
-      
-    </>
-  )
-}
+const Footer: React.FC = () => {
+  return <></>;
+};
 
-export default Footer
+export default Footer;
