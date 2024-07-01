@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
-const SharePage = () => {
-  return (
-    <>
-      share page
-    </>
-  )
-}
+const SharePage: React.FC = () => {
+  return <>share page</>;
+};
 
-export default SharePage
+export default SharePage;

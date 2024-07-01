@@ -1,9 +1,11 @@
 // import MyTreeIcon from "@mui/icons-material/Park";
 // import ExploreIcon from "@mui/icons-material/Explore";
 // import HomeIcon from "@mui/icons-material/Home";
+// import HomeUnselected from "@mui/icons-material/HomeOutlined";
 
-import HomeUnselected from "@mui/icons-material/HomeOutlined";
-import HomeSelected from "@mui/icons-material/HomeRounded";
+/** top nav */
+import HomeUnselected from "@mui/icons-material/ExploreOutlined";
+import HomeSelected from "@mui/icons-material/Explore";
 
 import ContinueReadingIconUnselected from "@mui/icons-material/MoreOutlined";
 import ContinueReadingIconSelected from "@mui/icons-material/More";
@@ -17,7 +19,17 @@ import DogEarIconSelected from "@mui/icons-material/Bookmark";
 import AddIconSelected from "@mui/icons-material/AddCircle";
 import AddIconUnselected from "@mui/icons-material/AddCircleOutlineOutlined";
 
-interface MenuItem {
+/** bottom nav */
+import ShareSelected from "@mui/icons-material/Share";
+import ShareUnselected from "@mui/icons-material/ShareOutlined";
+
+import DonateSelected from "@mui/icons-material/Favorite";
+import DonateUnselected from "@mui/icons-material/FavoriteBorderOutlined";
+
+import FeedbackSelected from "@mui/icons-material/ThumbUpAlt";
+import FeedbackUnselected from "@mui/icons-material/ThumbUpAltOutlined";
+
+export interface MenuItem {
   label: string;
   selectedIcon: () => JSX.Element;
   unselectedIcon: () => JSX.Element;
@@ -27,7 +39,7 @@ interface MenuItem {
 const fontSize = "medium";
 const featuredItemFontSize = "large";
 
-export const menu_items: MenuItem[] = [
+export const topNavItems: MenuItem[] = [
   {
     label: "Seeds",
     selectedIcon: () => <SeedIconSelected fontSize={fontSize} />,
@@ -41,7 +53,7 @@ export const menu_items: MenuItem[] = [
     link: "/dashboard/my-bookmarks",
   },
   {
-    label: "Home",
+    label: "Explore",
     selectedIcon: () => <HomeSelected fontSize={featuredItemFontSize} />,
     unselectedIcon: () => <HomeUnselected fontSize={featuredItemFontSize} />,
     link: "/dashboard/browse",
@@ -57,5 +69,26 @@ export const menu_items: MenuItem[] = [
     selectedIcon: () => <AddIconSelected fontSize={fontSize} />,
     unselectedIcon: () => <AddIconUnselected fontSize={fontSize} />,
     link: "/dashboard/create-cover",
+  },
+];
+
+export const bottomNavItems: MenuItem[] = [
+  {
+    label: "Share",
+    selectedIcon: () => <ShareSelected fontSize={fontSize} />,
+    unselectedIcon: () => <ShareUnselected fontSize={fontSize} />,
+    link: "/dashboard/share",
+  },
+  {
+    label: "Donate",
+    selectedIcon: () => <DonateSelected fontSize={fontSize} />,
+    unselectedIcon: () => <DonateUnselected fontSize={fontSize} />,
+    link: "/dashboard/donate",
+  },
+  {
+    label: "Feedback",
+    selectedIcon: () => <FeedbackSelected fontSize={fontSize} />,
+    unselectedIcon: () => <FeedbackUnselected fontSize={fontSize} />,
+    link: "/dashboard/feedback",
   },
 ];

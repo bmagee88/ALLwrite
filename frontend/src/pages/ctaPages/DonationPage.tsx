@@ -1,6 +1,6 @@
 import React from "react";
 
-const DonartionPage = () => {
+const DonartionPage: React.FC = () => {
   return <>donationing page</>;
 };
 

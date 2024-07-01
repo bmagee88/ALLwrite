@@ -5,7 +5,13 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../../../store/store";
 import React from "react";
+import MenuItem from "@mui/material/MenuItem";
 
+// interface ProfileMenuItemsProps {
+//   handleClose: () => void;
+// }
+
+// const ProfileMenuItems: React.FC<ProfileMenuItemsProps> = ({ handleClose }) => {
 const ProfileMenuItems: React.FC = () => {
   const user_id = useSelector((state: RootState) => state.user.user?.user_id || 0);
   const accountItems = [
@@ -22,6 +28,10 @@ const ProfileMenuItems: React.FC = () => {
       {accountItems.map((item, index) => {
         const { to, label } = item;
         return (
+          // <Link to={to}>
+          //   <MenuItem onClick={handleClose} />
+          //   {label}
+          // </Link>
           <Dropdown.Item
             key={index}
             as={Link}

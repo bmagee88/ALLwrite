@@ -5,6 +5,7 @@ import "./header.styles.scss";
 import Box from "@mui/material/Box";
 import ControlPanel from "../../ControlPanel/ControlPanel";
 import React from "react";
+import { topNavItems } from "../../ControlPanel/config";
 
 const Header: React.FC = () => {
   return (
@@ -29,7 +30,7 @@ const Header: React.FC = () => {
         <HeaderAccount />
       </Box>
       <Box>
-        <ControlPanel />
+        <ControlPanel items={topNavItems} />
       </Box>
     </Box>
   );
