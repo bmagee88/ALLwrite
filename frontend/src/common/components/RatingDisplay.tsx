@@ -2,29 +2,30 @@ import React, { useEffect, useState } from "react";
 
 import RatingDropFull from "../../assets/images/rating_drop_full.png";
 import RatingDropEmpty from "../../assets/images/rating_drop_empty.png";
-import WaterDropIcon from "@mui/icons-material/WaterDrop";
-
+interface Rating {
+  avg_rating: number;
+  total: number;
+}
 interface RatingDisplayProps {
   page_id: string;
 }
 
 const RatingDisplay: React.FC<RatingDisplayProps> = ({ page_id }) => {
-  const [rating, setRating] = useState(0);
-  const [total, setTotal] = useState(0);
+  const [rating, setRating] = useState<number>(0);
+  const [total, setTotal] = useState<number>(0);
   const MAX_RATING = 10;
-  const AVG_RATING_FOR_PAGE_ENDPOINT = "/api/rating/avg-rating/";
+  const AVG_RATING_FOR_PAGE_ENDPOINT = "/api/avg-rating/";
 
   useEffect(() => {
-    //fetch
-    // console.log("uid, pid", user_id, page_id)
     const fetchAvgRatingForPage = async () => {
       const response = await fetch(AVG_RATING_FOR_PAGE_ENDPOINT + `${page_id}`);
       const data = await response.json();
+      const ratingData: Rating = data.data[0];
       const avgRatingData = data.data;
 
       if (avgRatingData.length !== 0) {
-        setRating(avgRatingData[0].avg_rating);
-        setTotal(avgRatingData[0].total);
+        setRating(ratingData.avg_rating);
+        setTotal(ratingData.total);
       }
     };
     fetchAvgRatingForPage();
@@ -33,7 +34,6 @@ const RatingDisplay: React.FC<RatingDisplayProps> = ({ page_id }) => {
     <>
       {Array.from({ length: Math.round(rating) }).map((_, index) => {
         return (
-          // <WaterDropIcon />
           <img
             key={rating + index + 1}
             id={index + 1 + ""}
