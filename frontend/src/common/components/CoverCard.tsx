@@ -1,13 +1,14 @@
 import Box from "@mui/material/Box";
 import React from "react";
 import CoverSample from "../../assets/images/sample_cover_image.png";
-import BasicAvatar from "./user/BasicAvatar/BasicAvatar";
+// import BasicAvatar from "./user/BasicAvatar/BasicAvatar";
 import MoreOptions from "@mui/icons-material/MoreVert";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import StarOutlinedIcon from "@mui/icons-material/StarOutlined";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import AuthorAvatar from "./user/NamedColoredAvatar/NamedColoredAvatar";
 
 interface CoverCardProps {
   cover_id: number;
@@ -64,10 +65,11 @@ const CoverCard: React.FC<CoverCardProps> = ({
             <Box
               id='author'
               sx={{ paddingLeft: ".4rem", marginTop: ".2rem" }}>
-              <BasicAvatar
+              <AuthorAvatar name={author} />
+              {/* <BasicAvatar
                 firstName={author}
                 lastName=''
-              />
+              /> */}
             </Box>
           </Link>
           <Box

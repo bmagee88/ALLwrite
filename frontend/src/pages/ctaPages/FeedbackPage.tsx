@@ -1,6 +1,6 @@
 import React from "react";
 
-const FeedbackPage = () => {
+const FeedbackPage: React.FC = () => {
   return <>feed back</>;
 };
 

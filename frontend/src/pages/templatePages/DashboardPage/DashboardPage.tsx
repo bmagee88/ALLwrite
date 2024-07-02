@@ -2,7 +2,8 @@ import React from "react";
 import Header from "../../../common/components/layout/Header/Header";
 import { Outlet } from "react-router";
 import Box from "@mui/material/Box";
-import CallToAction from "../../../common/components/layout/CallToAction/CallToAction";
+import CallToAction from "../../../common/components/ControlPanel/ControlPanel";
+import { bottomNavItems } from "../../../common/components/ControlPanel/config";
 
 const DashboardPage: React.FC = () => {
   return (
@@ -15,15 +16,11 @@ const DashboardPage: React.FC = () => {
       }}>
       <Header />
       <Outlet />
-
-      <Box
-        sx={{
-          order: "20",
-          marginTop: "auto",
-        }}>
-        <CallToAction />
-      </Box>
-      {/* <Footer /> */}
+      <CallToAction
+        items={bottomNavItems}
+        justifyContent={"space-around"}
+        placement={{ position: "sticky", bottom: "0", right: "0", left: "0" }}
+      />
     </Box>
   );
 };

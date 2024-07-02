@@ -8,6 +8,7 @@ import ScrollableTagsContainer, {
   Tag,
 } from "../../../common/components/ScrollableTags/ScrollableTags";
 import AddIcon from "@mui/icons-material/Add";
+import AddCoverFab from "../../../common/components/AddCoverFab/AddCoverFab";
 
 const tags: Tag[] = [
   "Genre1",
@@ -128,17 +129,7 @@ const BrowsePage: React.FC = () => {
         }}>
         <div className='row justify-content-end'>
           <Box className='col-6 w-auto'>
-            {ACTIVE_USER_ID !== 0 && (
-              <Box sx={{ position: "absolute", right: "1rem", bottom: "1rem" }}>
-                <Link to='/dashboard/create-cover'>
-                  <Fab
-                    color='primary'
-                    aria-label='add'>
-                    <AddIcon />
-                  </Fab>
-                </Link>
-              </Box>
-            )}
+            <AddCoverFab activeUserId={ACTIVE_USER_ID} />
           </Box>
         </div>
         <Box

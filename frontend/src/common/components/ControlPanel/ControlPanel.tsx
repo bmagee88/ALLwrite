@@ -1,31 +1,53 @@
 import { Box, Typography } from "@mui/material";
 // import { Link } from "@mui/material";
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
-import { menu_items } from "./config";
+import React from "react";
+import { MenuItem } from "./config";
 import SelectableIcon from "../SelectableIcon/SelectableIcon";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import { setSelected } from "../../store/nav/navSlice";
 
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: inherit;
 `;
+interface Placement {
+  position?: string;
+  top?: string;
+  bottom?: string;
+  left?: string;
+  right?: string;
+}
+interface ControlPanelProps {
+  items: MenuItem[];
+  justifyContent?: string;
+  backgroundColor?: string;
+  placement?: Placement;
+}
 
-const ControlPanel: React.FC = () => {
-  const [selected, setSelected] = useState<number>(2);
+const ControlPanel: React.FC<ControlPanelProps> = ({
+  items,
+  justifyContent = "space-between",
+  backgroundColor = "white",
+  placement = {},
+}) => {
+  const dispatch = useDispatch();
+  const selected = useSelector((state: RootState) => state.nav.selectedItem);
+  console.log("selected", selected);
 
-  const onClick = (index: number) => {
-    setSelected(index);
-  };
   return (
     <Box
       sx={{
+        ...placement,
         display: "flex",
-        justifyContent: "space-between",
+        justifyContent: justifyContent,
+        backgroundColor: backgroundColor,
         marginTop: ".5rem",
         boxShadow: "0 4px 8px -2px lightgray",
       }}>
-      {menu_items.map((item, index) => {
+      {items.map((item) => {
         return (
           <Box
             key={item.label}
@@ -33,7 +55,9 @@ const ControlPanel: React.FC = () => {
               paddingY: ".5rem",
               paddingX: "1rem",
             }}
-            onClick={() => onClick(index)}>
+            onClick={() => {
+              return dispatch(setSelected(item.label));
+            }}>
             <StyledLink to={item.link}>
               <Box
                 sx={{
@@ -42,9 +66,8 @@ const ControlPanel: React.FC = () => {
                   alignItems: "center",
                   color: "#2f2f2f",
                 }}>
-                {/* <item.icon isSelected={index === selected} /> */}
                 <SelectableIcon
-                  isSelected={index === selected}
+                  isSelected={item.label === selected}
                   selectedIcon={item.selectedIcon}
                   unselectedIcon={item.unselectedIcon}
                 />
