@@ -1,6 +1,7 @@
 import Button from "@mui/material/Button";
 import React, { RefObject } from "react";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import Box from "@mui/material/Box";
 
 interface BackwardButtonProps {
   isAtBottom: boolean;
@@ -29,7 +30,16 @@ const ForwardButton: React.FC<BackwardButtonProps> = ({ isAtBottom, childRef }) 
         padding: "0px",
         margin: "0px",
       }}>
-      <NavigateNextIcon />
+      <Box
+        sx={{
+          borderRadius: "50%",
+          "&:hover": {
+            backgroundColor: "#1976d2",
+            color: "white",
+          },
+        }}>
+        <NavigateNextIcon />
+      </Box>
     </Button>
   );
 };

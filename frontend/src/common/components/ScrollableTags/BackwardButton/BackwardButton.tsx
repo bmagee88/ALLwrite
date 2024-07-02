@@ -1,6 +1,8 @@
 import Button from "@mui/material/Button";
 import React, { RefObject } from "react";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import LeftArrow from "@mui/icons-material/ArrowCircleLeftOutlined";
+import Box from "@mui/material/Box";
 
 interface BackwardButtonProps {
   isAtTop: boolean;
@@ -29,7 +31,17 @@ const BackwardButton: React.FC<BackwardButtonProps> = ({ isAtTop, childRef }) =>
         padding: "0px",
         margin: "0px",
       }}>
-      <NavigateBeforeIcon />
+      <Box
+        sx={{
+          borderRadius: "50%",
+          "&:hover": {
+            backgroundColor: "#1976d2",
+            color: "white",
+          },
+        }}>
+        <NavigateBeforeIcon />
+      </Box>
+      {/* <LeftArrow /> */}
     </Button>
   );
 };

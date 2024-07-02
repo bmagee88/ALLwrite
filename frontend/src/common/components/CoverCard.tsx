@@ -32,7 +32,8 @@ const CoverCard: React.FC<CoverCardProps> = ({
   return (
     <Box
       id='container'
-      sx={{}}>
+      // sx={{ padding: "0" }}
+    >
       <Box
         sx={{ display: "flex", flexDirection: "column", marginTop: "1rem", marginBottom: "1rem" }}>
         <Link to={`/dashboard/cover-details/${cover_id}`}>
