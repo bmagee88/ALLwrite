@@ -20,18 +20,38 @@ interface Placement {
   left?: string;
   right?: string;
 }
+interface Animation {
+  zIndex?: number;
+  transition?: string;
+  transform: string;
+}
+
+interface Styles {
+  backgroundColor: string;
+}
+
+interface Sizing {
+  height: string;
+  width: string;
+}
 interface ControlPanelProps {
   items: MenuItem[];
   justifyContent?: string;
   backgroundColor?: string;
+  sizing?: Sizing;
   placement?: Placement;
+  animation?: Animation;
+  styles?: Styles;
 }
 
 const ControlPanel: React.FC<ControlPanelProps> = ({
   items,
   justifyContent = "space-between",
   backgroundColor = "white",
+  sizing = {},
   placement = {},
+  animation = {},
+  styles = {},
 }) => {
   const dispatch = useDispatch();
   const selected = useSelector((state: RootState) => state.nav.selectedItem);
@@ -40,7 +60,10 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
   return (
     <Box
       sx={{
+        ...sizing,
         ...placement,
+        ...styles,
+        ...animation,
         display: "flex",
         justifyContent: justifyContent,
         backgroundColor: backgroundColor,
