@@ -20,11 +20,13 @@ const DashboardPage: React.FC = () => {
       }}>
       <Header />
       <Outlet />
-      <Box sx={{ paddingBottom: "40px", width: "100vw" }}></Box>
+      <Box
+        id='buffer-space'
+        sx={{ paddingBottom: "40px" }}></Box>
       <CallToAction
         items={bottomNavItems}
         justifyContent={"space-around"}
-        sizing={{ height: "40px", width: "100vw" }}
+        sizing={{ height: "40px" }}
         placement={{
           position: "fixed",
           bottom: "0",
