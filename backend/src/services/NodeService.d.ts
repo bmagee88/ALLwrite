@@ -49,3 +49,10 @@ export function getAuthorChildForPage(client: Client, author: string, p_id: stri
 export function getHighestRatingChoices(client: Client, p_id: string): void;
 
 export function getLongestStoryChoicesFrom(client: Client, n_id: string): void;
+
+export function upsertBookmark(
+  client: Client,
+  userId: number,
+  coverId: number,
+  pageId: number
+): void;
