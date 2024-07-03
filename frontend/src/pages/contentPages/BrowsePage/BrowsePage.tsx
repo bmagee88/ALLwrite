@@ -151,14 +151,9 @@ const BrowsePage: React.FC = () => {
           })}
         </Box>
       </Box>
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <Button
-          sx={{ display: "inline-flex" }}
-          onClick={() => addItems(ADD_AMOUNT)}>
-          {" "}
-          load {ADD_AMOUNT} more
-        </Button>
-      </Box>
+      <div className='row'>
+        <Button onClick={() => addItems(ADD_AMOUNT)}> load {ADD_AMOUNT} more</Button>
+      </div>
     </Box>
   );
 };

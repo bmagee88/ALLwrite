@@ -23,7 +23,7 @@ interface Placement {
 interface Animation {
   zIndex?: number;
   transition?: string;
-  transform?: string;
+  transform: string;
 }
 
 interface Styles {
@@ -31,8 +31,8 @@ interface Styles {
 }
 
 interface Sizing {
-  height?: string;
-  width?: string;
+  height: string;
+  width: string;
 }
 interface ControlPanelProps {
   items: MenuItem[];
