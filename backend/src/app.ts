@@ -12,6 +12,7 @@ import choiceRouter from "./routes/choice/ChoiceRoute.js";
 import coverRouter, { testing } from "./routes/cover/CoverRoute.js";
 import pageRouter from "./routes/page/PageRoute.js";
 import ratingRouter from "./routes/rating/RatingRoute.js";
+import bookmarkRouter from "./routes/bookmark/BookmarkRoute.js";
 config();
 const dbconfig = {
   host: process.env.HOST,
@@ -105,6 +106,7 @@ async function main() {
     app.use("/api/cover", coverRouter);
     app.use("/api/page", pageRouter);
     app.use("/api/rating", ratingRouter);
+    app.use("/api/bookmark", bookmarkRouter);
 
     app.listen(process.env.SERVER_PORT, () => {
       console.log(`listening on port ${process.env.SERVER_PORT}...`);

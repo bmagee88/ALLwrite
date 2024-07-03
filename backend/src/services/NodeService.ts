@@ -336,25 +336,31 @@ export async function getLongestStoryChoicesFrom(client: Client, n_id: string) {
   return res.rows;
 }
 
-// module.exports = {
-//   createCover,
-//   avgRatingByPageId,
-//   createPage,
-//   getChoices,
-//   getCoverById,
-//   getPageById,
-//   getBookmarksByUserId,
-//   getCovers,
-//   getAuthorChildForPage,
-//   getHighestRatingChoices,
-//   getLongestStoryChoicesFrom,
-//   getCoverByPageId,
-//   readPage,
-//   getRatingByUserAndPage,
-//   insertUserRatingByUserIdAndPageId,
-//   updateUserRatingByUserIdAndPageId,
-//   createUser,
-//   getIfPageRead,
-//   // login,
-//   isUsernameTaken,
-// };
+export async function upsertBookmark(
+  client: Client,
+  userId: number,
+  coverId: number,
+  pageId: number
+) {
+  try {
+    const query = `
+      INSERT INTO page_bookmarks (user_id, cover_id, page_id)
+      VALUES($1,$2,$3)
+      ON CONFLICT (user_id, cover_id)
+      DO UPDATE SET page_id = EXCLUDED.page_id
+      RETURNING *;
+    `;
+    const values = [userId, coverId, pageId];
+
+    const result = await client.query(query, values);
+
+    if (result.rows.length > 0) {
+      return result.rows[0];
+    } else {
+      return "Record not found";
+    }
+  } catch (err) {
+    console.error("Error executing query", err);
+    return "Internal Server Error";
+  }
+}
