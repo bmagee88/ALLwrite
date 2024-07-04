@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import userReducer from "./user/userSlice";
+import coverReducer from "./cover/coverSlice";
 import navReducer from "./nav/navSlice";
 
 const reducers = combineReducers({
   user: userReducer,
   nav: navReducer,
+  cover: coverReducer,
 });
 
 export const store = configureStore({ reducer: reducers });
