@@ -32,7 +32,6 @@ const DashboardPage: React.FC = () => {
       <CallToAction
         items={bottomNavItems}
         justifyContent={"space-around"}
-        // sizing={{ height: "40px" }}
         placement={{
           position: "fixed",
           bottom: "0",

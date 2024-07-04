@@ -133,7 +133,8 @@ const BrowsePage: React.FC = () => {
           </Box>
         </div>
         <Box
-          className='row'
+          id='covers-container'
+          // className='row'
           sx={{ marginTop: ".5rem" }}>
           {covers.map((cover: Cover, index) => {
             return (
