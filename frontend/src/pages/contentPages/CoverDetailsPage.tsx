@@ -8,7 +8,8 @@ import { Box, Typography } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const CoverDetails: React.FC = () => {
-  const { cover_id } = useParams();
+  const { cover_id: x } = useParams();
+  const cover_id = parseInt(x || "-1");
   const [cover, setCover] = useState<Cover>({} as Cover);
   const navigate = useNavigate();
   const GET_COVER_ENDPOINT = `/api/cover/cover-details/`;
