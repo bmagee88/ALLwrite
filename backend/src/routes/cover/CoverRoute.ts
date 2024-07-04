@@ -2,11 +2,11 @@ import express from "express";
 const router = express.Router();
 import {
   createCover,
-  getBookmarksByUserId,
   getCovers,
   getCoverById,
   getCoverByPageId,
   getAuthorChildForPage,
+  getAllStarredCoversByUserId,
 } from "../../services/NodeService.js";
 import CoverDto from "../../dtos/CoverDto.js";
 
@@ -38,7 +38,7 @@ router.post("/create-cover", (req, res) => {
 
 router.get("/bookmarks/:user_id", (req, res) => {
   const client = req.client;
-  getBookmarksByUserId(client, req.params.user_id)
+  getAllStarredCoversByUserId(client, parseInt(req.params.user_id))
     .then((result) => {
       res.status(200).json({ data: result });
     })

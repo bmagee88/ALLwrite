@@ -271,11 +271,11 @@ export async function getPageById(client: Client, page_id: string) {
   return res.rows;
 }
 
-export async function getBookmarksByUserId(client: Client, user_id: string) {
+export async function getAllStarredCoversByUserId(client: Client, userId: number) {
   const res = await client.query(
     `select cb.cover_id as bm_cover_id \
     from cover_bookmarks cb \
-    where cb.user_id = ${user_id}`
+    where cb.user_id = ${userId}`
   );
   // console.log(res.rows);
   return res.rows;
@@ -351,6 +351,45 @@ export async function upsertBookmark(
       RETURNING *;
     `;
     const values = [userId, coverId, pageId];
+
+    const result = await client.query(query, values);
+
+    if (result.rows.length > 0) {
+      return result.rows[0];
+    } else {
+      return "Record not found";
+    }
+  } catch (err) {
+    console.error("Error executing query", err);
+    return "Internal Server Error";
+  }
+}
+export async function getAllCoversBookmarksByUserId(client: Client, userId: number) {
+  try {
+    const query = `select * from page_bookmarks where user_id = $1;`;
+    const values = [userId];
+
+    const result = await client.query(query, values);
+
+    if (result.rows.length > 0) {
+      return result.rows;
+    } else {
+      return "Record not found";
+    }
+  } catch (err) {
+    console.error("Error executing query", err);
+    return "Internal Server Error";
+  }
+}
+
+export async function getBookmarkByUserIdAndCoverId(
+  client: Client,
+  userId: number,
+  coverId: number
+) {
+  try {
+    const query = `select * from page_bookmarks where user_id = $1 and cover_id = $2`;
+    const values = [userId, coverId];
 
     const result = await client.query(query, values);
 

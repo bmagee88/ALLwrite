@@ -56,3 +56,13 @@ export function upsertBookmark(
   coverId: number,
   pageId: number
 ): void;
+
+export function getAllStarredCoversByUserId(client: Client, userId: number): void;
+
+export function getAllCoversBookmarksByUserId(client: Client, userId: number): void;
+
+export function getBookmarkByUserIdAndCoverId(
+  client: Client,
+  userId: number,
+  coverId: number
+): void;
