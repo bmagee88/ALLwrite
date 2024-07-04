@@ -24,7 +24,7 @@ router.put("/upsert", (req, res) => {
     });
 });
 
-router.get("/all-by-user", (req, res) => {
+router.post("/all-by-user", (req, res) => {
   const client = req.client;
   const { userId } = req.body;
   if (!userId) {
@@ -39,7 +39,7 @@ router.get("/all-by-user", (req, res) => {
     });
 });
 
-router.get("/by-cover-by-user", (req, res) => {
+router.post("/by-cover-by-user", (req, res) => {
   const client = req.client;
   const { userId, coverId } = req.body;
   if (!userId || !coverId) {
