@@ -14,7 +14,7 @@ const RatingDisplay: React.FC<RatingDisplayProps> = ({ page_id }) => {
   const [rating, setRating] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
   const MAX_RATING = 10;
-  const AVG_RATING_FOR_PAGE_ENDPOINT = "/api/avg-rating/";
+  const AVG_RATING_FOR_PAGE_ENDPOINT = "/api/rating/avg-rating/";
 
   useEffect(() => {
     const fetchAvgRatingForPage = async () => {

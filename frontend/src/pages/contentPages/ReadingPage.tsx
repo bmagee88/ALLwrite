@@ -5,8 +5,9 @@ import Rating from "../../common/components/Rating";
 import { v4 as uuidv4 } from "uuid";
 import Read from "../../assets/images/read.png";
 import { RootState } from "../../common/store/store";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Cover } from "./BrowsePage/BrowsePage";
+import { setCoverId } from "../../common/store/cover/coverSlice";
 
 export interface Choice {
   author: string;
@@ -41,6 +42,8 @@ export interface Flag {
 const ReadingPage: React.FC = () => {
   const { cover_title, first_page } = useParams();
   const this_page_id = first_page;
+
+  const dispatch = useDispatch();
   // here we have the title of the story and the current page's id
 
   //maybe get cover record by title and first page in useEffect
@@ -60,12 +63,16 @@ const ReadingPage: React.FC = () => {
   const [cover, setCover] = useState<Cover>({} as Cover);
   const [pageIsRead, setPageIsRead] = useState(false);
   const [isFirstPage, setIsFirstPage] = useState(false);
+  const [bookmarkedPageId, setBookmarkedPageId] = useState<number>(-1);
 
   const navigate = useNavigate();
 
   const { user_id: ACTIVE_USER_ID, username } = useSelector(
     (state: RootState) => state.user.user ?? { user_id: 0, username: "Anon" }
   );
+
+  const coverId = useSelector((state: RootState) => state.cover.coverId);
+  console.log("redux coverId", coverId);
 
   if (!ACTIVE_USER_ID) {
     navigate("/login");
@@ -78,6 +85,7 @@ const ReadingPage: React.FC = () => {
   // const RATING_ENDPOINT = `/api/rating-choices?parent_id=${this_page_id}`;
   const SET_READ_ENDPOINT = `/api/page/read`;
   const CHOICE_DEPTHS_ENDPOINT = `/api/page/longest-stories`;
+  const BOOKMARK_BY_COVER_BY_USER_ENDPOINT = `/api/bookmark/by-cover-by-user`;
 
   useEffect(() => {
     //fetch first page
@@ -110,9 +118,19 @@ const ReadingPage: React.FC = () => {
     };
 
     const fetchCover = async () => {
+      console.log("fetching cover");
       const result = await fetch(CURRENT_COVER_ENDPOINT);
       const data = await result.json();
-      const cover = data.data[0] as Cover;
+      const cover = data.data[0];
+      console.log("cover", cover);
+      // if (coverId < 0 || cover.id !== coverId) {
+      console.log("fetching bookmark for cover");
+      const bookmarkedPageId: number = await fetchBookmarkByUserAndCover(cover.id);
+
+      setBookmarkedPageId(bookmarkedPageId);
+      // }
+      console.log("setting cover in Redux");
+      dispatch(setCoverId(cover.id));
       setCover(cover);
     };
 
@@ -159,6 +177,19 @@ const ReadingPage: React.FC = () => {
       setAuthorChoices(authorChoices);
     };
 
+    const fetchBookmarkByUserAndCover = async (fetchedCover: number): Promise<number> => {
+      const result = await fetch(BOOKMARK_BY_COVER_BY_USER_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: ACTIVE_USER_ID, coverId: fetchedCover }),
+      });
+      const data = await result.json();
+      console.log("bookmark data", data);
+      return data.data.page_id;
+    };
+
     // const fetchRatingChoice = async (page_id) => {
     //   const result = await fetch(RATING_ENDPOINT);
     //   const data = await result.json();
@@ -189,15 +220,20 @@ const ReadingPage: React.FC = () => {
   return (
     <>
       <div className='container bg=light'>
+        pageId: {page.id}
+        <br></br>
+        bm_pgId: {bookmarkedPageId}
+        <br></br>
+        type of pageId: {typeof bookmarkedPageId}
         <div className='row justify-content-between border border-dark mt-2'>
           <div className='col-1 w-auto'>
-            {isFirstPage && <Link to={`/dashboard/cover-details/${cover.cover_id}`}>back</Link>}
+            {isFirstPage && <Link to={`/dashboard/cover-details/${cover.id}`}>back</Link>}
             {!isFirstPage && (
               <Link to={`/dashboard/reading/${cover_title}/${page.parent_id}`}>back</Link>
             )}
           </div>
           <div className='col-1 w-auto'>
-            <Link to={`/dashboard/cover-details/${cover.cover_id}`}>{cover_title}</Link>
+            <Link to={`/dashboard/cover-details/${cover.id}`}>{cover_title}</Link>
             {pageIsRead && (
               <span>
                 {" "}
@@ -241,7 +277,6 @@ const ReadingPage: React.FC = () => {
             })}
           </div>
         )}
-
         {false && isRatedByActiveUser && (
           <div className='row justify-content-evenly mt-2 border border-dark p-3'>
             {authorChoices.map((authorChoice) => {
@@ -259,7 +294,6 @@ const ReadingPage: React.FC = () => {
             })}
           </div>
         )}
-
         {isRatedByActiveUser && (
           <div className='row justify-content-evenly mt-2 border border-dark p-3'>
             {choices.map((choice) => {
