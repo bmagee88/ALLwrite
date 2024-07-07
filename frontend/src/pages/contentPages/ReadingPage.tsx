@@ -8,6 +8,7 @@ import { RootState } from "../../common/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { Cover } from "./BrowsePage/BrowsePage";
 import { setCoverId } from "../../common/store/cover/coverSlice";
+import Bookmark from "../../common/components/Bookmark/Bookmark";
 
 export interface Choice {
   author: string;
@@ -63,7 +64,6 @@ const ReadingPage: React.FC = () => {
   const [cover, setCover] = useState<Cover>({} as Cover);
   const [pageIsRead, setPageIsRead] = useState(false);
   const [isFirstPage, setIsFirstPage] = useState(false);
-  const [bookmarkedPageId, setBookmarkedPageId] = useState<number>(-1);
 
   const navigate = useNavigate();
 
@@ -85,7 +85,6 @@ const ReadingPage: React.FC = () => {
   // const RATING_ENDPOINT = `/api/rating-choices?parent_id=${this_page_id}`;
   const SET_READ_ENDPOINT = `/api/page/read`;
   const CHOICE_DEPTHS_ENDPOINT = `/api/page/longest-stories`;
-  const BOOKMARK_BY_COVER_BY_USER_ENDPOINT = `/api/bookmark/by-cover-by-user`;
 
   useEffect(() => {
     //fetch first page
@@ -124,10 +123,7 @@ const ReadingPage: React.FC = () => {
       const cover = data.data[0];
       console.log("cover", cover);
       // if (coverId < 0 || cover.id !== coverId) {
-      console.log("fetching bookmark for cover");
-      const bookmarkedPageId: number = await fetchBookmarkByUserAndCover(cover.id);
-
-      setBookmarkedPageId(bookmarkedPageId);
+      /////////////
       // }
       console.log("setting cover in Redux");
       dispatch(setCoverId(cover.id));
@@ -177,19 +173,6 @@ const ReadingPage: React.FC = () => {
       setAuthorChoices(authorChoices);
     };
 
-    const fetchBookmarkByUserAndCover = async (fetchedCover: number): Promise<number> => {
-      const result = await fetch(BOOKMARK_BY_COVER_BY_USER_ENDPOINT, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: ACTIVE_USER_ID, coverId: fetchedCover }),
-      });
-      const data = await result.json();
-      console.log("bookmark data", data);
-      return data.data.page_id;
-    };
-
     // const fetchRatingChoice = async (page_id) => {
     //   const result = await fetch(RATING_ENDPOINT);
     //   const data = await result.json();
@@ -220,11 +203,11 @@ const ReadingPage: React.FC = () => {
   return (
     <>
       <div className='container bg=light'>
-        pageId: {page.id}
+        {/* pageId: {page.id}
         <br></br>
         bm_pgId: {bookmarkedPageId}
         <br></br>
-        type of pageId: {typeof bookmarkedPageId}
+        type of pageId: {typeof bookmarkedPageId} */}
         <div className='row justify-content-between border border-dark mt-2'>
           <div className='col-1 w-auto'>
             {isFirstPage && <Link to={`/dashboard/cover-details/${cover.id}`}>back</Link>}
@@ -248,6 +231,13 @@ const ReadingPage: React.FC = () => {
           <div className='col-1 w-auto'>{page.page_num}</div>
         </div>
         <div className='row mt-4 border border-dark p-3 justify-content-center'>
+          <div className='row'>
+            <Bookmark
+              userId={ACTIVE_USER_ID}
+              coverId={cover.id}
+              pageId={this_page_id ? parseInt(this_page_id) : -1}
+            />
+          </div>
           <div className='col-6 border'>{page.body}</div>
         </div>
         <div className='row justify-content-center border border-dark mt-2'>
