@@ -25,7 +25,7 @@ const Client = new pg.Client(dbconfig);
 console.log("client", Client);
 const app = express();
 
-console.log("test:", testing);
+let requestCount = 0;
 
 // import db from "./database/postgres/db";
 
@@ -83,6 +83,12 @@ const setClient = (req: Request, res: Response, next: NextFunction) => {
 /**
  *    Routes
  */
+
+app.use((req, res, next) => {
+  requestCount += 1;
+  console.log(requestCount);
+  next();
+});
 async function main() {
   try {
     // Connect to the MongoDB cluster
