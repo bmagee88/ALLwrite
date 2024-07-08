@@ -34,7 +34,7 @@ const NamedColoredAvatar: React.FC<NamedColoredAvatarProps> = ({ name }) => {
 
   function stringAvatar(name: string) {
     let splitName = name.split(" ");
-    console.log("splitName", splitName);
+    // console.log("splitName", splitName);
 
     // let splitNameLength = splitName.length;
 
@@ -45,7 +45,7 @@ const NamedColoredAvatar: React.FC<NamedColoredAvatarProps> = ({ name }) => {
     splitName.forEach((word) => {
       displayName += word[0];
     });
-    console.log("displayname", displayName);
+    // console.log("displayname", displayName);
 
     //to limit to 2
     // if (splitNameLength === 1) {

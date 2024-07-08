@@ -55,7 +55,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
 }) => {
   const dispatch = useDispatch();
   const selected = useSelector((state: RootState) => state.nav.selectedItem);
-  console.log("selected", selected);
+  // console.log("selected", selected);
 
   return (
     <Box
