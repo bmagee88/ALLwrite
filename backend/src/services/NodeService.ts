@@ -18,9 +18,10 @@ export async function getChoices(client: Client, parent_id: string, limit: strin
 export async function createCover(client: Client, cover: Cover) {
   // should be of type Cover
   // console.log("service: cover", cover);
-  const res = await client.query(
-    `insert into covers (title, author, genre, summary, first_page) values ('${cover.title}', '${cover.author}', '${cover.genre}', '${cover.summary}', ${cover.first_page});`
-  );
+  const query =
+    "insert into covers (title, author, genre, summary, first_page) values ($1, $2, $3, $4, $5);";
+  const values = [cover.title, cover.author, cover.genre, cover.summary, cover.first_page];
+  const res = await client.query(query, values);
   // console.log(res.rows);
   return res.rows;
 }
@@ -139,13 +140,16 @@ export async function createPage(client: Client, page: PageDto) {
   // console.log("service: Page", page);
   const id = await client.query("select id from page order by id desc limit 1");
   // console.log("id", id.rows[0].id);
-  const res = await client.query(
-    `insert into page (id, parent_id, prompt, body, page_num, author) values (${
-      id.rows[0].id + 1
-    }, ${page.parent_id}, '${page.prompt}', '${page.body_text}', ${page.page_num}, '${
-      page.author
-    }' ) returning *;`
-  );
+  const query = `insert into page (id, parent_id, prompt, body, page_num, author) values ($1, $2, $3, $4, $5, $6) returning *;`;
+  const values = [
+    id.rows[0].id + 1,
+    page.parent_id,
+    page.prompt,
+    page.body_text,
+    page.page_num,
+    page.author,
+  ];
+  const res = await client.query(query, values);
   // const res = await client.query(`insert into page (id, parent_id, prompt, body, page_num, author) values (${id.rows[0].id+1}, ${page.parent_id}, ${page.prompt}, ${page.body}, ${page.page_num}, '${page.author}');`
   // );
   // console.log(res.rows);
