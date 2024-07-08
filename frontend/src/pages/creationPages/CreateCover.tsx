@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../common/store/store";
+import SearchAndList from "../../common/components/SearchAndList/SearchAndList";
+import Box from "@mui/material/Box";
+import { GENRES } from "../../configs/static-data";
 // import { Form } from "react-bootstrap";
 
 /**
@@ -109,7 +112,7 @@ const CreateCover: React.FC = () => {
               />
             </div>
 
-            <label
+            {/* <label
               htmlFor='inputGenre'
               className='col-sm-2 col-form-label'>
               Genre
@@ -123,8 +126,13 @@ const CreateCover: React.FC = () => {
                 name='genre'
                 required
               />
-            </div>
-
+            </div> */}
+            <Box sx={{ marginTop: "1rem" }}>
+              <SearchAndList
+                subject={"Genres"}
+                options={GENRES}
+              />
+            </Box>
             <div className='row'>
               <label
                 htmlFor='textAreaSummary'
