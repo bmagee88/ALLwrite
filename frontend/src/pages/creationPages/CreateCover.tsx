@@ -112,7 +112,7 @@ const CreateCover: React.FC = () => {
               />
             </div>
 
-            {/* <label
+            <label
               htmlFor='inputGenre'
               className='col-sm-2 col-form-label'>
               Genre
@@ -126,13 +126,13 @@ const CreateCover: React.FC = () => {
                 name='genre'
                 required
               />
-            </div> */}
-            <Box sx={{ marginTop: "1rem" }}>
+            </div>
+            {/* <Box sx={{ marginTop: "1rem" }}>
               <SearchAndList
                 subject={"Genres"}
                 options={GENRES}
               />
-            </Box>
+            </Box> */}
             <div className='row'>
               <label
                 htmlFor='textAreaSummary'
