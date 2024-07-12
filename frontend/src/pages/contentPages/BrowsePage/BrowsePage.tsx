@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import TitleCard from "../../../common/components/CoverCard";
 import { Box, Button, Fab, Typography } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../common/store/store";
 import ScrollableTagsContainer, {
   Tag,
 } from "../../../common/components/ScrollableTags/ScrollableTags";
 import AddIcon from "@mui/icons-material/Add";
 import AddCoverFab from "../../../common/components/AddCoverFab/AddCoverFab";
+import { setSelected } from "../../../common/store/nav/navSlice";
 
 const tags: Tag[] = [
   "Genre1",
@@ -42,6 +43,11 @@ interface Bookmark {
 }
 
 const BrowsePage: React.FC = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setSelected("Explore"));
+  }, [dispatch]);
+
   const [limit, setLimit] = useState<number>(3);
   const [covers, setCovers] = useState<Cover[]>([]);
 
