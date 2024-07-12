@@ -53,25 +53,25 @@ const BrowsePage: React.FC = () => {
       let bms_outer: Bookmark[] = [],
         tits_outer: Cover[] = [];
       const fetchBookmarksByUser = async (user_id: number) => {
-        console.log("in bookmarks by user on browse page");
+        // console.log("in bookmarks by user on browse page");
         const response = await fetch(`/api/cover/bookmarks/${user_id}`);
         const bms = await response.json();
-        console.log("bms", bms);
+        // console.log("bms", bms);
         bms_outer = bms.data;
       };
       await fetchBookmarksByUser(ACTIVE_USER_ID);
 
       const fetchTitles = async (limit: number) => {
-        console.log("getching from api cover covers");
+        // console.log("getching from api cover covers");
         const response = await fetch(`/api/cover/covers?limit=${limit}`);
         const covers = await response.json();
-        console.log("covers", covers);
+        // console.log("covers", covers);
         tits_outer = covers.data;
       };
       await fetchTitles(limit);
 
       const addBookMarksToTitles = async (t: Cover[], b: Bookmark[]) => {
-        console.log("in add bookmarks to titles on browse page");
+        // console.log("in add bookmarks to titles on browse page");
         var found = false;
         const innerf = async () => {
           for (var i = 0; i < t.length; i++) {
