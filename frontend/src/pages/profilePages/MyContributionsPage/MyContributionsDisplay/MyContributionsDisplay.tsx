@@ -1,12 +1,21 @@
 import { Box } from "@mui/material";
 import React from "react";
 
-const MyContributionsDisplay: React.FC = () => {
-  const testArr = [{ id: 1, text: "asdf" }];
+interface MyContributionsDisplayProps {
+  contributions: [];
+}
+
+const MyContributionsDisplay: React.FC<MyContributionsDisplayProps> = ({ contributions }) => {
+  //   const testArr = [{ id: 1, text: "asdf" }];
   return (
     <Box>
-      {testArr.map((item) => {
-        return <Box key={item.id}>{item.text}</Box>;
+      {contributions.map((cont, index) => {
+        return (
+          <Box key={index}>
+            <Box fontWeight={"bold"}>{cont.covertitle}</Box>
+            <Box>{cont.pagebody}</Box>
+          </Box>
+        );
       })}
     </Box>
   );

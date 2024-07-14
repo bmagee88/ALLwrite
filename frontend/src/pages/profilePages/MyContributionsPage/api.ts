@@ -1,12 +1,11 @@
 export const fetchCoversAndPagesByUser = async (user_id: number) => {
-  const testBody = { user_id };
-  const response = await fetch("/api/my-contributions", {
-    method: "POST",
-    headers: {},
-    body: JSON.stringify(testBody),
-  });
+  console.log("in fetchCoversAndPagesByUser");
+  const response = await fetch(`/api/users/${user_id}/my-contributions`);
   if (response.ok) {
+    console.log("response ok");
     const data = await response.json();
     return data.data;
+  } else {
+    console.log("response not okay");
   }
 };
