@@ -3,32 +3,38 @@
 // import HomeIcon from "@mui/icons-material/Home";
 // import HomeUnselected from "@mui/icons-material/HomeOutlined";
 
+import PushPinIcon from "@mui/icons-material/PushPin";
+import NoteIcon from "@mui/icons-material/Note";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+
 /** top nav */
-import HomeUnselected from "@mui/icons-material/ExploreOutlined";
-import HomeSelected from "@mui/icons-material/Explore";
 
-import ContinueReadingIconUnselected from "@mui/icons-material/MoreOutlined";
-import ContinueReadingIconSelected from "@mui/icons-material/More";
+import AddCoverUnselected from "@mui/icons-material/AddCircleOutlineOutlined";
+import AddCoverSelected from "@mui/icons-material/AddCircle";
 
-import SeedIconSelected from "@mui/icons-material/ArrowDropDownCircle";
-import SeedIconUnselected from "@mui/icons-material/ArrowDropDownCircleOutlined";
+import ContributionUnselected from "@mui/icons-material/BorderColorOutlined";
+import ContributionSelected from "@mui/icons-material/BorderColor";
 
-import DogEarIconUnselected from "@mui/icons-material/BookmarkBorderOutlined";
-import DogEarIconSelected from "@mui/icons-material/Bookmark";
+import ExploreUnselected from "@mui/icons-material/ExploreOutlined";
+import ExploreSelected from "@mui/icons-material/Explore";
 
-import AddIconSelected from "@mui/icons-material/AddCircle";
-import AddIconUnselected from "@mui/icons-material/AddCircleOutlineOutlined";
+import PinnedUnselected from "@mui/icons-material/PushPinOutlined";
+import PinnedSelected from "@mui/icons-material/PushPin";
+
+import ContinueReadingUnselected from "@mui/icons-material/MoreOutlined";
+import ContinueReadingSelected from "@mui/icons-material/More";
 
 /** bottom nav */
-import ShareSelected from "@mui/icons-material/Share";
 import ShareUnselected from "@mui/icons-material/ShareOutlined";
+import ShareSelected from "@mui/icons-material/Share";
 
-import DonateSelected from "@mui/icons-material/Favorite";
 import DonateUnselected from "@mui/icons-material/FavoriteBorderOutlined";
+import DonateSelected from "@mui/icons-material/Favorite";
 
-import FeedbackSelected from "@mui/icons-material/ThumbUpAlt";
 import FeedbackUnselected from "@mui/icons-material/ThumbUpAltOutlined";
+import FeedbackSelected from "@mui/icons-material/ThumbUpAlt";
 
+// import Adjustment from "../Adjustment/Adjustment";
 export interface MenuItem {
   label: string;
   selectedIcon: () => JSX.Element;
@@ -41,34 +47,46 @@ const featuredItemFontSize = "large";
 
 export const topNavItems: MenuItem[] = [
   {
-    label: "Seeds",
-    selectedIcon: () => <SeedIconSelected fontSize={fontSize} />,
-    unselectedIcon: () => <SeedIconUnselected fontSize={fontSize} />,
+    label: "Create Cover",
+    selectedIcon: () => <AddCoverSelected fontSize={fontSize} />,
+    unselectedIcon: () => <AddCoverUnselected fontSize={fontSize} />,
+    link: "/dashboard/create-cover",
+  },
+  {
+    label: "My Contributions",
+    selectedIcon: () => <ContributionSelected fontSize={fontSize} />,
+    unselectedIcon: () => <ContributionUnselected fontSize={fontSize} />,
     link: "/dashboard/my-covers",
   },
   {
-    label: "Bookmarks",
-    selectedIcon: () => <ContinueReadingIconSelected fontSize={fontSize} />,
-    unselectedIcon: () => <ContinueReadingIconUnselected fontSize={fontSize} />,
-    link: "/dashboard/my-bookmarks",
-  },
-  {
     label: "Explore",
-    selectedIcon: () => <HomeSelected fontSize={featuredItemFontSize} />,
-    unselectedIcon: () => <HomeUnselected fontSize={featuredItemFontSize} />,
+    selectedIcon: () => <ExploreSelected fontSize={featuredItemFontSize} />,
+    unselectedIcon: () => <ExploreUnselected fontSize={featuredItemFontSize} />,
     link: "/dashboard/browse",
   },
   {
-    label: "Dog Ears",
-    selectedIcon: () => <DogEarIconSelected fontSize={fontSize} />,
-    unselectedIcon: () => <DogEarIconUnselected fontSize={fontSize} />,
+    label: "Pinned Pages",
+    selectedIcon: () => <PinnedSelected fontSize={fontSize} />,
+    unselectedIcon: () => <PinnedUnselected fontSize={fontSize} />,
     link: "/dashboard/my-pages",
   },
   {
-    label: "Plant",
-    selectedIcon: () => <AddIconSelected fontSize={fontSize} />,
-    unselectedIcon: () => <AddIconUnselected fontSize={fontSize} />,
-    link: "/dashboard/create-cover",
+    label: "Continue",
+    selectedIcon: () => (
+      <ContinueReadingSelected
+        sx={{ transform: "scaleX(-1)" }}
+        fontSize={fontSize}
+      />
+    ),
+    unselectedIcon: () => (
+      // <Adjustment flipHorizontal={true}>
+      <ContinueReadingUnselected
+        sx={{ transform: "scaleX(-1)" }}
+        fontSize={fontSize}
+      />
+      // </Adjustment>
+    ),
+    link: "/dashboard/my-bookmarks",
   },
 ];
 
