@@ -23,6 +23,7 @@ import BrowsePage from "./pages/contentPages/BrowsePage/BrowsePage";
 import { Provider } from "react-redux";
 import { store } from "./common/store/store";
 import DashboardPage from "./pages/templatePages/DashboardPage/DashboardPage";
+import VisTesting from "./test/VisTesting";
 function App() {
   return (
     <>
@@ -32,6 +33,10 @@ function App() {
           <Route
             path=''
             element={<LandingPage />}
+          />
+          <Route
+            path='vis'
+            element={<VisTesting />}
           />
 
           <Route
