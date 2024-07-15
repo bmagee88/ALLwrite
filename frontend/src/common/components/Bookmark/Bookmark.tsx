@@ -5,6 +5,7 @@ import SelectableIcon from "../SelectableIcon/SelectableIcon";
 import BookmarkUnselected from "@mui/icons-material/BookmarkBorderOutlined";
 import BookmarkSelected from "@mui/icons-material/Bookmark";
 
+const BOOKMARK_BY_COVER_BY_USER_ENDPOINT = `/api/bookmark/by-cover-by-user`;
 interface BookmarkProps {
   userId: number;
   coverId: number;
@@ -17,7 +18,6 @@ const Bookmark: React.FC<BookmarkProps> = ({ userId, coverId, pageId }) => {
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
 
   //   console.log(`bookmarkedPageId${bookmarkedPageId}isBookmarked${isBookmarked}`);
-  const BOOKMARK_BY_COVER_BY_USER_ENDPOINT = `/api/bookmark/by-cover-by-user`;
   useEffect(() => {
     const fetchBookmarkByUserAndCover = async (): Promise<void> => {
       const result = await fetch(BOOKMARK_BY_COVER_BY_USER_ENDPOINT, {
@@ -41,7 +41,7 @@ const Bookmark: React.FC<BookmarkProps> = ({ userId, coverId, pageId }) => {
 
     // console.log("fetching bookmark for cover");
     fetchBookmarkByUserAndCover();
-  }, [BOOKMARK_BY_COVER_BY_USER_ENDPOINT, bookmarkedPageId, coverId, pageId, userId]);
+  }, [bookmarkedPageId, coverId, pageId, userId]);
 
   const updateBookmarkedPageForStory = async () => {
     const upsertBookmarkData = {
