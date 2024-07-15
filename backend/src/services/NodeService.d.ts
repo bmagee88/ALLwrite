@@ -67,4 +67,8 @@ export function getBookmarkByUserIdAndCoverId(
   coverId: number
 ): void;
 
-export function getContinueReadingByUserId(user_id: number): void;
+export function getContinueReadingByUserId(client: Client, user_id: string): void;
+
+export function togglePin(client: Client, userId: string, pageId: string): void;
+
+export function getPinByUserByPage(client: Client, userId: string, pageId: string): void;
