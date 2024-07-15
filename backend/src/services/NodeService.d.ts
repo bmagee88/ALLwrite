@@ -67,4 +67,4 @@ export function getBookmarkByUserIdAndCoverId(
   coverId: number
 ): void;
 
-export function getContributionsByUserId(user_id: number): void;
+export function getContinueReadingByUserId(user_id: number): void;

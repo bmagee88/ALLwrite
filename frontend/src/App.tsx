@@ -23,7 +23,7 @@ import BrowsePage from "./pages/contentPages/BrowsePage/BrowsePage";
 import { Provider } from "react-redux";
 import { store } from "./common/store/store";
 import DashboardPage from "./pages/templatePages/DashboardPage/DashboardPage";
-import MyContributionsPage from "./pages/profilePages/MyContributionsPage/MyContributionsPage";
+import ContinueReadingPage from "./pages/profilePages/ContinueReadingPage/ContinueReadingPage";
 function App() {
   return (
     <>
@@ -121,8 +121,8 @@ function App() {
               element={<SettingsPage />}
             />
             <Route
-              path='my-contributions'
-              element={<MyContributionsPage />}
+              path='continue-reading'
+              element={<ContinueReadingPage />}
             />
             <Route
               path='my-covers'

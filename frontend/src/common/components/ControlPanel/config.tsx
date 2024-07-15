@@ -86,7 +86,7 @@ export const topNavItems: MenuItem[] = [
       />
       // </Adjustment>
     ),
-    link: "/dashboard/my-bookmarks",
+    link: "/dashboard/continue-reading",
   },
 ];
 
