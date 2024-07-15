@@ -348,10 +348,11 @@ export async function upsertBookmark(
 ) {
   try {
     const query = `
-      INSERT INTO page_bookmarks (user_id, cover_id, page_id)
-      VALUES($1,$2,$3)
+      INSERT INTO page_bookmarks (user_id, cover_id, page_id, updated_at)
+      VALUES($1,$2,$3, NOW())
       ON CONFLICT (user_id, cover_id)
-      DO UPDATE SET page_id = EXCLUDED.page_id
+      DO UPDATE SET page_id = EXCLUDED.page_id,
+      updated_at = NOW()
       RETURNING *;
     `;
     const values = [userId, coverId, pageId];
@@ -370,7 +371,7 @@ export async function upsertBookmark(
 }
 export async function getAllCoversBookmarksByUserId(client: Client, userId: number) {
   try {
-    const query = `select * from page_bookmarks where user_id = $1;`;
+    const query = `select * from page_bookmarks where user_id = $1 order by updated_at desc;`;
     const values = [userId];
 
     const result = await client.query(query, values);
