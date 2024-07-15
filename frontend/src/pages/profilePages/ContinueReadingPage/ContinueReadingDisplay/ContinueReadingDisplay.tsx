@@ -16,19 +16,20 @@ interface ContinueReadingDisplayProps {
 const ContinueReadingDisplay: React.FC<ContinueReadingDisplayProps> = ({ bookmarks }) => {
   return (
     <Box>
-      {bookmarks.map((cont, index) => {
+      {bookmarks.map((bookmark, index) => {
+        const { covertitle, lastupdated, pageid, pagebody } = bookmark;
         return (
           <Accordion key={index}>
             <AccordionSummary
               // expandIcon={<ArrowDropDownIcon />}
               aria-controls='panel1-content'
               id='panel1-header'>
-              <Typography fontWeight={"bold"}>{cont.covertitle}</Typography>
-              <Typography sx={{ pl: ".5rem", color: "grey" }}>{cont.lastupdated}</Typography>
+              <Typography fontWeight={"bold"}>{covertitle}</Typography>
+              <Typography sx={{ pl: ".5rem", color: "grey" }}>{lastupdated}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <StyledLink to={`/dashboard/reading/${cont.covertitle}/${cont.pageid}`}>
-                <Typography>{cont.pagebody}</Typography>
+              <StyledLink to={`/dashboard/reading/${covertitle}/${pageid}`}>
+                <Typography>{pagebody}</Typography>
               </StyledLink>
             </AccordionDetails>
           </Accordion>
