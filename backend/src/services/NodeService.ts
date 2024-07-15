@@ -26,6 +26,21 @@ export async function createCover(client: Client, cover: Cover) {
   return res.rows;
 }
 
+export async function getContributionsByUserId(client: Client, user_id: number) {
+  console.log("in service getContributionsByUserId");
+  const query = `select b.user_id as userId, c.id as coverId, c.title as coverTitle, p.id as pageId, p.body as pageBody
+  from page_bookmarks b 
+  join covers c 
+  on b.cover_id = c.id 
+  join page p 
+  on b.page_id = p.id 
+  where b.user_id = $1`;
+  const values = [user_id];
+  const res = await client.query(query, values);
+  console.log("rows", res.rows);
+  return res.rows;
+}
+
 export async function login(client: Client, username: string, password: string) {
   console.log("username", username);
   console.log("password", password);
