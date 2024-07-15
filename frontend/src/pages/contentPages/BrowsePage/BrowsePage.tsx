@@ -10,22 +10,9 @@ import ScrollableTagsContainer, {
 import AddIcon from "@mui/icons-material/Add";
 import AddCoverFab from "../../../common/components/AddCoverFab/AddCoverFab";
 import { setSelected } from "../../../common/store/nav/navSlice";
+import { GENRES } from "../../../configs/static-data";
 
-const tags: Tag[] = [
-  "Genre1",
-  "Genre1",
-  "Genre1",
-  "Genre1",
-  "Genre1",
-  "Genre1",
-  "Genre1",
-  "Genre1",
-  "Genre1",
-  "Genre1",
-  "Genre1",
-  "Genre1",
-  "Genre1",
-];
+const tags: Tag[] = GENRES;
 
 export interface Cover {
   cover_id: number;
