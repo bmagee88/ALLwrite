@@ -23,6 +23,7 @@ import BrowsePage from "./pages/contentPages/BrowsePage/BrowsePage";
 import { Provider } from "react-redux";
 import { store } from "./common/store/store";
 import DashboardPage from "./pages/templatePages/DashboardPage/DashboardPage";
+import MyContributionsPage from "./pages/profilePages/MyContributionsPage/MyContributionsPage";
 function App() {
   return (
     <>
@@ -118,6 +119,10 @@ function App() {
             <Route
               path='settings'
               element={<SettingsPage />}
+            />
+            <Route
+              path='my-contributions'
+              element={<MyContributionsPage />}
             />
             <Route
               path='my-covers'

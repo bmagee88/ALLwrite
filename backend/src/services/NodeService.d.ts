@@ -66,3 +66,5 @@ export function getBookmarkByUserIdAndCoverId(
   userId: number,
   coverId: number
 ): void;
+
+export function getContributionsByUserId(user_id: number): void;

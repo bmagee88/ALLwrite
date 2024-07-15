@@ -56,7 +56,7 @@ export const topNavItems: MenuItem[] = [
     label: "My Contributions",
     selectedIcon: () => <ContributionSelected fontSize={fontSize} />,
     unselectedIcon: () => <ContributionUnselected fontSize={fontSize} />,
-    link: "/dashboard/my-covers",
+    link: "/dashboard/my-contributions",
   },
   {
     label: "Explore",
