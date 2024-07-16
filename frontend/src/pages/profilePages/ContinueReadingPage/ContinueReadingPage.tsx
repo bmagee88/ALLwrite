@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import MyContributionsDisplay from "./ContinueReadingDisplay/ContinueReadingDisplay";
 // import { fetchCoversAndPagesByUser } from "./api";
 import { RootState } from "../../../common/store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { setBookmarks } from "../../../common/store/continueReading/continueReading";
+import { setBookmarks } from "../../../common/store/continueReading/continueReadingSlice";
 import { useNavigate } from "react-router";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
+import ContinueReadingDisplay from "./ContinueReadingDisplay/ContinueReadingDisplay";
 
 const ContinueReadingPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -39,7 +39,7 @@ const ContinueReadingPage: React.FC = () => {
       <Box sx={{ paddingLeft: "1rem", paddingTop: ".5rem" }}>
         <Typography fontSize={24}>Continue Reading</Typography>
       </Box>
-      <MyContributionsDisplay bookmarks={bookmarks} />
+      <ContinueReadingDisplay bookmarks={bookmarks} />
     </Box>
   );
 };
