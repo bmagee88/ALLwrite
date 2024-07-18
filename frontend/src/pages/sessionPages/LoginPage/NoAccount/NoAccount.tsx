@@ -11,7 +11,7 @@ const NoAccount = () => {
           sx={{ whiteSpace: "nowrap" }}>
           Don't have an account?{" "}
         </Box>
-        <Link to='register'>Register Here</Link>
+        <Link to='/register'>Register Here</Link>
       </Typography>
     </Box>
   );
