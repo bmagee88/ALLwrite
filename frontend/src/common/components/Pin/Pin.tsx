@@ -13,6 +13,7 @@ interface PinProps {
 }
 
 const Pin: React.FC<PinProps> = ({ userId, pageId }) => {
+  console.log(`userId${userId}--pageId${pageId}`);
   const [isPinned, setIsPinned] = useState<boolean>(false);
 
   useEffect(() => {
