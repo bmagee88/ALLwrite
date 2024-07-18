@@ -11,6 +11,8 @@ import { setCoverId } from "../../common/store/cover/coverSlice";
 import Bookmark from "../../common/components/Bookmark/Bookmark";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
+import Pin from "../../common/components/Pin/Pin";
+import CoverSample from "../../assets/images/sample_cover_image.png";
 
 export interface Choice {
   author: string;
@@ -234,12 +236,28 @@ const ReadingPage: React.FC = () => {
         </div>
         <div className='row mt-4 border border-dark p-3 justify-content-center'>
           <div className='row'>
-            <Bookmark
-              userId={ACTIVE_USER_ID}
-              coverId={cover.id}
-              pageId={this_page_id ? parseInt(this_page_id) : -1}
-            />
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Box>
+                <Box sx={{ display: "flex" }}>
+                  <Bookmark
+                    userId={ACTIVE_USER_ID}
+                    coverId={cover.id}
+                    pageId={this_page_id ? parseInt(this_page_id) : -1}
+                  />
+                  <Pin
+                    userId={ACTIVE_USER_ID}
+                    pageId={this_page_id ? parseInt(this_page_id) : -1}
+                  />
+                </Box>
+              </Box>
+              <Box>Flags</Box>
+            </Box>
           </div>
+          <Box
+            component='img'
+            sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+            src={CoverSample}
+          />
           <div className='col-6 border'>{page.body}</div>
         </div>
         <div className='row justify-content-center border border-dark mt-2'>

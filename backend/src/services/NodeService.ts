@@ -1,10 +1,51 @@
 import { compare } from "bcryptjs";
 import { Client, QueryResult } from "pg";
 import User from "../entities/User.entity";
-import Page from "../entities/Page.entity";
 import Read from "../entities/Read.entity";
 import Cover from "../entities/Cover.entity";
 import PageDto from "../dtos/PageDto";
+
+export async function togglePin(client: Client, userId: string, pageId: string) {
+  try {
+    const query = `
+    WITH deleted AS (
+      DELETE FROM pinned_pages
+      WHERE user_id = $1 AND page_id = $2
+      RETURNING *
+    )
+    INSERT INTO pinned_pages (user_id, page_id)
+    SELECT $1, $2
+    WHERE NOT EXISTS (SELECT 1 FROM deleted)
+    returning *;
+  `;
+
+    const values = [userId, pageId];
+    const result = await client.query(query, values);
+    console.log("togglePin result", result);
+
+    return result.rowCount;
+  } catch (err) {
+    console.error("Error executing toggling pin", err);
+    return "Internal Server Error";
+  }
+}
+
+export async function getPinByUserByPage(client: Client, userId: string, pageId: string) {
+  try {
+    const query = `
+    SELECT * from pinned_pages where user_id = $1 AND page_id = $2
+  `;
+
+    const values = [userId, pageId];
+    const result = await client.query(query, values);
+    console.log("getPinByUserByPage result.rowcount", result.rowCount);
+
+    return result.rowCount;
+  } catch (err) {
+    console.error("Error executing toggling pin", err);
+    return "Internal Server Error";
+  }
+}
 
 export async function getChoices(client: Client, parent_id: string, limit: string) {
   // console.log("pid, limit", parent_id, limit);

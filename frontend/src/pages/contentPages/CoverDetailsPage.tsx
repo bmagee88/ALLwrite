@@ -6,6 +6,7 @@ import { Cover } from "./BrowsePage/BrowsePage";
 import Button from "@mui/material/Button";
 import { Box, Typography } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import CoverSample from "../../assets/images/sample_cover_image.png";
 
 const CoverDetails: React.FC = () => {
   const { cover_id: x } = useParams();
@@ -37,6 +38,15 @@ const CoverDetails: React.FC = () => {
   return (
     <>
       <Box className='container'>
+        <Box className='row'>
+          <Box className='col'>
+            <Box
+              component='img'
+              sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+              src={CoverSample}
+            />
+          </Box>
+        </Box>
         <Box className='row'>
           <Box className='col'>{cover.title}</Box>
         </Box>
