@@ -26,15 +26,16 @@ export async function createCover(client: Client, cover: Cover) {
   return res.rows;
 }
 
-export async function getContributionsByUserId(client: Client, user_id: number) {
-  console.log("in service getContributionsByUserId");
-  const query = `select b.user_id as userId, c.id as coverId, c.title as coverTitle, p.id as pageId, p.body as pageBody
+export async function getContinueReadingByUserId(client: Client, user_id: number) {
+  console.log("in service getContinueReadingByUserId");
+  const query = `select b.user_id as userId, c.id as coverId, c.title as coverTitle, p.id as pageId, p.body as pageBody, b.updated_at as lastUpdated
   from page_bookmarks b 
   join covers c 
   on b.cover_id = c.id 
   join page p 
   on b.page_id = p.id 
-  where b.user_id = $1`;
+  where b.user_id = $1
+  order by b.updated_at desc`;
   const values = [user_id];
   const res = await client.query(query, values);
   console.log("rows", res.rows);
@@ -386,7 +387,7 @@ export async function upsertBookmark(
 }
 export async function getAllCoversBookmarksByUserId(client: Client, userId: number) {
   try {
-    const query = `select * from page_bookmarks where user_id = $1 order by updated_at desc;`;
+    const query = `select * from page_bookmarks where user_id = $1`;
     const values = [userId];
 
     const result = await client.query(query, values);
