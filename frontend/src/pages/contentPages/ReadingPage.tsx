@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Cover } from "./BrowsePage/BrowsePage";
 import { setCoverId } from "../../common/store/cover/coverSlice";
 import Bookmark from "../../common/components/Bookmark/Bookmark";
+import Box from "@mui/material/Box";
+import { Typography } from "@mui/material";
 
 export interface Choice {
   author: string;
@@ -286,20 +288,26 @@ const ReadingPage: React.FC = () => {
         )}
         {isRatedByActiveUser && (
           <div className='row justify-content-evenly mt-2 border border-dark p-3'>
-            {choices.map((choice) => {
-              return (
-                <ChoiceCard
-                  key={uuidv4()}
-                  title={cover_title || ""}
-                  choice={[choice]}
-                  setTrigger={setTrigger}
-                  trigger={trigger}
-                  flags={[{ author: false, rating: false } as Flag]}
-                  depth={choice.depth}
-                />
-              );
-            })}
-            <div className='row justify-content-end mt-2'>
+            {choices.length !== 0 &&
+              choices.map((choice) => {
+                return (
+                  <ChoiceCard
+                    key={uuidv4()}
+                    title={cover_title || ""}
+                    choice={[choice]}
+                    setTrigger={setTrigger}
+                    trigger={trigger}
+                    flags={[{ author: false, rating: false } as Flag]}
+                    depth={choice.depth}
+                  />
+                );
+              })}
+            {choices.length === 0 && (
+              <Box sx={{ display: "flex", justifyContent: "center" }}>
+                <Typography sx={{ fontWeight: "bold" }}>The End</Typography>
+              </Box>
+            )}
+            <div className='row justify-content-center mt-2'>
               <div className='col-1 w-auto'>
                 <Link to={`/dashboard/create-page/${this_page_id}`}>
                   <button>+ add new choice</button>

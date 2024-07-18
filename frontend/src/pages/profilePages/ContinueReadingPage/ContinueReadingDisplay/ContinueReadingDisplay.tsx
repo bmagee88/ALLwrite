@@ -1,8 +1,9 @@
 import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from "@mui/material";
 import React from "react";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import TimeAgo from "../../../../common/components/TimeAgo/TimeAgo";
+import CoverSample from "../../../../assets/images/sample_cover_image.png";
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -17,15 +18,31 @@ const ContinueReadingDisplay: React.FC<ContinueReadingDisplayProps> = ({ bookmar
   return (
     <Box>
       {bookmarks.map((bookmark, index) => {
-        const { covertitle, lastupdated, pageid, pagebody } = bookmark;
+        const { covertitle, lastupdated, pageid, pagebody, pagenum } = bookmark;
         return (
           <Accordion key={index}>
             <AccordionSummary
               // expandIcon={<ArrowDropDownIcon />}
               aria-controls='panel1-content'
               id='panel1-header'>
-              <Typography fontWeight={"bold"}>{covertitle}</Typography>
-              <Typography sx={{ pl: ".5rem", color: "grey" }}>{lastupdated}</Typography>
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <Box
+                  component='img'
+                  sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  src={CoverSample}
+                />
+                <Box>
+                  <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+                    <Box>
+                      <Typography fontWeight={"bold"}>{covertitle}</Typography>
+                    </Box>
+                    <Box>
+                      <TimeAgo timestamp={lastupdated} />
+                    </Box>
+                  </Box>
+                  <Box>Pg.&nbsp;{pagenum}</Box>
+                </Box>
+              </Box>
             </AccordionSummary>
             <AccordionDetails>
               <StyledLink to={`/dashboard/reading/${covertitle}/${pageid}`}>

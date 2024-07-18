@@ -28,7 +28,7 @@ export async function createCover(client: Client, cover: Cover) {
 
 export async function getContinueReadingByUserId(client: Client, user_id: number) {
   console.log("in service getContinueReadingByUserId");
-  const query = `select b.user_id as userId, c.id as coverId, c.title as coverTitle, p.id as pageId, p.body as pageBody, b.updated_at as lastUpdated
+  const query = `select b.user_id as userId, c.id as coverId, c.title as coverTitle, p.id as pageId, p.body as pageBody, b.updated_at as lastUpdated, p.page_num as pagenum
   from page_bookmarks b 
   join covers c 
   on b.cover_id = c.id 
