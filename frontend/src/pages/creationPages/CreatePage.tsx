@@ -11,7 +11,7 @@ const CreatePage = () => {
 
   const [cover, setCover] = useState();
   const CREATE_PAGE_ENDPOINT = `/api/page/create-page-for/${parent_id}`;
-  const CURRENT_COVER_ENDPOINT = `/api/cover/cover-by/${parent_id}`;
+  const CURRENT_COVER_ENDPOINT = `/api/cover/cover-by/${parent_id}`; // TODO - remove and replace with get-page-by-id
   const ACTIVE_USERNAME = useSelector((state: RootState) => state.user.user?.username);
   // const parent_pg_num = 45
   if (!ACTIVE_USERNAME) {
@@ -43,6 +43,7 @@ const CreatePage = () => {
       // page_num: cover.hlevel + 1,
       page_num: cover.hlevel + 1,
       author: ACTIVE_USERNAME,
+      cover_id: cover.id,
     };
 
     // console.log("prompt", typeof e.target.elements.prompt.value);

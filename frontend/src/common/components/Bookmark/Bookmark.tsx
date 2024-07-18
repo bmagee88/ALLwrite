@@ -13,7 +13,7 @@ interface BookmarkProps {
 }
 
 const Bookmark: React.FC<BookmarkProps> = ({ userId, coverId, pageId }) => {
-  //   console.log(`userId${userId}coverId${coverId}pageId${pageId}`);
+  console.log(`userId${userId}--coverId${coverId}--pageId${pageId}`); // TODO coverId is missing while page is being fetched on reading page
   const [bookmarkedPageId, setBookmarkedPageId] = useState<number>(-1);
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
 

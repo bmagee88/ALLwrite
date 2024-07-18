@@ -37,6 +37,7 @@ interface Page {
   parent_id: string | null;
   prompt: string | null;
   updated_at: string;
+  cover_id: number;
 }
 
 export interface Flag {
@@ -65,7 +66,7 @@ const ReadingPage: React.FC = () => {
   const [isRatedByActiveUser, setIsRatedByActiveUser] = useState(false);
   const [choiceLimit] = useState(3);
   const [trigger, setTrigger] = useState(false);
-  const [cover, setCover] = useState<Cover>({} as Cover);
+  // const [cover, setCover] = useState<Cover>({} as Cover);
   const [pageIsRead, setPageIsRead] = useState(false);
   const [isFirstPage, setIsFirstPage] = useState(false);
 
@@ -75,15 +76,15 @@ const ReadingPage: React.FC = () => {
     (state: RootState) => state.user.user ?? { user_id: 0, username: "Anon" }
   );
 
-  const coverId = useSelector((state: RootState) => state.cover.coverId);
-  console.log("redux coverId", coverId);
+  // const coverId = useSelector((state: RootState) => state.cover.coverId);
+  // console.log("redux coverId", coverId);
 
   if (!ACTIVE_USER_ID) {
     navigate("/login");
   }
 
-  const CURRENT_PAGE_ENDPOINT = `/api/page/page/${this_page_id}`;
-  const CURRENT_COVER_ENDPOINT = `/api/cover/cover-by/${this_page_id}`;
+  const CURRENT_PAGE_ENDPOINT = `/api/page/page/${this_page_id}`; // TODO rm page/page from api
+  const CURRENT_COVER_ENDPOINT = `/api/cover/cover-by/${this_page_id}`; // TODO rm this and replace with the cover_id from fetched page
   const CHOICES_ENDPOINT = `/api/choice/choices-for/${this_page_id}?limit=${choiceLimit}`;
   const AUTHOR_ENDPOINT = `/api/cover/author-choices?author=${username}&parent_id=${this_page_id}`;
   // const RATING_ENDPOINT = `/api/rating-choices?parent_id=${this_page_id}`;
@@ -120,19 +121,19 @@ const ReadingPage: React.FC = () => {
       setPageIsRead(() => pageIsRead.length === 0);
     };
 
-    const fetchCover = async () => {
-      console.log("fetching cover");
-      const result = await fetch(CURRENT_COVER_ENDPOINT);
-      const data = await result.json();
-      const cover = data.data[0];
-      console.log("cover", cover);
-      // if (coverId < 0 || cover.id !== coverId) {
-      /////////////
-      // }
-      console.log("setting cover in Redux");
-      dispatch(setCoverId(cover.id));
-      setCover(cover);
-    };
+    // const fetchCover = async () => {
+    //   console.log("fetching cover");
+    //   const result = await fetch(CURRENT_COVER_ENDPOINT);
+    //   const data = await result.json();
+    //   const cover = data.data[0];
+    //   console.log("cover", cover);
+    //   // if (coverId < 0 || cover.id !== coverId) {
+    //   /////////////
+    //   // }
+    //   console.log("setting cover in Redux");
+    //   dispatch(setCoverId(cover.id));
+    //   // setCover(cover);
+    // };
 
     const fetchPage = async () => {
       const result = await fetch(CURRENT_PAGE_ENDPOINT);
@@ -144,6 +145,9 @@ const ReadingPage: React.FC = () => {
       } else {
         setIsFirstPage(() => false);
       }
+
+      // console.log("setting cover in Redux"); // TODO preservation of something i haven't looked into yet
+      // dispatch(setCoverId(page.cover_id));
     };
     const fetchRandomChoices = async () => {
       const result = await fetch(CHOICES_ENDPOINT);
@@ -189,7 +193,7 @@ const ReadingPage: React.FC = () => {
     fetchAuthorChoice(); //buggy
     fetchPage();
     fetchRandomChoices();
-    fetchCover();
+    // fetchCover();
     postRead();
   }, [
     trigger,
@@ -202,25 +206,21 @@ const ReadingPage: React.FC = () => {
     this_page_id,
     CHOICE_DEPTHS_ENDPOINT,
     AUTHOR_ENDPOINT,
+    dispatch,
   ]);
 
   return (
     <>
       <div className='container bg=light'>
-        {/* pageId: {page.id}
-        <br></br>
-        bm_pgId: {bookmarkedPageId}
-        <br></br>
-        type of pageId: {typeof bookmarkedPageId} */}
         <div className='row justify-content-between border border-dark mt-2'>
           <div className='col-1 w-auto'>
-            {isFirstPage && <Link to={`/dashboard/cover-details/${cover.id}`}>back</Link>}
+            {isFirstPage && <Link to={`/dashboard/cover-details/${page.cover_id}`}>back</Link>}
             {!isFirstPage && (
               <Link to={`/dashboard/reading/${cover_title}/${page.parent_id}`}>back</Link>
             )}
           </div>
           <div className='col-1 w-auto'>
-            <Link to={`/dashboard/cover-details/${cover.id}`}>{cover_title}</Link>
+            <Link to={`/dashboard/cover-details/${page.cover_id}`}>{cover_title}</Link>
             {pageIsRead && (
               <span>
                 {" "}
@@ -241,7 +241,7 @@ const ReadingPage: React.FC = () => {
                 <Box sx={{ display: "flex" }}>
                   <Bookmark
                     userId={ACTIVE_USER_ID}
-                    coverId={cover.id}
+                    coverId={page.cover_id}
                     pageId={this_page_id ? parseInt(this_page_id) : -1}
                   />
                   <Pin

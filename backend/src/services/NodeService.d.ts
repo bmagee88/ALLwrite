@@ -72,3 +72,7 @@ export function getContinueReadingByUserId(client: Client, user_id: string): voi
 export function togglePin(client: Client, userId: string, pageId: string): void;
 
 export function getPinByUserByPage(client: Client, userId: string, pageId: string): void;
+
+export function getContributionsByUserId(client: Client, user_id: string);
+
+export function addCoverIdsToPages(client: Client): void;

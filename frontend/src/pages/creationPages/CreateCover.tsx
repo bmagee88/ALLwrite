@@ -14,6 +14,7 @@ import { GENRES } from "../../configs/static-data";
 const CreateCover: React.FC = () => {
   const CREATE_COVER_ENDPOINT = "/api/cover/create-cover";
   const CREATE_PAGE_ENDPOINT = "/api/page/create-page-for/0";
+  const UPDATE_PAGE_WITH_COVER_ID_ENDPOINT = "/api/page/update-page-with-coverid";
   const ACTIVE_USER = useSelector((state: RootState) => state.user.user);
   console.log("active user", ACTIVE_USER);
 
@@ -33,6 +34,7 @@ const CreateCover: React.FC = () => {
       body_text: e.target.elements.body.value,
       page_num: 1,
       author: ACTIVE_USER ? ACTIVE_USER.username : "default",
+      cover_id: 0,
     };
 
     let resp = await fetch(CREATE_PAGE_ENDPOINT, {
@@ -51,7 +53,7 @@ const CreateCover: React.FC = () => {
 
   const postCover = async (e, first_page) => {
     console.log("posting cover");
-    var form_data = {
+    let form_data = {
       title: e.target.elements.title.value,
       author: ACTIVE_USER ? ACTIVE_USER.username : "default",
       genre: e.target.elements.genre.value,
@@ -59,19 +61,45 @@ const CreateCover: React.FC = () => {
       first_page: first_page,
     };
 
-    fetch(e.target.action, {
+    const response = await fetch(e.target.action, {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(form_data),
+    });
+
+    if (response.status !== 200) {
+      throw new Error(response.statusText);
+    }
+
+    const data = await response.json();
+    const cover_data = data.data;
+    return cover_data;
+  };
+
+  const updatePageWithCoverId = async (e, page_id, cover_id) => {
+    console.log("updating page with coverid:", cover_id);
+    let payload = {
+      page_id,
+      cover_id,
+    };
+    fetch(UPDATE_PAGE_WITH_COVER_ID_ENDPOINT, {
+      // go to update page route
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
     })
       .then((response) => {
         if (response.status !== 200) {
           throw new Error(response.statusText);
+        } else {
+          navigate(`/dashboard/browse`);
         }
-        navigate(`/dashboard/browse`);
       })
       .catch((err) => {
         console.log(err);
@@ -81,7 +109,11 @@ const CreateCover: React.FC = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     let page_data = await postPage(e);
-    await postCover(e, page_data.data[0].id);
+    let cover_data = await postCover(e, page_data.data[0].id);
+    console.log("cover_data", cover_data);
+    console.log("cover_data.id", cover_data[0].id);
+    await updatePageWithCoverId(e, page_data.data[0].id, cover_data[0].id);
+    console.log("create cover success (+page, +cover, +updatepage)");
   };
 
   return (
