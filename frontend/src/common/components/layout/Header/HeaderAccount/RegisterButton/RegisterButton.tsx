@@ -11,7 +11,7 @@ const RegisterButton: React.FC = () => {
           display: "block",
         },
       }}>
-      <Link to='register'>
+      <Link to='/register'>
         <Button variant='outlined'>
           <span className='text-nowrap'>Sign Up</span>
         </Button>
