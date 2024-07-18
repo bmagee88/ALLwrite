@@ -7,11 +7,24 @@ import {
   getIfPageRead,
   getHighestRatingChoices,
   getLongestStoryChoicesFrom,
+  updatePageWithCoverId,
 } from "../../services/NodeService.js";
 import ReadDto from "../../dtos/ReadDto.js";
 import PageDto from "../../dtos/PageDto.js";
-import { Client } from "pg";
 // import Page from "../../entities/Page.entity.js";
+
+router.put("/update-page-with-coverid", (req, res) => {
+  const client = req.client;
+  const { page_id, cover_id } = req.body;
+  console.log("page, cover", page_id, cover_id);
+  updatePageWithCoverId(client, page_id, cover_id)
+    .then((result) => {
+      res.status(200).json({ data: result });
+    })
+    .catch((err: Error) => {
+      console.log(err);
+    });
+});
 
 router.get("/page/:page_id", (req, res) => {
   const client = req.client;
@@ -56,7 +69,8 @@ router.post("/create-page-for/:parent_id", (req, res) => {
     adjusted_prompt,
     req.body.body_text,
     parseInt(req.body.page_num),
-    req.body.author
+    req.body.author,
+    req.body.cover_id
   );
   console.log("page at before createing page");
   createPage(client, page)
