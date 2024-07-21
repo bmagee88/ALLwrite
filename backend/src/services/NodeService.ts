@@ -5,67 +5,6 @@ import Read from "../entities/Read.entity";
 import Cover from "../entities/Cover.entity";
 import PageDto from "../dtos/PageDto";
 
-export async function addCoverIdsToPages(client: Client) {
-  console.log("XXX adding coverid to pages");
-
-  let pageAndCovers: [{ pageid: number; coverid: number | null }] = [{ pageid: -1, coverid: -1 }];
-  pageAndCovers.pop();
-  // get all page ids
-  // for each pageid get the coverid associated with it
-  // update page set coverid where pageid = i
-  const getAllPages_Query = `
-    select id from page;
-  `;
-  const pageIdQueryResults = await client.query(getAllPages_Query);
-  const pagesArr = [];
-  for (let i = 0; i < pageIdQueryResults.rows.length; i++) {
-    pageAndCovers.push({ pageid: pageIdQueryResults.rows[i].id, coverid: null });
-    pagesArr.push(pageIdQueryResults.rows[i].id);
-  }
-
-  // console.log("pagesArr", pagesArr);
-  // console.log("pageAndCovers", pageAndCovers);
-
-  for (let i = 0; i < pageAndCovers.length; i++) {
-    // console.log("=====================");
-    const cover = await getCoverByPageId(client, pageAndCovers[i].pageid + "");
-    // console.log("cover", cover);
-
-    const pc_cover_index = pageAndCovers.findIndex((obj) => {
-      // console.log("obj", obj);
-      return obj.pageid === pageAndCovers[i].pageid;
-    });
-    // console.log("pc_cover_index (not 0 everytime)", pc_cover_index);
-    if (cover.length === 0) {
-      // console.log("cover not found, setting to page id");
-      pageAndCovers[pc_cover_index].coverid = null;
-      // console.log("pageAndCovers[pc_cover_index].coverid", pageAndCovers[pc_cover_index].coverid);
-    } else {
-      // console.log("cover found, taking cover id");
-      // console.log("cover id", cover[0].id);
-      pageAndCovers[pc_cover_index].coverid = cover[0].id;
-      // console.log("pageAndCovers[pc_cover_index].coverid", pageAndCovers[pc_cover_index].coverid);
-    }
-  }
-
-  // console.log("page and covers", pageAndCovers);
-
-  const updateQuery = `update page set cover_id = $1 where id = $2 returning *`;
-  for (let i = 0; i < pageAndCovers.length; i++) {
-    const values = [pageAndCovers[i].coverid, pageAndCovers[i].pageid];
-    console.log("updatevalues", values);
-
-    try {
-      const result = await client.query(updateQuery, values);
-      console.log("result.rows", result.rows);
-    } catch (err) {
-      console.log("error happened during insert");
-    }
-  }
-
-  return "test good (hopefully)";
-}
-
 export async function togglePin(client: Client, userId: string, pageId: string) {
   try {
     const query = `
@@ -137,36 +76,6 @@ export async function updatePageWithCoverId(client: Client, pageid: number, cove
   return res.rows;
 }
 
-export async function getContinueReadingByUserId(client: Client, user_id: number) {
-  console.log("in service getContinueReadingByUserId");
-  const query = `select b.user_id as userId, c.id as coverId, c.title as coverTitle, p.id as pageId, p.body as pageBody, b.updated_at as lastUpdated, p.page_num as pagenum
-  from page_bookmarks b 
-  join covers c 
-  on b.cover_id = c.id 
-  join page p 
-  on b.page_id = p.id 
-  where b.user_id = $1
-  order by b.updated_at desc`;
-  const values = [user_id];
-  const res = await client.query(query, values);
-  console.log("rows", res.rows);
-  return res.rows;
-}
-
-export async function getContributionsByUserId(client: Client, user_id: string) {
-  console.log("in service getContributionsByUserId");
-  const query = `select c.id as userId, c.id as coverId, c.title as coverTitle, p.id as pageId, p.body as pageBody, c.updated_at as lastUpdated, p.page_num as pagenum 
-  from covers c 
-  join page p 
-  on c.id = p.id 
-  where c.id = $1
-  order by c.updated_at desc`;
-  const values = [user_id];
-  const res = await client.query(query, values);
-  console.log("rows", res.rows);
-  return res.rows;
-}
-
 export async function login(client: Client, username: string, password: string) {
   console.log("username", username);
   console.log("password", password);
@@ -230,50 +139,6 @@ export async function isUsernameTaken(client: Client, username: string) {
   );
   console.log("usernames", result.rows);
   return Array.isArray(result.rows) && result.rows.length !== 0;
-}
-
-export async function createUser(client: Client, user: User) {
-  //should be of type User
-  // should be of type User
-  const resUser: QueryResult<any> = await client
-    .query(`insert into allwrite_user (id) values (default) returning *;`)
-    .then((resUser) => {
-      // console.log("resUser.rows[0]", resUser.rows[0])
-      client.query(
-        `insert into user_profile (user_id, username, firstname, lastname, email, password) values (${resUser.rows[0].id}, '${user.username}', '${user.firstname}', '${user.lastname}', '${user.email}', '${user.password}');`
-      );
-      return resUser;
-    })
-    .then((resUser) => {
-      if (resUser.rows.length !== 0) {
-        client.query(
-          `insert into user_account (user_id, amount) values (${resUser.rows[0].id}, 100);`
-        );
-      }
-      return resUser;
-    })
-    .then((resUser) => {
-      if (resUser.rows.length !== 0) {
-        client.query(`insert into user_settings (user_id) values (${resUser.rows[0].id});`);
-      }
-      return resUser;
-    })
-    .catch((err) => {
-      // console.log(err);
-      return resUser;
-    });
-
-  // console.log("id from insert", resUser[0].id);
-  // if (resUser.rows.length !== 0) {
-  //   const resProfile = await client.query(
-  //     `insert into user_profile (user_id, username, firstname, lastname, email, password) values (${resUser.rows.id}, '${user.username}', '${user.firstname}', '${user.lastname}', '${user.email}', '${user.password}');`
-  //   );
-  //   const resAccount = await client.query(
-  //     `insert into user_account (user_id, amount) values (${resUser.rows.id}, 100;`
-  //   );
-  // }
-  // console.log(res.rows);
-  return resUser.rows;
 }
 
 export async function createPage(client: Client, page: PageDto) {
@@ -372,43 +237,6 @@ export async function getIfPageRead(client: Client, page_id: string, user_id: st
 export async function getCoverById(client: Client, cover_id: string) {
   const res = await client.query(`select * from covers where id = ${cover_id};`);
   // console.log(res.rows);
-  return res.rows;
-}
-
-/** this is recursive. Depreciate */
-export async function getCoverByPageId(client: Client, page_id: string) {
-  const res = await client.query(`with recursive tree AS (
-    SELECT n1.id, n1.parent_id, 1 as hlevel
-    from page n1
-    where n1.id = ${page_id}
-      
-    UNION all
-      
-    SELECT n2.id, n2.parent_id, hlevel + 1
-    FROM page n2
-    JOIN tree tr ON tr.parent_id = n2.id
-  )
-
-select  	  c.id as id
-, c.title
-, c.author
-, c.genre
-, c.summary
-, c.first_page
-, c.image_url
-, t.id as page_id
-, t.parent_id
-, t.hlevel
-, ${page_id} as leaf_node
-from covers c 
-join tree t
-on c.first_page = t.id
-where c.first_page = (
-select tr.id 
-from tree tr 
-where tr.parent_id is null)
-`);
-  // console.log("get cover by page id", res.rows);
   return res.rows;
 }
 

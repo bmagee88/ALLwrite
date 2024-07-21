@@ -12,8 +12,6 @@ export function login(client: Client, username: string, password: string): void;
 
 export function isUsernameTaken(client: Client, username: string): void;
 
-export function createUser(client: Client, user: User): void;
-
 export function createPage(client: Client, page: Page): void;
 
 export function insertUserRatingByUserIdAndPageId(
@@ -37,8 +35,6 @@ export function getRatingByUserAndPage(client: Client, user_id: string, page_id:
 export function getIfPageRead(client: Client, page_id: string, user_id: string): void;
 
 export function getCoverById(client: Client, cover_id: string): void;
-
-export function getCoverByPageId(client: Client, page_id: string): void;
 
 export function getPageById(client: Client, page_id: string): void;
 
@@ -67,12 +63,6 @@ export function getBookmarkByUserIdAndCoverId(
   coverId: number
 ): void;
 
-export function getContinueReadingByUserId(client: Client, user_id: string): void;
-
 export function togglePin(client: Client, userId: string, pageId: string): void;
 
 export function getPinByUserByPage(client: Client, userId: string, pageId: string): void;
-
-export function getContributionsByUserId(client: Client, user_id: string);
-
-export function addCoverIdsToPages(client: Client): void;
