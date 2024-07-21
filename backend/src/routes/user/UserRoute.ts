@@ -1,11 +1,11 @@
 import express from "express";
 const router = express.Router();
+import UserDto from "../../dtos/UserDto.js";
 import {
   createUser,
   getContinueReadingByUserId,
   getContributionsByUserId,
-} from "../../services/NodeService.js";
-import UserDto from "../../dtos/UserDto.js";
+} from "../../services/user/UserService.js";
 
 router.post("/create-user", (req, res) => {
   const client = req.client;

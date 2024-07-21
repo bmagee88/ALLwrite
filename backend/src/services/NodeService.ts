@@ -232,50 +232,6 @@ export async function isUsernameTaken(client: Client, username: string) {
   return Array.isArray(result.rows) && result.rows.length !== 0;
 }
 
-export async function createUser(client: Client, user: User) {
-  //should be of type User
-  // should be of type User
-  const resUser: QueryResult<any> = await client
-    .query(`insert into allwrite_user (id) values (default) returning *;`)
-    .then((resUser) => {
-      // console.log("resUser.rows[0]", resUser.rows[0])
-      client.query(
-        `insert into user_profile (user_id, username, firstname, lastname, email, password) values (${resUser.rows[0].id}, '${user.username}', '${user.firstname}', '${user.lastname}', '${user.email}', '${user.password}');`
-      );
-      return resUser;
-    })
-    .then((resUser) => {
-      if (resUser.rows.length !== 0) {
-        client.query(
-          `insert into user_account (user_id, amount) values (${resUser.rows[0].id}, 100);`
-        );
-      }
-      return resUser;
-    })
-    .then((resUser) => {
-      if (resUser.rows.length !== 0) {
-        client.query(`insert into user_settings (user_id) values (${resUser.rows[0].id});`);
-      }
-      return resUser;
-    })
-    .catch((err) => {
-      // console.log(err);
-      return resUser;
-    });
-
-  // console.log("id from insert", resUser[0].id);
-  // if (resUser.rows.length !== 0) {
-  //   const resProfile = await client.query(
-  //     `insert into user_profile (user_id, username, firstname, lastname, email, password) values (${resUser.rows.id}, '${user.username}', '${user.firstname}', '${user.lastname}', '${user.email}', '${user.password}');`
-  //   );
-  //   const resAccount = await client.query(
-  //     `insert into user_account (user_id, amount) values (${resUser.rows.id}, 100;`
-  //   );
-  // }
-  // console.log(res.rows);
-  return resUser.rows;
-}
-
 export async function createPage(client: Client, page: PageDto) {
   // page:Page
   // console.log("service: Page", page);

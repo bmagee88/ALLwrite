@@ -12,8 +12,6 @@ export function login(client: Client, username: string, password: string): void;
 
 export function isUsernameTaken(client: Client, username: string): void;
 
-export function createUser(client: Client, user: User): void;
-
 export function createPage(client: Client, page: Page): void;
 
 export function insertUserRatingByUserIdAndPageId(
