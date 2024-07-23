@@ -1,5 +1,5 @@
 import express from "express";
-import { addCoverIdsToPages } from "../../services/admin/AdminService";
+import { addCoverIdsToPages } from "../../services/admin/AdminService.js";
 const router = express.Router();
 
 router.put("/add-coverid-to-pages", (req, res) => {

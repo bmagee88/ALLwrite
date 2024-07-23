@@ -4,11 +4,11 @@ import {
   createCover,
   getCovers,
   getCoverById,
-  getCoverByPageId,
   getAuthorChildForPage,
   getAllStarredCoversByUserId,
 } from "../../services/NodeService.js";
 import CoverDto from "../../dtos/CoverDto.js";
+import { getCoverByPageId } from "../../services/cover/CoverService.js";
 
 export const testing = "testing";
 

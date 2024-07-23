@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs";
 
 const RegisterPage = () => {
-  const CREATE_USER_ENDPOINT = `/api/user/create-user`;
+  const CREATE_USER_ENDPOINT = `/api/users/create-user`;
   const IS_USERNAME_AVAILABLE_ENDPOINT = `/api/access/is-username-taken/`;
   const [usernameAvailable, setUsernameAvailable] = useState(false);
   const [usernameIsBlank, setUsernameIsBlank] = useState(true);
@@ -64,7 +64,7 @@ const RegisterPage = () => {
         }
         console.log("success");
         // return response.json();
-        navigate("/browse");
+        navigate("/dashboard/browse");
       })
       .catch((err) => {
         console.log(err);
