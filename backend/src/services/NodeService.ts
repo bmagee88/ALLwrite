@@ -144,11 +144,11 @@ export async function isUsernameTaken(client: Client, username: string) {
 export async function createPage(client: Client, page: PageDto) {
   // page:Page
   // console.log("service: Page", page);
-  const id = await client.query("select id from page order by id desc limit 1");
+  const idQueryResult = await client.query("select id from page order by id desc limit 1"); // TODO table needs to auto incr the id
   // console.log("id", id.rows[0].id);
   const query = `insert into page (id, parent_id, prompt, body, page_num, author, cover_id) values ($1, $2, $3, $4, $5, $6, $7) returning *;`;
   const values = [
-    id.rows[0].id + 1,
+    idQueryResult.rows.length !== 0 ? idQueryResult.rows[0].id + 1 : 1,
     page.parent_id,
     page.prompt,
     page.body_text,

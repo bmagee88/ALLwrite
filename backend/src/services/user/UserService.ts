@@ -61,6 +61,7 @@ export async function getContinueReadingByUserId(client: Client, user_id: number
   return res.rows;
 }
 
+/** TODO fix query now that cover_id is in pages */
 export async function getContributionsByUserId(client: Client, user_id: string) {
   console.log("in service getContributionsByUserId");
   const query = `select c.id as userId, c.id as coverId, c.title as coverTitle, p.id as pageId, p.body as pageBody, c.updated_at as lastUpdated, p.page_num as pagenum 
