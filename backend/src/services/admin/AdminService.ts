@@ -1,5 +1,5 @@
 import { Client } from "pg";
-import { getCoverByPageId } from "../cover/CoverService";
+import { getCoverByPageId } from "../cover/CoverService.js";
 
 export async function addCoverIdsToPages(client: Client) {
   console.log("XXX adding coverid to pages");
