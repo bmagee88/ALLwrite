@@ -10,7 +10,7 @@ import { Cover } from "./BrowsePage/BrowsePage";
 import { setCoverId } from "../../common/store/cover/coverSlice";
 import Bookmark from "../../common/components/Bookmark/Bookmark";
 import Box from "@mui/material/Box";
-import { Typography } from "@mui/material";
+import { Input, TextField, Typography } from "@mui/material";
 import Pin from "../../common/components/Pin/Pin";
 import CoverSample from "../../assets/images/sample_cover_image.png";
 
@@ -238,7 +238,7 @@ const ReadingPage: React.FC = () => {
           <div className='row'>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <Box>
-                <Box sx={{ display: "flex" }}>
+                <Box sx={{ display: "flex", alignItems: "center", mb: "1rem" }}>
                   <Bookmark
                     userId={ACTIVE_USER_ID}
                     coverId={page.cover_id}
