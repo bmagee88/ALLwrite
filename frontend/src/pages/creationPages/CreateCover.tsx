@@ -29,7 +29,7 @@ const CreateCover: React.FC = () => {
   }, [ACTIVE_USER, navigate]);
 
   const postPage = async (e) => {
-    var page_data = {
+    let page_data = {
       prompt: 0,
       body_text: e.target.elements.body.value,
       page_num: 1,
@@ -52,7 +52,6 @@ const CreateCover: React.FC = () => {
   };
 
   const postCover = async (e, first_page) => {
-    console.log("posting cover");
     let form_data = {
       title: e.target.elements.title.value,
       author: ACTIVE_USER ? ACTIVE_USER.username : "default",
