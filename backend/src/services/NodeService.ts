@@ -23,7 +23,7 @@ export async function togglePin(client: Client, userId: string, pageId: string) 
     const result = await client.query(query, values);
     console.log("togglePin result", result);
 
-    return result.rowCount;
+    return result.rows;
   } catch (err) {
     console.error("Error executing toggling pin", err);
     return "Internal Server Error";
@@ -38,9 +38,9 @@ export async function getPinByUserByPage(client: Client, userId: string, pageId:
 
     const values = [userId, pageId];
     const result = await client.query(query, values);
-    console.log("getPinByUserByPage result.rowcount", result.rowCount);
+    console.log("getPinByUserByPage result.rows", result.rows);
 
-    return result.rowCount;
+    return result.rows;
   } catch (err) {
     console.error("Error executing toggling pin", err);
     return "Internal Server Error";
