@@ -6,6 +6,7 @@ import Pinned from "@mui/icons-material/PushPin";
 
 const PIN_BY_USER_AND_PAGE_ENDPOINT = `/api/pin/by-user-by-page`;
 const PIN_ADD_OR_DELETE_ENDPOINT = "/api/pin/add-or-delete";
+const UPDATE_NOTE_ENDPOINT = "/api/pin/update-note";
 
 interface PinProps {
   userId: number;
@@ -72,9 +73,27 @@ const Pin: React.FC<PinProps> = ({ userId, pageId }) => {
     }
   };
 
-  const handleNoteSave = (): void => {
+  const handleNoteSave = async (): Promise<void> => {
     //update database with new note
     console.log("handling save to database");
+    const newRecord = { userId, pageId, note: editedNote };
+    const response = await fetch(UPDATE_NOTE_ENDPOINT, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newRecord),
+    });
+    if (response.ok) {
+      await response.json();
+
+      console.log("note update good");
+      const newPin = { ...pin[0], note: editedNote };
+      setPin([newPin]);
+    } else {
+      console.log("note update failed");
+    }
   };
 
   const handleNoteStateUpdate = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -95,10 +114,11 @@ const Pin: React.FC<PinProps> = ({ userId, pageId }) => {
       </Box>
       <>
         <Note
+          id='pin-note'
           label='Note'
           size='small'
           sx={{ visibility: isPinned ? "visible" : "hidden" }}
-          defaultValue={isPinned ? pin[0].note : ""}
+          value={editedNote}
           onChange={(e) => handleNoteStateUpdate(e)}
         />
         {userUpdatedPinNote && <Button onClick={() => handleNoteSave()}>Save</Button>}

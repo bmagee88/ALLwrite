@@ -1,7 +1,26 @@
 import { Client } from "pg";
 import express from "express";
 import { getPinByUserByPage, togglePin } from "../../services/NodeService.js";
+import { updatePinNote } from "../../services/pin/PinService.js";
 const router = express.Router();
+
+router.put("/update-note", async (req, res) => {
+  const client = req.client;
+  const { userId, pageId, note } = req.body;
+
+  if (!userId || !pageId) {
+    return res.status(400).send("Missing required fields");
+  }
+
+  try {
+    const result = await updatePinNote(client, userId, pageId, note);
+    res.status(200).json({ data: result });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("update-note Error");
+  }
+});
+
 router.put("/add-or-delete", async (req, res) => {
   const client = req.client;
   const { userId, pageId } = req.body;
@@ -15,7 +34,7 @@ router.put("/add-or-delete", async (req, res) => {
     res.status(200).json({ data: result });
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error");
+    res.status(500).send("add-or-delete Error");
   }
 });
 
@@ -35,7 +54,7 @@ router.post("/by-user-by-page", async (req, res) => {
     res.status(200).json({ data: result });
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error");
+    res.status(500).send("by-user-by-page Error");
   }
 });
 
