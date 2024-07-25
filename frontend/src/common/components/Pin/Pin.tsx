@@ -41,8 +41,12 @@ const Pin: React.FC<PinProps> = ({ userId, pageId }) => {
       const pin_data: PinRecord[] = rows.data; // an array with 0 or 1 element
 
       setPin(pin_data);
-      const initNote = pin_data[0].note !== null ? pin_data[0].note : "";
-      setEditedNote(pin_data.length !== 0 ? initNote : "");
+      if (pin_data.length > 0) {
+        const initNote = pin_data[0].note !== null ? pin_data[0].note : "";
+        setEditedNote(pin_data.length !== 0 ? initNote : "");
+      } else {
+        setEditedNote("");
+      }
     };
 
     fetchPinByUser();
