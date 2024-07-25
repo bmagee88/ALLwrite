@@ -87,7 +87,7 @@ export async function login(client: Client, username: string, password: string) 
   if (testing) {
     console.log("testing");
 
-    const query = `select user_id, username, firstname, lastname, email from user_profile where username = '$1' and test_text_password = '$2'`;
+    const query = `select user_id, username, firstname, lastname, email from user_profile where username = $1 and test_text_password = $2`;
     const values = [username, password];
 
     const userInfo: QueryResult<any> = await client.query(query, values);
