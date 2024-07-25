@@ -1,6 +1,6 @@
-import { Box } from "@mui/material";
+import { Box, Button, TextField as Note } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import SelectableIcon from "../SelectableIcon/SelectableIcon";
+import PinIcon from "../SelectableIcon/SelectableIcon";
 import Unpinned from "@mui/icons-material/PushPinOutlined";
 import Pinned from "@mui/icons-material/PushPin";
 
@@ -12,9 +12,19 @@ interface PinProps {
   pageId: number;
 }
 
+interface PinRecord {
+  id: number;
+  user_id: number;
+  page_id: number;
+  note: string;
+}
+
 const Pin: React.FC<PinProps> = ({ userId, pageId }) => {
-  console.log(`userId${userId}--pageId${pageId}`);
-  const [isPinned, setIsPinned] = useState<boolean>(false);
+  const [pin, setPin] = useState<PinRecord[]>([]); // an array with 0 or 1 element
+  const isPinned = pin.length !== 0;
+  const [editedNote, setEditedNote] = useState<string>("");
+  const userUpdatedPinNote: boolean =
+    editedNote !== (isPinned && pin[0].note !== null ? pin[0].note : "");
 
   useEffect(() => {
     const fetchPinByUser = async (): Promise<void> => {
@@ -26,12 +36,12 @@ const Pin: React.FC<PinProps> = ({ userId, pageId }) => {
         },
         body: JSON.stringify({ userId, pageId }),
       });
-      const data: { data: number } = await result.json();
-      const rowCount = data.data;
-      //   const data = { data: [1] };
-      console.log("rowCount after fetchPinByUser: ", rowCount);
+      const rows: { data: PinRecord[] } = await result.json();
+      const pin_data: PinRecord[] = rows.data; // an array with 0 or 1 element
 
-      setIsPinned(rowCount > 0);
+      setPin(pin_data);
+      const initNote = pin_data[0].note !== null ? pin_data[0].note : "";
+      setEditedNote(pin_data.length !== 0 ? initNote : "");
     };
 
     fetchPinByUser();
@@ -53,22 +63,46 @@ const Pin: React.FC<PinProps> = ({ userId, pageId }) => {
 
     if (response.ok) {
       const data = await response.json();
-      console.log("data.data after pin toggle", data.data);
 
-      setIsPinned(data.data > 0);
+      setPin(data.data);
+      setEditedNote("");
       console.log("upsert good");
     } else {
       console.log("upsert failed");
     }
   };
 
+  const handleNoteSave = (): void => {
+    //update database with new note
+    console.log("handling save to database");
+  };
+
+  const handleNoteStateUpdate = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { value } = e.target;
+    setEditedNote(value);
+  };
+
   return (
-    <Box onClick={updatePinnedPage}>
-      <SelectableIcon
-        isSelected={isPinned}
-        selectedIcon={() => <Pinned fontSize={"medium"} />}
-        unselectedIcon={() => <Unpinned fontSize={"medium"} />}
-      />
+    <Box sx={{ display: "flex" }}>
+      <Box
+        onClick={updatePinnedPage}
+        sx={{ display: "flex", alignItems: "center" }}>
+        <PinIcon
+          isSelected={isPinned}
+          selectedIcon={() => <Pinned fontSize={"medium"} />}
+          unselectedIcon={() => <Unpinned fontSize={"medium"} />}
+        />
+      </Box>
+      <>
+        <Note
+          label='Note'
+          size='small'
+          sx={{ visibility: isPinned ? "visible" : "hidden" }}
+          defaultValue={isPinned ? pin[0].note : ""}
+          onChange={(e) => handleNoteStateUpdate(e)}
+        />
+        {userUpdatedPinNote && <Button onClick={() => handleNoteSave()}>Save</Button>}
+      </>
     </Box>
   );
 };
