@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import bcrypt from "bcryptjs";
 
-const RegisterPage = () => {
+const RegisterPage: React.FC = () => {
   const CREATE_USER_ENDPOINT = `/api/users/create-user`;
   const IS_USERNAME_AVAILABLE_ENDPOINT = `/api/access/is-username-taken/`;
   const [usernameAvailable, setUsernameAvailable] = useState(false);
@@ -21,15 +20,13 @@ const RegisterPage = () => {
       return;
     }
 
-    //encrypt password
-    const encrypted_password = await bcrypt.hash(e.target.elements.inputPassword.value, 10);
     // load pbject to send
     var form_data = {
       username: e.target.elements.inputUsername.value,
       firstname: e.target.elements.inputFirstName.value,
       lastname: e.target.elements.inputLastName.value,
       email: e.target.elements.inputEmail.value,
-      password: encrypted_password,
+      password: e.target.elements.inputPassword.value,
     };
 
     // bcrypt.compare(
