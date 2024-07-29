@@ -14,7 +14,7 @@ router.post("/login", (req, res) => {
     })
     .catch((err: Error) => {
       console.log(err);
-      res.status(400).json({ data: "invalid" });
+      res.status(400).json({ data: err.message });
     });
 });
 router.get("/is-username-taken/:username", (req, res) => {

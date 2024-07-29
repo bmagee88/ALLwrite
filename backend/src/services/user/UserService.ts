@@ -1,16 +1,27 @@
 import { Client, QueryResult } from "pg";
 import User from "../../entities/User.entity";
+import bcrypt from "bcrypt";
 
 export async function createUser(client: Client, user: User) {
+  //encrypt password
+  const encryptedPassword = await bcrypt.hash(user.password, 10);
   //should be of type User
   // should be of type User
   const resUser: QueryResult<any> = await client
     .query(`insert into allwrite_user (id) values (default) returning *;`)
     .then((resUser) => {
       // console.log("resUser.rows[0]", resUser.rows[0])
-      client.query(
-        `insert into user_profile (user_id, username, firstname, lastname, email, password) values (${resUser.rows[0].id}, '${user.username}', '${user.firstname}', '${user.lastname}', '${user.email}', '${user.password}');`
-      );
+      const query =
+        "insert into user_profile (user_id, username, firstname, lastname, email, password) values ($1, $2, $3, $4, $5, $6);";
+      const values = [
+        resUser.rows[0].id,
+        user.username,
+        user.firstname,
+        user.lastname,
+        user.email,
+        encryptedPassword,
+      ];
+      client.query(query, values);
       return resUser;
     })
     .then((resUser) => {

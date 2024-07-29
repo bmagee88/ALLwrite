@@ -1,9 +1,8 @@
-import { compare } from "bcryptjs";
 import { Client, QueryResult } from "pg";
-import User from "../entities/User.entity";
 import Read from "../entities/Read.entity";
 import Cover from "../entities/Cover.entity";
 import PageDto from "../dtos/PageDto";
+import { passwordsMatch } from "./utils.js";
 
 export async function togglePin(client: Client, userId: string, pageId: string) {
   try {
@@ -77,60 +76,21 @@ export async function updatePageWithCoverId(client: Client, pageid: number, cove
 }
 
 export async function login(client: Client, username: string, password: string) {
-  console.log("username", username);
-  console.log("password", password);
-  const empty_result = {
-    rowCount: 0,
-    rows: [],
-  };
-  const testing = true;
-  if (testing) {
-    console.log("testing");
+  const query: string = `select user_id, username, firstname, lastname, email, password from user_profile where username = $1`;
+  const values: string[] = [username];
 
-    const query = `select user_id, username, firstname, lastname, email from user_profile where username = $1 and test_text_password = $2`;
-    const values = [username, password];
+  const userInfo: QueryResult<any> = await client.query(query, values);
 
-    const userInfo: QueryResult<any> = await client.query(query, values);
-    console.log("userInfo:", userInfo.rows[0]);
-
-    if (Array.isArray(userInfo.rows) && userInfo.rows.length === 0) {
-      console.log("Array is empty or length is 0, returning empty result");
-      return empty_result;
-    } else {
-      console.log("userInfo", userInfo.rows[0]);
-      return userInfo.rows[0];
-    }
+  if (Array.isArray(userInfo.rows) && userInfo.rows.length === 0) {
+    throw new Error("Username not found");
   }
-  // validate password
-  // get username stored hashed password
-  // const res: QueryResult<any> = await client
-  //   .query(`select password from user_profile where username = '${username}';`)
-  //   .then((get_hashed_pass_query_result) => {
-  //     console.log("query results", get_hashed_pass_query_result);
-  //     if (
-  //       Array.isArray(get_hashed_pass_query_result) &&
-  //       get_hashed_pass_query_result.length === 0
-  //     ) {
-  //       console.log("array empty or length 0, returning empty result");
-  //       return empty_result;
-  //     }
-  //     let hashed_password_from_db = get_hashed_pass_query_result.rows[0].password;
-  //     if (compare(password, hashed_password_from_db)) {
-  //       const userInfo = client.query(
-  //         `select user_id, username, firstname, lastname, email from user_profile where username = '${username}' and password = '${hashed_password_from_db}'`
-  //       );
-  //       console.log("userInfo:", userInfo);
-  //       return userInfo;
-  //     } else {
-  //       console.log("password bad, returning empty result");
-  //       return empty_result;
-  //     }
-  //   })
-  //   .catch((err:Error) => {
-  //     console.log("something went wrong:", err);
-  //   });
-  // console.log(res.rows);
-  // return res.rows;
+
+  if (!(await passwordsMatch(password, userInfo.rows[0].password))) {
+    throw new Error("Passwords did not match");
+  }
+
+  delete userInfo.rows[0].password;
+  return userInfo.rows[0];
 }
 
 export async function isUsernameTaken(client: Client, username: string) {

@@ -4,14 +4,19 @@ import { useNavigate } from "react-router-dom";
 import { User, loginUser } from "../../../common/store/user/userSlice";
 import { useDispatch } from "react-redux";
 import NoAccount from "./NoAccount/NoAccount";
-import Box from "@mui/material/Box";
-import { Input, Typography } from "@mui/material";
+import { Alert } from "@mui/material";
 
-const LoginPage = () => {
-  const LOGIN_ENDPOINT = `/api/access/login`;
+const LOGIN_ENDPOINT = `/api/access/login`;
+
+interface LoginError {
+  isError: boolean;
+  message: string;
+}
+const LoginPage: React.FC = () => {
   const dispatch = useDispatch();
   const usernameRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
+  const [loginError, setLoginError] = useState<LoginError>({ isError: false, message: "" });
 
   const navigate = useNavigate();
 
@@ -37,22 +42,21 @@ const LoginPage = () => {
     const data = await response.json();
     console.log("data = ", data);
     if (response.status === 400) {
-      console.log("invalid key value pair");
-      throw new Error(response.statusText);
+      console.log("error 400:", data.data);
+      setLoginError({ isError: true, message: data.data });
+      return;
     } else if (response.status !== 200) {
-      console.log("not 200");
-      throw new Error(response.statusText);
+      console.log("not 200:", data.data);
+      setLoginError({ isError: true, message: data.data });
+      return;
     }
+
+    console.log("status code 200");
     console.log("data.data", data.data);
 
-    if (data.data) {
-      dispatch(loginUser(data.data as User));
-      console.log("success");
-      navigate(`/dashboard/browse`);
-    } else {
-      console.log("login failed: user/pass key/val incorrect");
-      navigate("/dashboard/login");
-    }
+    dispatch(loginUser(data.data as User));
+    console.log("success");
+    navigate(`/dashboard/browse`);
   };
 
   return (
@@ -62,6 +66,8 @@ const LoginPage = () => {
           <div className='col-6 w-auto h1 border border-dark rounded p-2'>Login</div>
         </div>
         <div className='row justify-content-center'>
+          {loginError.isError && <Alert severity='warning'>{loginError.message}</Alert>}
+
           <div className='form-group row mt-4 p-4 border border-dark rounded w-50'>
             <label
               htmlFor='inputUsername'
