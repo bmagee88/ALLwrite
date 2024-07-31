@@ -15,6 +15,7 @@ import pageRouter from "./routes/page/PageRoute.js";
 import ratingRouter from "./routes/rating/RatingRoute.js";
 import bookmarkRouter from "./routes/bookmark/BookmarkRoute.js";
 import pinRouter from "./routes/pin/PinRoute.js";
+import openAiRouter from "./routes/openAi/OpenAiRoute.js"
 config();
 const dbconfig = {
   host: process.env.HOST,
@@ -28,7 +29,6 @@ console.log("client", Client);
 const app = express();
 
 let requestCount = 0;
-
 // import db from "./database/postgres/db";
 
 /** start postgres client */
@@ -111,6 +111,7 @@ async function main() {
     app.use("/api/admin", adminRouter);
     app.use("/api/users", userRouter);
     app.use("/api/access", accessRouter);
+    app.use("/api/open-ai", openAiRouter);
     app.use("/api/choice", choiceRouter);
     app.use("/api/cover", coverRouter);
     app.use("/api/page", pageRouter);
