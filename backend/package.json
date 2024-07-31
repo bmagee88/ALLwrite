@@ -23,6 +23,7 @@
     "express-validator": "^7.0.1",
     "helmet": "^7.1.0",
     "http-proxy-middleware": "^3.0.0",
+    "openai": "^4.53.2",
     "pg": "^8.11.3",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
