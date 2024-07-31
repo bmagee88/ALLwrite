@@ -20,8 +20,8 @@ const MyContributionsPage: React.FC = () => {
   useEffect(() => {
     console.log("running useeffect");
     const fetchCoversAndPagesByUser = async (user_id: number) => {
-      console.log("in fetchCoversAndPagesByUser - my-contributions");
-      const response = await fetch(`/api/users/${user_id}/my-contributions`);
+      console.log("in fetchCoversAndPagesByUser - contributions");
+      const response = await fetch(`/api/users/${user_id}/contributions`);
       if (response.ok) {
         console.log("response ok");
         const data = await response.json();

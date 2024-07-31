@@ -25,6 +25,7 @@ import { store } from "./common/store/store";
 import DashboardPage from "./pages/templatePages/DashboardPage/DashboardPage";
 import ContinueReadingPage from "./pages/profilePages/ContinueReadingPage/ContinueReadingPage";
 import MyContributionsPage from "./pages/profilePages/MyContributionsPage/MyContributionsPage";
+import PinnedPagesPage from "./pages/profilePages/PinnedPagesPage/PinnedPagesPage";
 function App() {
   return (
     <>
@@ -126,20 +127,12 @@ function App() {
               element={<ContinueReadingPage />}
             />
             <Route
-              path='my-contributions'
+              path='contributions'
               element={<MyContributionsPage />}
             />
             <Route
-              path='my-covers'
-              element={<MyCoversPage />}
-            />
-            <Route
-              path='my-pages'
-              element={<MyPagesPage />}
-            />
-            <Route
-              path='my-bookmarks'
-              element={<MyBookmarksPage />}
+              path='pinned'
+              element={<PinnedPagesPage />}
             />
           </Route>
         </Routes>
