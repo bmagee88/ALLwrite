@@ -38,7 +38,7 @@ const MyContributionsPage: React.FC = () => {
       <Box sx={{ paddingLeft: "1rem", paddingTop: ".5rem" }}>
         <Typography fontSize={24}>My Contributions</Typography>
       </Box>
-      <MyContributionsDisplay contributions={contributions} />
+      <MyContributionsDisplay stories={contributions} />
     </Box>
   );
 };
