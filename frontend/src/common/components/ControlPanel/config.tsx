@@ -56,7 +56,7 @@ export const topNavItems: MenuItem[] = [
     label: "My Contributions",
     selectedIcon: () => <ContributionSelected fontSize={fontSize} />,
     unselectedIcon: () => <ContributionUnselected fontSize={fontSize} />,
-    link: "/dashboard/my-contributions",
+    link: "/dashboard/contributions",
   },
   {
     label: "Explore",
@@ -68,7 +68,7 @@ export const topNavItems: MenuItem[] = [
     label: "Pinned Pages",
     selectedIcon: () => <PinnedSelected fontSize={fontSize} />,
     unselectedIcon: () => <PinnedUnselected fontSize={fontSize} />,
-    link: "/dashboard/my-pages",
+    link: "/dashboard/pinned",
   },
   {
     label: "Continue",

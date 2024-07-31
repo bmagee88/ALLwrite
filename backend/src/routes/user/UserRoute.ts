@@ -42,8 +42,8 @@ router.get("/:user_id/continue-reading", async (req, res) => {
   }
 });
 
-router.get("/:user_id/my-contributions", async (req, res) => {
-  console.log("in my-contributions endpoint");
+router.get("/:user_id/contributions", async (req, res) => {
+  console.log("in contributions endpoint");
   const user_id = req.params.user_id;
   if (!user_id) {
     console.log("bad user id format");
