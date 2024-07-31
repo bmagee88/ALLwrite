@@ -1,6 +1,7 @@
 import { Client, QueryResult } from "pg";
 import User from "../../entities/User.entity";
 import bcrypt from "bcrypt";
+import { formatContributions } from "./utils.js";
 
 export async function createUser(client: Client, user: User) {
   //encrypt password
@@ -75,14 +76,23 @@ export async function getContinueReadingByUserId(client: Client, user_id: number
 /** TODO fix query now that cover_id is in pages */
 export async function getContributionsByUserId(client: Client, user_id: string) {
   console.log("in service getContributionsByUserId");
-  const query = `select c.id as userId, c.id as coverId, c.title as coverTitle, p.id as pageId, p.body as pageBody, c.updated_at as lastUpdated, p.page_num as pagenum 
-    from covers c 
-    join page p 
-    on c.id = p.id 
-    where c.id = $1
-    order by c.updated_at desc`;
+  const query = `select p.cover_id as coverId, up.user_id as userId, p.page_num as pageNum, c.author as coverAuthorName, p.author as pageAuthorName, c.title as coverTitle, p.body as pageBody, c.updated_at as coverLastUpdated, p.updated_at as pageLastUpdated
+
+from page p
+join user_profile up
+on up.username = p.author
+join covers c
+on c.id = p.cover_id
+where up.user_id = $1
+order by c.id, p.updated_at desc`;
   const values = [user_id];
-  const res = await client.query(query, values);
-  console.log("rows", res.rows);
-  return res.rows;
+  try {
+    const res = await client.query(query, values);
+    console.log("getContributionsByUserId rows", res.rows);
+    const formattedContributions = await formatContributions(res.rows);
+    console.log("formattedContributions", formattedContributions);
+    return formattedContributions;
+  } catch (err) {
+    throw new Error("error querying contributionsByUser");
+  }
 }
