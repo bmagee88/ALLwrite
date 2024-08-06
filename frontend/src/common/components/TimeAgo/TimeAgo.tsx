@@ -5,15 +5,25 @@ interface TimeAgoProps {
   timestamp: string;
 }
 
+export const adjustUniversalTzToUserTz = (time: Date): Date => {
+  const timezoneOffset = time.getTimezoneOffset();
+  const localTime = new Date(time.getTime() - timezoneOffset * 60 * 1000);
+  return localTime;
+};
+
 const TimeAgo: React.FC<TimeAgoProps> = ({ timestamp }) => {
   const [timeAgo, setTimeAgo] = useState<string>("");
   const [checkTime, setCheckTime] = useState<number>(1000);
 
   useEffect(() => {
     const calculateTimeAgo = () => {
-      const now = new Date();
-      const past = new Date(timestamp);
-      const diff = now.getTime() - past.getTime();
+      // console.log("now", new Date());
+      const localNow = adjustUniversalTzToUserTz(new Date());
+      // console.log("localNow", localNow);
+      console.log("past", new Date(timestamp));
+      const localPast = adjustUniversalTzToUserTz(new Date(timestamp));
+      console.log("localPast", localPast);
+      const diff = localNow.getTime() - localPast.getTime();
 
       const seconds = Math.floor(diff / 1000);
       const minutes = Math.floor(seconds / 60);
@@ -46,13 +56,13 @@ const TimeAgo: React.FC<TimeAgoProps> = ({ timestamp }) => {
       return `seconds ago`;
     };
 
-    const interval = setInterval(() => {
-      setTimeAgo(calculateTimeAgo());
-    }, checkTime);
+    // const interval = setInterval(() => {
+    //   setTimeAgo(calculateTimeAgo());
+    // }, checkTime);
 
     setTimeAgo(calculateTimeAgo());
 
-    return () => clearInterval(interval);
+    // return () => clearInterval(interval);
   }, [checkTime, timestamp]);
 
   return <span style={{ color: "grey", fontStyle: "italic" }}>{timeAgo}</span>;
