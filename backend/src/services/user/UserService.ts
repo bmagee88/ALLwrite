@@ -76,15 +76,28 @@ export async function getContinueReadingByUserId(client: Client, user_id: number
 /** TODO fix query now that cover_id is in pages */
 export async function getContributionsByUserId(client: Client, user_id: string) {
   console.log("in service getContributionsByUserId");
-  const query = `select p.cover_id as coverId, up.user_id as userId, p.page_num as pageNum, c.author as coverAuthorName, p.author as pageAuthorName, c.title as coverTitle, p.body as pageBody, c.updated_at as coverLastUpdated, p.updated_at as pageLastUpdated
+  //   const query = `select p.cover_id as coverId, up.user_id as userId, p.page_num as pageNum, c.author as coverAuthorName, p.author as pageAuthorName, c.title as coverTitle, p.body as pageBody, c.updated_at as coverLastUpdated, p.updated_at as pageLastUpdated
 
-from page p
-join user_profile up
-on up.username = p.author
-join covers c
-on c.id = p.cover_id
-where up.user_id = $1
-order by c.id, p.updated_at desc`;
+  // from page p
+  // join user_profile up
+  // on up.username = p.author
+  // join covers c
+  // on c.id = p.cover_id
+  // where up.user_id = $1
+  // order by c.id, p.updated_at desc`;
+  const query = `SELECT sq.coverId, sq.userId, sq.pageNum, sq.coverAuthorName, sq.pageAuthorName,  sq.coverTitle, sq.pageBody, sq.coverLastUpdated, sq.pageLastUpdated
+                  FROM (select p.cover_id as coverId, up.user_id as userId, p.page_num as pageNum, c.author as coverAuthorName, p.author as pageAuthorName,  c.title as coverTitle, p.body as pageBody, c.updated_at as coverLastUpdated, p.updated_at as pageLastUpdated
+                        from page p
+                        join user_profile up
+                        on up.username = p.author
+                        join covers c
+                        on c.id = p.cover_id
+                        where up.user_id = $1
+                        order by c.id, p.updated_at desc) sq
+                  ORDER BY
+                  MAX(sq.pageLastUpdated) OVER (PARTITION BY sq.coverId) DESC, 
+                  sq.coverId,                                          
+                  sq.pageLastUpdated DESC; `;
   const values = [user_id];
   try {
     const res = await client.query(query, values);
