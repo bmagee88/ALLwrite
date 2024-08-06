@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Contributions } from "../../MyContributionsDisplay";
-import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
-
+import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from "@mui/material";
+import CoverSample from "../../../../../../assets/images/sample_cover_image.png";
+import TimeAgo from "../../../../../../common/components/TimeAgo/TimeAgo";
 interface ContributionsPageDisplayProps {
   pageContributions: Contributions[];
 }
@@ -15,12 +16,29 @@ const ContributionsPageDisplay: React.FC<ContributionsPageDisplayProps> = ({
         return (
           <Accordion key={index}>
             <AccordionSummary>
-              {/** page info */} {page.data.pagenum}
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <Box sx={{ maxHeight: "5rem" }}>
+                  <Box
+                    component='img'
+                    sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    src={CoverSample}
+                  />
+                </Box>
+                <Box>
+                  <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+                    <Box>
+                      <Typography fontWeight={"bold"}>Prompt</Typography>
+                    </Box>
+                    <Box>
+                      <TimeAgo timestamp={page.data.pagelastupdated} />
+                    </Box>
+                  </Box>
+                  <Box>Pg.&nbsp;{page.data.pagenum}</Box>
+                </Box>
+              </Box>
             </AccordionSummary>
 
-            <AccordionDetails>
-              {/** page details here*/} {page.data.pagebody}
-            </AccordionDetails>
+            <AccordionDetails>{page.data.pagebody}</AccordionDetails>
           </Accordion>
         );
       })}
